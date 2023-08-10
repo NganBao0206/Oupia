@@ -1,0 +1,19 @@
+p {margin: 0}
+
+.w-fit-content {
+    width: fit-content;
+}
+
+.avatar{
+
+}
+.avatar img{
+    width:45px;
+    height:45px;
+    background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.match-h-parent{
+    height: max-content;
+}
