@@ -5,6 +5,7 @@
 package com.pn.configs;
 
 import com.pn.validator.ConfirmPasswordValidator;
+import com.pn.validator.UsernameValidator;
 import com.pn.validator.WebAppValidator;
 import java.util.HashSet;
 import java.util.Set;
@@ -84,6 +85,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
     public WebAppValidator userValidator() {
         Set<Validator> springValidators = new HashSet<>();
         springValidators.add(new ConfirmPasswordValidator());
+        springValidators.add(new UsernameValidator());
         WebAppValidator validator = new WebAppValidator();
         validator.setSpringValidators(springValidators);
         return validator;
