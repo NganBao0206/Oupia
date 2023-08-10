@@ -70,4 +70,9 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public boolean existsByUsername(String username) {
+        return this.userRepository.existsByUsername(username);
+    }
+
 }
