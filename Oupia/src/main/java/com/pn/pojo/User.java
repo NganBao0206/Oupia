@@ -117,10 +117,6 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
     
-    @Size(max = 20)
-    @Column(name = "phone_number")
-    private String phoneNumber;
-    
     @Basic(optional = false)
     @NotNull(message = "{user.identityNumber.notNull}")
     @Size(min = 1, max = 100, message = "{user.identityNumber.size}")
@@ -244,14 +240,6 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getIdentityNumber() {
