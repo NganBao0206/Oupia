@@ -120,4 +120,16 @@ public class UserRepositoryImpl implements UserRepository {
 
         return (User) query.getSingleResult();
     }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        Session session = this.factory.getObject().getCurrentSession();
+        Query query = session.createQuery("SELECT COUNT(u) FROM User u WHERE u.username = :username");
+        query.setParameter("username", username);
+        Long count = (Long) q.getSingleResult();
+        if (count > 0)
+            return true;
+        else return false;
+    }
+
 }
