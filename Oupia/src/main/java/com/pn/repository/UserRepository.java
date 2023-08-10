@@ -18,4 +18,5 @@ public interface UserRepository {
     int countUsers();
     boolean addOrUpdateUser(User u);
     User getUserBySlug(String slug);
+    boolean existsByUsername(String username);
 }
