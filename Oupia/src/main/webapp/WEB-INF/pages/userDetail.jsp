@@ -84,12 +84,11 @@
             <hr/>
             <div class="row mb-3">
                 <div class="col">
-                    <div class="form-floating">
-                        <form:input path="phoneNumber" type="tel" class="form-control" id="inputPhone" placeholder="" />
-                        <label for="inputPhone">Số điện thoại</label>
+                     <div class="form-floating">
+                        <form:input path="identityNumber" type="text" class="form-control" id="identityNumber" placeholder=""  />
+                        <label for="identityNumber">CMND/CCCD</label>
                     </div>
-                    <form:errors path="phoneNumber" element="div" cssClass="text-danger" />
-
+                    <form:errors path="identityNumber" element="div" cssClass="text-danger" />
                 </div>
                 <div class="col">
                     <div class="form-floating">
@@ -122,16 +121,7 @@
 
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col">
-                    <div class="form-floating">
-                        <form:input path="identityNumber" type="text" class="form-control" id="identityNumber" placeholder=""  />
-                        <label for="identityNumber">CMND/CCCD</label>
-                    </div>
-                    <form:errors path="identityNumber" element="div" cssClass="text-danger" />
-
-                </div>
-            </div>
+        
             <button type="submit" class="btn btn-dark btn-block mb-3 w-100 shadow">Thêm</button>
         </form:form>
     </div>
