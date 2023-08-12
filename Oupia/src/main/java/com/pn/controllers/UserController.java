@@ -74,9 +74,17 @@ public class UserController {
         return "userDetail";
     }
     
+    @RequestMapping(value = "/error")
+    public String error() {
+        return "error";
+    }
+    
     @GetMapping("/users/storage/{slug}")
     public String update(Model model, @PathVariable(value = "slug") String slug) {
-        model.addAttribute("user", this.userService.getUserBySlug(slug));
+        User u = this.userService.getUserBySlug(slug);
+        if (u == null) 
+            return "error";
+        model.addAttribute("user", u);
         return "userDetail";
     }
     

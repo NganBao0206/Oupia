@@ -5,6 +5,7 @@
 package com.pn.validator;
 
 import com.pn.pojo.User;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -12,6 +13,7 @@ import org.springframework.validation.Validator;
  *
  * @author yuumm
  */
+@Component
 public class ConfirmPasswordValidator implements Validator{
 
     @Override

@@ -66,7 +66,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserBySlug(String slug) {
         User user = this.userRepository.getUserBySlug(slug);
-        user.setConfirmPassword(user.getPassword());
+        if (user != null) {
+            user.setConfirmPassword(user.getPassword());
+        }
         return user;
     }
 

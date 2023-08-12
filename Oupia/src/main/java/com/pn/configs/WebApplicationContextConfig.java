@@ -4,6 +4,7 @@
  */
 package com.pn.configs;
 
+import com.pn.service.UserService;
 import com.pn.validator.ConfirmPasswordValidator;
 import com.pn.validator.UsernameValidator;
 import com.pn.validator.WebAppValidator;
@@ -34,7 +35,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan({
     "com.pn.controllers",
     "com.pn.repository",
-    "com.pn.service",})
+    "com.pn.service",
+    "com.pn.validator",})
 @PropertySource("classpath:configs.properties")
 public class WebApplicationContextConfig implements WebMvcConfigurer {
 
@@ -82,10 +84,10 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public WebAppValidator userValidator() {
+    public WebAppValidator userValidator(UserService userService) {
         Set<Validator> springValidators = new HashSet<>();
         springValidators.add(new ConfirmPasswordValidator());
-        springValidators.add(new UsernameValidator());
+        springValidators.add(new UsernameValidator(userService));
         WebAppValidator validator = new WebAppValidator();
         validator.setSpringValidators(springValidators);
         return validator;

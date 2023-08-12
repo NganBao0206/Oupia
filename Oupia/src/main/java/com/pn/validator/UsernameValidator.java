@@ -1,25 +1,34 @@
-package com.pn.validator
-import com.pn.pojo.User
-import java.util.Set;
-import javax.validation.ConstraintViolation;
+package com.pn.validator;
+
+import com.pn.pojo.User;
+import com.pn.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-public class UsernameValidator implements Validator{
-   @Autowired
-   UserService userService;
-   @Override
-   public boolean supports(Class<?> clazz) {
-       return User.class.isAssignableFrom(clazz);
-   }
+@Component
+public class UsernameValidator implements Validator {
 
-   @Override
-   public void validate(Object target, Errors errors) {
+    private final UserService userService;
+
+    @Autowired
+    public UsernameValidator(UserService userService) {
+        this.userService = userService;
+    }
+    
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return User.class.isAssignableFrom(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
         User user = (User) target;
-       
-       if  (userService.existsByUsername(user.getUsername())) {
-           errors.rejectValue("username", "user.username.exist");
-       }
-   }
-   
+
+        if (userService.existsByUsername(user.getUsername())) {
+            errors.rejectValue("username", "user.username.exist");
+        }
+    }
+
 }

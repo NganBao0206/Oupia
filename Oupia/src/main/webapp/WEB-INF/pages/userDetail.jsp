@@ -10,8 +10,8 @@
 
 <div> 
     <c:url value="/users/storage/" var="action" />
-    <h3>Thêm tài khoản</h3>
-    <div class="shadow p-3 mb-5 bg-body-tertiary rounded mt-3">
+    <h3 class="mt-5 bold">Thêm tài khoản</h3>
+    <div class="shadow p-4 mb-5 bg-body-tertiary rounded mt-3">
         <form:form modelAttribute="user" action="${action}" method="POST" enctype="multipart/form-data">
             <form:hidden path="id" />
             <form:hidden path="avatar" />
@@ -75,7 +75,6 @@
                     </div>
                 </div>
                 <div class="mb-3 mt-3">
-                    <label for="inputFile" class="form-label">Avatar</label>
                     <form:input path="file" onchange="readURL(this)" class="form-control" type="file" id="inputFile" accept="image/gif, image/jpeg, image/png"/>
                 </div>
                 <form:errors path="file" element="div" cssClass="text-danger" />
@@ -84,7 +83,7 @@
             <hr/>
             <div class="row mb-3">
                 <div class="col">
-                     <div class="form-floating">
+                    <div class="form-floating">
                         <form:input path="identityNumber" type="text" class="form-control" id="identityNumber" placeholder=""  />
                         <label for="identityNumber">CMND/CCCD</label>
                     </div>
@@ -118,11 +117,19 @@
                         <label for="inputDob">Ngày sinh</label>
                     </div>
                     <form:errors path="dob" element="div" cssClass="text-danger" />
-
                 </div>
             </div>
-        
-            <button type="submit" class="btn btn-dark btn-block mb-3 w-100 shadow">Thêm</button>
+            <div class="row mb-3 mt-4">
+                <div class="col">
+                    <a type="button" class="btn btn-secondary btn-block mb-3 w-100 shadow p-3">Hủy</a>
+
+                </div>
+                <div class="col">
+                    <a type="submit" class="btn btn-primary btn-my-primary btn-block mb-3 w-100 shadow p-3">Thêm</a>
+                </div>
+            </div>
+
+
         </form:form>
     </div>
 
@@ -139,4 +146,5 @@
         var hiddenAvatar = document.getElementById('hiddenAvatar');
         hiddenAvatar.classList.add('d-none');
     }
+
 </script>

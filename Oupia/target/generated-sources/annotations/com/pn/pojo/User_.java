@@ -10,7 +10,7 @@ import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-08-09T23:19:31", comments="EclipseLink-2.7.10.v20211216-rNA")
+@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-08-11T16:09:33", comments="EclipseLink-2.7.10.v20211216-rNA")
 @StaticMetamodel(User.class)
 public class User_ { 
 
@@ -25,7 +25,6 @@ public class User_ {
     public static volatile SetAttribute<User, Motel> motelSet;
     public static volatile SingularAttribute<User, Date> createdAt;
     public static volatile SingularAttribute<User, String> password;
-    public static volatile SingularAttribute<User, String> phoneNumber;
     public static volatile SingularAttribute<User, String> identityNumber;
     public static volatile SingularAttribute<User, Date> dob;
     public static volatile SetAttribute<User, Follow> followSet;

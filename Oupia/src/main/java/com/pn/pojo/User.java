@@ -46,7 +46,6 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
     @NamedQuery(name = "User.findByFullName", query = "SELECT u FROM User u WHERE u.fullName = :fullName"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByPhoneNumber", query = "SELECT u FROM User u WHERE u.phoneNumber = :phoneNumber"),
     @NamedQuery(name = "User.findByIdentityNumber", query = "SELECT u FROM User u WHERE u.identityNumber = :identityNumber"),
     @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
     @NamedQuery(name = "User.findByDob", query = "SELECT u FROM User u WHERE u.dob = :dob"),
@@ -153,6 +152,11 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "is_active")
     private boolean isActive;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "is_confirm")
+    private boolean isConfirm;
     
     @Lob
     @Size(max = 65535)
@@ -296,6 +300,14 @@ public class User implements Serializable {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
+    }
+    
+    public boolean getIsConfirm() {
+        return isConfirm;
+    }
+
+    public void setIsConfirm(boolean isConfirm) {
+        this.isConfirm = isConfirm;
     }
 
     public String getAvatar() {

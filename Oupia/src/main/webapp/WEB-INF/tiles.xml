@@ -25,4 +25,10 @@
         <put-attribute name="content" 
                        value="/WEB-INF/pages/userDetail.jsp" />
     </definition>
+    <definition name="error" extends="baseLayout">
+        <put-attribute name="title" value="Thông tin user" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/404.jsp" />
+    </definition>
+
 </tiles-definitions>

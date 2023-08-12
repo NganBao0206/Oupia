@@ -9,6 +9,7 @@ import com.pn.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -118,7 +119,11 @@ public class UserRepositoryImpl implements UserRepository {
         Query query = session.createQuery("FROM User u WHERE u.slug = :slug");
         query.setParameter("slug", slug);
 
-        return (User) query.getSingleResult();
+        try {
+            return (User) query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null; // Trả về null nếu không tìm thấy kết quả
+        }
     }
 
     @Override
@@ -126,10 +131,12 @@ public class UserRepositoryImpl implements UserRepository {
         Session session = this.factory.getObject().getCurrentSession();
         Query query = session.createQuery("SELECT COUNT(u) FROM User u WHERE u.username = :username");
         query.setParameter("username", username);
-        Long count = (Long) q.getSingleResult();
-        if (count > 0)
+        Long count = (Long) query.getSingleResult();
+        if (count > 0) {
             return true;
-        else return false;
+        } else {
+            return false;
+        }
     }
 
 }
