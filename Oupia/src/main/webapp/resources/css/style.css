@@ -42,3 +42,7 @@ body {
 .match-h-parent{
     height: max-content;
 }
+
+.table-hover tbody tr:hover {
+    background-color: #00B7FF !important;
+}

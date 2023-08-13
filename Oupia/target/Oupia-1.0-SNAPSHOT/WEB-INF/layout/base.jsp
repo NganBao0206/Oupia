@@ -25,8 +25,9 @@
     </head>
     <body class="min-vh-100">
         <tiles:insertAttribute name="header" />
+
         <main>
-            <div class="container my-3">
+            <div class="my-5 container">
                 <tiles:insertAttribute name="content" />
             </div>
         </main>

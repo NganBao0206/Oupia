@@ -14,6 +14,7 @@
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/configs/WebApplicationContextConfig.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/controllers/UserController.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/pojo/Location.java
+/home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/enums/Gender.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/pojo/PostDetail.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/validator/DobValidator.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/pojo/PostDetailImage.java

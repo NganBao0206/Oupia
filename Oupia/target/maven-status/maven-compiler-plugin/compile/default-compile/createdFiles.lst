@@ -1,5 +1,6 @@
 com/pn/configs/TilesConfig.class
 com/pn/pojo/Image.class
+com/pn/enums/Gender.class
 com/pn/pojo/Comment_.class
 com/pn/pojo/PostDetail_.class
 com/pn/pojo/Post_.class

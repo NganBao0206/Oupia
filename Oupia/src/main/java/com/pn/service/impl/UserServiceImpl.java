@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
     private Cloudinary cloudinary;
 
     @Override
-    public List<User> getUsers(Map<String, String> params) {
-        return userRepository.getUsers(params);
+    public List<User> getUsers(Map<String, String> params, List<String> userRoles) {
+        return userRepository.getUsers(params, userRoles);
     }
 
     @Override
@@ -73,8 +73,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean existsByUsername(String username) {
-        return this.userRepository.existsByUsername(username);
+    public boolean existsByUsername(String username, int id) {
+        return this.userRepository.existsByUsername(username, id);
     }
 
 }

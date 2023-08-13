@@ -25,8 +25,8 @@ public class UsernameValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         User user = (User) target;
-
-        if (userService.existsByUsername(user.getUsername())) {
+        int id = user.getId() != null? user.getId() : -1;
+        if (userService.existsByUsername(user.getUsername(), id)) {
             errors.rejectValue("username", "user.username.exist");
         }
     }

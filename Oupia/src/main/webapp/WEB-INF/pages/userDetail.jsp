@@ -10,7 +10,7 @@
 
 <div> 
     <c:url value="/users/storage/" var="action" />
-    <h3 class="mt-5 bold">Thêm tài khoản</h3>
+    <h3 class="fw-bold text-my-primary">Thêm tài khoản</h3>
     <div class="shadow p-4 mb-5 bg-body-tertiary rounded mt-3">
         <form:form modelAttribute="user" action="${action}" method="POST" enctype="multipart/form-data">
             <form:hidden path="id" />
@@ -102,9 +102,16 @@
                 <div class="col">
                     <div class="form-floating">
                         <form:select path="gender" class="form-select" id="inputGender" aria-label="Floating label select example" >
-                            <option value="MALE">Nam</option>
-                            <option value="FEMALE">Nữ</option>
-                            <option value="OTHER">Khác</option>
+                             <c:forEach items="${genders}" var="gender">
+                                <c:choose>
+                                    <c:when test="${user.gender == gender}">
+                                        <option selected value="${gender}">${gender.displayName}</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${gender}">${gender.displayName}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
                         </form:select>
                         <label for="inputGender">Giới tính</label>
                     </div>
@@ -121,11 +128,11 @@
             </div>
             <div class="row mb-3 mt-4">
                 <div class="col">
-                    <a type="button" class="btn btn-secondary btn-block mb-3 w-100 shadow p-3">Hủy</a>
+                    <a type="button" class="btn btn-outline-dark btn-block mb-3 w-100 p-3">Hủy</a>
 
                 </div>
                 <div class="col">
-                    <a type="submit" class="btn btn-primary btn-my-primary btn-block mb-3 w-100 shadow p-3">Thêm</a>
+                    <buton type="submit" onclick="submitForm()" class="btn btn-dark btn-block mb-3 w-100 p-3">Thêm</button>
                 </div>
             </div>
 
@@ -146,5 +153,7 @@
         var hiddenAvatar = document.getElementById('hiddenAvatar');
         hiddenAvatar.classList.add('d-none');
     }
-
+    function submitForm() {
+        document.querySelector("form").submit();
+    }
 </script>

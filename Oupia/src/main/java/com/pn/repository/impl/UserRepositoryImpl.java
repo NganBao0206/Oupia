@@ -38,7 +38,7 @@ public class UserRepositoryImpl implements UserRepository {
     private Environment env;
 
     @Override
-    public List<User> getUsers(Map<String, String> params) {
+    public List<User> getUsers(Map<String, String> params, List<String> userRoles) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<User> q = b.createQuery(User.class);
@@ -61,12 +61,11 @@ public class UserRepositoryImpl implements UserRepository {
                 predicates.add(b.like(root.get("email"), String.format("%%%s%%", email)));
             }
 
-            String role = params.get("role");
-            if (role != null && !role.isEmpty()) {
-                String[] roles = role.split("\\$");
+            if (userRoles != null && userRoles.size() > 0) {
                 List<Predicate> pres = new ArrayList<>();
-                for (int i = 0; i < roles.length; i++) {
-                    pres.add(b.equal(root.get("userRole"), roles[i]));
+                
+                for (String role : userRoles) {
+                    pres.add(b.equal(root.get("userRole"), role));
                 }
                 System.out.println(pres.size());
                 if (pres.size() > 0) {
@@ -127,9 +126,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean existsByUsername(String username) {
+    public boolean existsByUsername(String username, int id) {
         Session session = this.factory.getObject().getCurrentSession();
-        Query query = session.createQuery("SELECT COUNT(u) FROM User u WHERE u.username = :username");
+        String queryString = "SELECT COUNT(u) FROM User u WHERE u.username = :username";
+
+        if (id != -1) {
+            queryString += " AND u.id != :id";
+        }
+
+        Query query = session.createQuery(queryString);
+
+        if (id != -1) {
+            query.setParameter("id", id);
+        }
         query.setParameter("username", username);
         Long count = (Long) query.getSingleResult();
         if (count > 0) {

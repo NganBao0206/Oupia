@@ -6,7 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<header>
     <c:url value="/" var="homeUrl"/>
     <c:url value="/users" var="usersUrl"/>
 
@@ -34,5 +33,4 @@
             </div>
         </nav>
     </nav
-</header>
 
