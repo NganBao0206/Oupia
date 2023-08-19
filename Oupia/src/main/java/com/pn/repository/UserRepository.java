@@ -14,9 +14,19 @@ import java.util.Map;
  */
 public interface UserRepository {
 
-    List<User> getUsers(Map<String, String> params, List<String> userRoles);
-    int countUsers();
+    List<User> getUsers(Map<String, String> params, List<String> userRoles, List<String> status);
+
+    int countUsers(Map<String, String> params, List<String> userRoles, List<String> status);
+
     boolean addOrUpdateUser(User u);
-    User getUserBySlug(String slug);
+
+    User getUserByUsername(String username);
+
     boolean existsByUsername(String username, int id);
+
+    boolean deleteUser(String username);
+
+    boolean destroyUser(String username);
+
+    boolean restoreUser(String username);
 }

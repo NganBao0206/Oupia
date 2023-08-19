@@ -6,18 +6,23 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div> 
     <c:url value="/users/storage/" var="action" />
-    <h3 class="fw-bold text-my-primary">Thêm tài khoản</h3>
+    <c:set value="Thông tin tài khoản" var="title"/>
+    <c:if test="${empty user.id}">
+        <c:set value="Thêm tài khoản" var="title"/>
+    </c:if>
+    <h3 class="fw-bold text-my-primary">${title}</h3>
     <div class="shadow p-4 mb-5 bg-body-tertiary rounded mt-3">
         <form:form modelAttribute="user" action="${action}" method="POST" enctype="multipart/form-data">
             <form:hidden path="id" />
             <form:hidden path="avatar" />
-            <form:hidden path="slug" />
             <form:hidden path="createdAt"/>
             <form:hidden path="updatedAt"/>
+            <form:hidden path="oldPassword"/>
+
             <div class="row mb-3">
                 <div class="col">
                     <div class="form-floating mb-3 col">
@@ -102,7 +107,7 @@
                 <div class="col">
                     <div class="form-floating">
                         <form:select path="gender" class="form-select" id="inputGender" aria-label="Floating label select example" >
-                             <c:forEach items="${genders}" var="gender">
+                            <c:forEach items="${genders}" var="gender">
                                 <c:choose>
                                     <c:when test="${user.gender == gender}">
                                         <option selected value="${gender}">${gender.displayName}</option>
@@ -128,15 +133,18 @@
             </div>
             <div class="row mb-3 mt-4">
                 <div class="col">
-                    <a type="button" class="btn btn-outline-dark btn-block mb-3 w-100 p-3">Hủy</a>
+                    <c:url value="/users/" var="urlBack"/>
 
+                    <a href="${urlBack}" type="button" class="btn btn-outline-dark btn-block mb-3 w-100 p-3">Hủy</a>
                 </div>
                 <div class="col">
-                    <buton type="submit" onclick="submitForm()" class="btn btn-dark btn-block mb-3 w-100 p-3">Thêm</button>
+                    <c:set value="Cập nhật" var="btnText"/>
+                    <c:if test="${empty user.id}">
+                        <c:set value="Thêm" var="btnText"/>
+                    </c:if>
+                    <buton type="submit" onclick="submitForm()" class="btn btn-dark btn-block mb-3 w-100 p-3">${btnText}</button>
                 </div>
             </div>
-
-
         </form:form>
     </div>
 

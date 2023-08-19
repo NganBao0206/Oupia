@@ -4,8 +4,12 @@
  */
 package com.pn.configs;
 
+import com.github.slugify.Slugify;
+import com.pn.formatters.MotelFormatter;
+import com.pn.formatters.UserFormatter;
 import com.pn.service.UserService;
 import com.pn.validator.ConfirmPasswordValidator;
+import com.pn.validator.PasswordValidator;
 import com.pn.validator.UsernameValidator;
 import com.pn.validator.WebAppValidator;
 import java.util.HashSet;
@@ -16,6 +20,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -36,6 +41,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
     "com.pn.controllers",
     "com.pn.repository",
     "com.pn.service",
+    "com.pn.formatters",
     "com.pn.validator",})
 @PropertySource("classpath:configs.properties")
 public class WebApplicationContextConfig implements WebMvcConfigurer {
@@ -54,6 +60,14 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/js/**")
                 .addResourceLocations("/resources/js/");
     }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new UserFormatter());
+        registry.addFormatter(new MotelFormatter());
+    }
+    
+    
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
@@ -88,9 +102,15 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         Set<Validator> springValidators = new HashSet<>();
         springValidators.add(new ConfirmPasswordValidator());
         springValidators.add(new UsernameValidator(userService));
+        springValidators.add(new PasswordValidator());
         WebAppValidator validator = new WebAppValidator();
         validator.setSpringValidators(springValidators);
         return validator;
+    }
+    
+    @Bean
+    public Slugify slugify() {
+        return new Slugify();
     }
 
 }

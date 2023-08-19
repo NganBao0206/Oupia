@@ -4,6 +4,9 @@
  */
 package com.pn.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pn.enums.Status;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
@@ -39,50 +42,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Entity
 @Table(name = "user")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
-    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByFullName", query = "SELECT u FROM User u WHERE u.fullName = :fullName"),
-    @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByIdentityNumber", query = "SELECT u FROM User u WHERE u.identityNumber = :identityNumber"),
-    @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
-    @NamedQuery(name = "User.findByDob", query = "SELECT u FROM User u WHERE u.dob = :dob"),
-    @NamedQuery(name = "User.findByCreatedAt", query = "SELECT u FROM User u WHERE u.createdAt = :createdAt"),
-    @NamedQuery(name = "User.findByUpdatedAt", query = "SELECT u FROM User u WHERE u.updatedAt = :updatedAt"),
-    @NamedQuery(name = "User.findByUserRole", query = "SELECT u FROM User u WHERE u.userRole = :userRole"),
-    @NamedQuery(name = "User.findByIsActive", query = "SELECT u FROM User u WHERE u.isActive = :isActive"),
-    @NamedQuery(name = "User.findBySlug", query = "SELECT u FROM User u WHERE u.slug = :slug")})
 public class User implements Serializable {
-
-    /**
-     * @return the file
-     */
-    public MultipartFile getFile() {
-        return file;
-    }
-
-    /**
-     * @param file the file to set
-     */
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
-
-    /**
-     * @return the confirmPassword
-     */
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    /**
-     * @param confirmPassword the confirmPassword to set
-     */
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -90,120 +50,142 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    
+
     @Basic(optional = false)
     @NotNull(message = "{user.username.notNull}")
-    @Size(min = 1, max = 50, message = "{user.username.size}")
-    @Pattern(regexp = "^[a-zA-Z0-9._-]{3,}$", message = "{user.username.pattern}")
+    @Size(min = 3, max = 50, message = "{user.username.size}")
+    @Pattern(regexp = "^[a-zA-Z0-9.]{3,}$", message = "{user.username.pattern}")
     @Column(name = "username")
     private String username;
-    
+
     @Basic(optional = false)
     @NotNull(message = "{user.password.notNull}")
-    @Size(min = 8, max = 100,message = "{user.password.size}")
-    @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*\\_\\-+=])[A-Za-z\\d!@#$%^&*\\_\\-+=]+$", message = "user.password.pattern")
+    @Size(min = 8, max = 100, message = "{user.password.size}")
+    @JsonIgnore
     @Column(name = "password")
     private String password;
-    
+
     @Basic(optional = false)
     @NotNull(message = "{user.fullName.notNull}")
     @Size(min = 1, max = 50, message = "{user.fullName.size}")
     @Column(name = "full_name")
     private String fullName;
-    
+
 //    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 100)
     @Column(name = "email")
     private String email;
-    
+
     @Basic(optional = false)
     @NotNull(message = "{user.identityNumber.notNull}")
     @Size(min = 1, max = 100, message = "{user.identityNumber.size}")
     @Column(name = "identity_number")
     private String identityNumber;
-    
+
     @Basic(optional = false)
     @NotNull(message = "{user.gender.notNull}")
     @Size(min = 1, message = "{user.gender.notNull}")
     @Column(name = "gender")
     private String gender;
-    
+
     @Basic(optional = false)
     @NotNull(message = "{user.dob.notNull}")
     @Column(name = "dob")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dob;
-    
+
     @Column(name = "created_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    
+
     @Column(name = "updated_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-    
+
     @Basic(optional = false)
     @NotNull(message = "{user.userRole.notNull}")
     @Size(min = 1, message = "{user.userRole.notNull}")
     @Column(name = "user_role")
     private String userRole;
-    
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "is_active")
-    private boolean isActive;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "is_confirm")
     private boolean isConfirm;
-    
+
     @Lob
     @Size(max = 65535)
     @Column(name = "avatar")
     private String avatar;
-    
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "slug")
-    private String slug;
+
     @Transient
+    @JsonIgnore
+    @XmlTransient
     private MultipartFile file;
+
     @Transient
+    @JsonIgnore
+//    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*\\_\\-+=])[A-Za-z\\d!@#$%^&*\\_\\-+=]+$", message = "user.password.pattern")
+    private String oldPassword;
+
+    @Transient
+    @JsonIgnore
     private String confirmPassword;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @JsonIgnore
     private Set<Post> postSet;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "followUserId")
+    @JsonIgnore
     private Set<Follow> followSet;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "beFollowedUserId")
+    @JsonIgnore
     private Set<Follow> followSet1;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sendUserId")
-    private Set<Message> messageSet;
+    @JsonIgnore
+    private Set<Message> sentMessageSet;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "receiveUserId")
-    private Set<Message> messageSet1;
+    @JsonIgnore
+    private Set<Message> receivedMessageSet;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @JsonIgnore
     private Set<Motel> motelSet;
 
+    @Basic(optional = false)
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
     public User() {
-        this.slug = "ok";
+        isDeleted = false;
+        status = Status.PENDING.toString();
     }
 
     public User(Integer id) {
         this.id = id;
     }
 
-    public User(Integer id, String username, String password, String fullName, String identityNumber, String gender, Date dob, String userRole, boolean isActive, String slug) {
+    public User(Integer id, String username, String password, String fullName, String identityNumber, String gender, Date dob, String userRole, String slug) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.oldPassword = password;
+        this.confirmPassword = password;
         this.fullName = fullName;
         this.identityNumber = identityNumber;
         this.gender = gender;
         this.dob = dob;
         this.userRole = userRole;
-        this.isActive = isActive;
-        this.slug = "ok";
     }
 
     public Integer getId() {
@@ -294,14 +276,6 @@ public class User implements Serializable {
         this.userRole = userRole;
     }
 
-    public boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-    }
-    
     public boolean getIsConfirm() {
         return isConfirm;
     }
@@ -318,15 +292,74 @@ public class User implements Serializable {
         this.avatar = avatar;
     }
 
-    public String getSlug() {
-        return slug;
+    public Boolean getIsDeleted() {
+        return isDeleted;
     }
 
-    public void setSlug(String slug) {
-        this.slug = slug;
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the oldPassword
+     */
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    /**
+     * @param oldPassword the oldPassword to set
+     */
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
+    /**
+     * @return the file
+     */
+    @XmlTransient
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
+    /**
+     * @return the confirmPassword
+     */
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    /**
+     * @param confirmPassword the confirmPassword to set
+     */
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     @XmlTransient
+    @JsonIgnore
+
     public Set<Post> getPostSet() {
         return postSet;
     }
@@ -336,6 +369,8 @@ public class User implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
+
     public Set<Follow> getFollowSet() {
         return followSet;
     }
@@ -345,6 +380,8 @@ public class User implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
+
     public Set<Follow> getFollowSet1() {
         return followSet1;
     }
@@ -354,24 +391,28 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public Set<Message> getMessageSet() {
-        return messageSet;
+    @JsonIgnore
+
+    public Set<Message> getSentMessageSet() {
+        return sentMessageSet;
     }
 
-    public void setMessageSet(Set<Message> messageSet) {
-        this.messageSet = messageSet;
-    }
-
-    @XmlTransient
-    public Set<Message> getMessageSet1() {
-        return messageSet1;
-    }
-
-    public void setMessageSet1(Set<Message> messageSet1) {
-        this.messageSet1 = messageSet1;
+    public void setSentMessageSet(Set<Message> sentMessageSet) {
+        this.sentMessageSet = sentMessageSet;
     }
 
     @XmlTransient
+    @JsonIgnore
+    public Set<Message> getReceiverMessageSet() {
+        return receivedMessageSet;
+    }
+
+    public void setReceiverMessageSet(Set<Message> receivedMessageSet) {
+        this.receivedMessageSet = receivedMessageSet;
+    }
+
+    @XmlTransient
+    @JsonIgnore
     public Set<Motel> getMotelSet() {
         return motelSet;
     }
@@ -404,6 +445,7 @@ public class User implements Serializable {
     public String toString() {
         return "com.pn.pojo.User[ id=" + id + " ]";
     }
+
     @PrePersist
     protected void onCreate() {
         createdAt = new Date();

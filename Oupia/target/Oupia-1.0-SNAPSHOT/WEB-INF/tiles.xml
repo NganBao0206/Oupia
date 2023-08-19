@@ -25,10 +25,34 @@
         <put-attribute name="content" 
                        value="/WEB-INF/pages/userDetail.jsp" />
     </definition>
+    <definition name="motels" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý trọ" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/motels.jsp" />
+    </definition>
+    <definition name="motelDetail" extends="baseLayout">
+        <put-attribute name="title" value="Thông tin trọ" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/motelDetail.jsp" />
+    </definition>
+    <definition name="motelDetail1" extends="baseLayout">
+        <put-attribute name="title" value="Thông tin trọ" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/motelDetail_1.jsp" />
+    </definition>
     <definition name="error" extends="baseLayout">
         <put-attribute name="title" value="Thông tin user" />
         <put-attribute name="content" 
                        value="/WEB-INF/pages/404.jsp" />
+    </definition>
+    
+    <definition name="login" extends="baseLayout">
+        <put-attribute name="title" value="Login" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/login.jsp" />
+    </definition>
+    <definition name="testMap"
+                 template="/WEB-INF/pages/testMap.jsp">
     </definition>
 
 </tiles-definitions>

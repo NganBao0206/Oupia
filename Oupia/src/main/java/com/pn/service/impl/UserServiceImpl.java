@@ -7,42 +7,63 @@ package com.pn.service.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
+import com.pn.enums.Status;
+import com.pn.enums.UserRole;
 import com.pn.pojo.User;
 import com.pn.repository.UserRepository;
 import com.pn.service.UserService;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author yuumm
  */
-@Service
+@Service("userDetailsService")
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private Cloudinary cloudinary;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public List<User> getUsers(Map<String, String> params, List<String> userRoles) {
-        return userRepository.getUsers(params, userRoles);
+    public List<User> getUsers(Map<String, String> params, List<String> userRoles, List<String> status) {
+        return userRepository.getUsers(params, userRoles, status);
     }
 
     @Override
-    public int countUsers() {
-        return userRepository.countUsers();
+    public int countUsers(Map<String, String> params, List<String> userRoles, List<String> status) {
+        return userRepository.countUsers(params, userRoles, status);
     }
 
     @Override
     public boolean addOrUpdateUser(User u) {
-        u.setSlug(u.getUsername().replaceAll("\\._", "-"));
+        if (u.getId() == null) {
+            if (u.getUserRole().equals(UserRole.TENANT.toString())) {
+                u.setStatus(Status.ACCEPTED.toString());
+            }
+        }
+        if (u.getOldPassword() == null || !u.getPassword().equals(u.getOldPassword())) {
+            String hashedPassword = passwordEncoder.encode(u.getPassword());
+            u.setPassword(hashedPassword);
+        }
         if (!u.getFile().isEmpty()) {
             try {
                 Map res;
@@ -64,10 +85,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserBySlug(String slug) {
-        User user = this.userRepository.getUserBySlug(slug);
+    public User getUserByUsername(String username) {
+        User user = this.userRepository.getUserByUsername(username);
         if (user != null) {
             user.setConfirmPassword(user.getPassword());
+            user.setOldPassword(user.getPassword());
         }
         return user;
     }
@@ -77,4 +99,49 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.existsByUsername(username, id);
     }
 
+    @Override
+    public boolean deleteUser(String slug) {
+        return this.userRepository.deleteUser(slug);
+    }
+
+    @Override
+    public boolean destroyUser(String username) {
+        User u = getUserByUsername(username);
+        String avatar = u.getAvatar();
+        boolean result = this.userRepository.destroyUser(username);
+        if (result) {
+            CompletableFuture.runAsync(() -> {
+                if (result && avatar != null) {
+                    String[] part = avatar.split("/");
+                    String publicId = part[part.length - 1];
+                    try {
+                        Map res = this.cloudinary.uploader().destroy(publicId, ObjectUtils.asMap("invalidate", true));
+                    } catch (IOException ex) {
+                        Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                    }
+                }
+            });
+        }
+        return result;
+    }
+
+    @Override
+    public boolean restoreUser(String username) {
+        return this.userRepository.restoreUser(username);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User u = this.userRepository.getUserByUsername(username);
+        if (u == null) {
+            throw new UsernameNotFoundException("Invalid user!");
+        }
+
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(u.getUserRole()));
+
+        return new org.springframework.security.core.userdetails.User(
+                u.getUsername(), u.getPassword(), authorities);
+    }
 }

@@ -5,9 +5,7 @@
 package com.pn.pojo;
 
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,24 +16,18 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author yuumm
+ * @author yuu
  */
 @Entity
 @Table(name = "image")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i"),
-    @NamedQuery(name = "Image.findById", query = "SELECT i FROM Image i WHERE i.id = :id"),
-    @NamedQuery(name = "Image.findByCaption", query = "SELECT i FROM Image i WHERE i.caption = :caption")})
 public class Image implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,20 +36,17 @@ public class Image implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 255)
-    @Column(name = "caption")
-    private String caption;
+  
     @Basic(optional = false)
     @NotNull
     @Lob
     @Size(min = 1, max = 65535)
     @Column(name = "image")
     private String image;
+    
     @JoinColumn(name = "motel_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Motel motelId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "imageId")
-    private Set<PostDetailImage> postDetailImageSet;
 
     public Image() {
     }
@@ -79,14 +68,6 @@ public class Image implements Serializable {
         this.id = id;
     }
 
-    public String getCaption() {
-        return caption;
-    }
-
-    public void setCaption(String caption) {
-        this.caption = caption;
-    }
-
     public String getImage() {
         return image;
     }
@@ -103,15 +84,6 @@ public class Image implements Serializable {
         this.motelId = motelId;
     }
 
-    @XmlTransient
-    public Set<PostDetailImage> getPostDetailImageSet() {
-        return postDetailImageSet;
-    }
-
-    public void setPostDetailImageSet(Set<PostDetailImage> postDetailImageSet) {
-        this.postDetailImageSet = postDetailImageSet;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -126,7 +98,7 @@ public class Image implements Serializable {
             return false;
         }
         Image other = (Image) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.image == null && other.image != null) || (this.image != null && !this.image.equals(other.image))) {
             return false;
         }
         return true;

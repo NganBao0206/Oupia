@@ -29,4 +29,11 @@ public class IndexController {
         model.addAttribute("message", "nene");
         return "index";
     }
+    
+     @RequestMapping(value = "/map")
+    public String map(Model model) {
+        model.addAttribute("message", "nene");
+        return "testMap";
+    }
+  
 }

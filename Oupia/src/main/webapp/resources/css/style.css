@@ -1,7 +1,20 @@
 :root {
-    --my-primary: #00B7FF;
+    --my-primary: rgba(0, 183, 255, 1);
+    --my-primary-action: rgba(0, 150, 222, 1);
+
+    --my-primary-25: rgba(0, 183, 255, 0.25);
+    --my-primary-5: rgba(0, 183, 255, 0.05);
+
+    --my-darker: #0d1728;
+    --my-dark: #11242e;
 }
-p {margin: 0}
+p {
+    margin: 0
+}
+
+body {
+    font-family: 'Comfortaa', cursive;
+}
 
 .w-fit-content {
     width: fit-content;
@@ -11,10 +24,26 @@ p {margin: 0}
     background-color: var(--my-primary) !important;
 }
 
+.bg-my-primary-25{
+    background-color: var(--my-primary-25) !important;
+}
+
+.bg-my-primary-5{
+    background-color: var(--my-primary-5) !important;
+}
+
 .btn-my-primary{
     background-color: var(--my-primary) !important;
     border-color: var(--my-primary) !important;
-    color: #FFF !important;
+    color: var(--my-darker);
+}
+
+.btn-my-primary:hover{
+    background-color: transparent !important;
+    border-color: var(--my-primary) !important;
+    border-width: 2px;
+    color: var(--my-primary) !important;
+    font-weight: 700;
 }
 
 .border-my-primary {
@@ -25,8 +54,8 @@ p {margin: 0}
     color: var(--my-primary) !important;
 }
 
-body {
-    font-family: 'Quicksand', sans-serif !important;
+.text-my-darker {
+    color: var(--my-darker) !important;
 }
 
 .avatar{
@@ -45,4 +74,35 @@ body {
 
 .table-hover tbody tr:hover {
     background-color: #00B7FF !important;
+}
+
+.cursor-hand:hover {
+    cursor: pointer;
+}
+
+input[type=radio]:checked, input[type=checkbox]:checked {
+    background-color: var(--my-primary) !important;
+    border-color: var(--my-primary) !important;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    content: ">" !important;
+}
+
+.breadcrumb-item a {
+    color: var(--my-primary) !important;
+    text-decoration: none;
+}
+
+.choices {
+    height:100%;
+}
+
+.choices__list--dropdown, .choices__list[aria-expanded] {
+    z-index: 999 !important;
+}
+
+.label-selected {
+    color: rgba(var(--bs-body-color-rgb),.65);
+    transform: scale(.85) translateY(-.5rem) translateX(.15rem);
 }

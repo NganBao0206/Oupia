@@ -79,5 +79,5 @@ public class HibernateConfig {
                         "secure", true));
         return cloudinary;
     }
-
+   
 }

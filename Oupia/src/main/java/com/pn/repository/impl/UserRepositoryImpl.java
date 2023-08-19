@@ -38,7 +38,7 @@ public class UserRepositoryImpl implements UserRepository {
     private Environment env;
 
     @Override
-    public List<User> getUsers(Map<String, String> params, List<String> userRoles) {
+    public List<User> getUsers(Map<String, String> params, List<String> userRoles, List<String> status) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<User> q = b.createQuery(User.class);
@@ -48,29 +48,53 @@ public class UserRepositoryImpl implements UserRepository {
         if (params != null) {
             List<Predicate> predicates = new ArrayList<>();
 
+            String deleted = params.get("isDeleted");
+            if (deleted != null && !deleted.isEmpty()) {
+                if (deleted.equals("0")) {
+                    predicates.add(b.equal(root.get("isDeleted"), false));
+                } else {
+                    predicates.add(b.equal(root.get("isDeleted"), true));
+                }
+            }
             String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
                 Predicate pFullName = b.like(root.get("fullName"), String.format("%%%s%%", kw));
                 Predicate pUsername = b.like(root.get("username"), String.format("%%%s%%", kw));
+                Predicate pEmail = b.like(root.get("email"), String.format("%%%s%%", kw));
 
-                predicates.add(b.or(pFullName, pUsername));
-            }
-
-            String email = params.get("email");
-            if (email != null && !email.isEmpty()) {
-                predicates.add(b.like(root.get("email"), String.format("%%%s%%", email)));
+                predicates.add(b.or(pFullName, pUsername, pEmail));
             }
 
             if (userRoles != null && userRoles.size() > 0) {
                 List<Predicate> pres = new ArrayList<>();
-                
+
                 for (String role : userRoles) {
                     pres.add(b.equal(root.get("userRole"), role));
                 }
-                System.out.println(pres.size());
                 if (pres.size() > 0) {
                     Predicate[] predicateArray = pres.toArray(new Predicate[0]);
                     predicates.add(b.or(predicateArray));
+                }
+            }
+
+            if (status != null && status.size() > 0) {
+                List<Predicate> pres = new ArrayList<>();
+
+                for (String st : status) {
+                    pres.add(b.equal(root.get("status"), st));
+                }
+                if (pres.size() > 0) {
+                    Predicate[] predicateArray = pres.toArray(new Predicate[0]);
+                    predicates.add(b.or(predicateArray));
+                }
+            }
+
+            String isConfirm = params.get("isConfirm");
+            if (isConfirm != null && !isConfirm.isEmpty()) {
+                if (isConfirm.equals("1")) {
+                    predicates.add(b.equal(root.get("isConfirm"), true));
+                } else if (isConfirm.equals("0")) {
+                    predicates.add(b.equal(root.get("isConfirm"), false));
                 }
             }
 
@@ -88,10 +112,73 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int countUsers() {
+    public int countUsers(Map<String, String> params, List<String> userRoles, List<String> status) {
         Session s = this.factory.getObject().getCurrentSession();
-        Query q = s.createQuery("SELECT count(*) FROM User");
-        Long count = (Long) q.getSingleResult();
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<Long> q = b.createQuery(Long.class);
+        Root<User> root = q.from(User.class);
+        q.select(b.count(root));
+
+        if (params != null) {
+            List<Predicate> predicates = new ArrayList<>();
+
+            String deleted = params.get("isDeleted");
+            if (deleted != null && !deleted.isEmpty()) {
+                if (deleted.equals("0")) {
+                    predicates.add(b.equal(root.get("isDeleted"), false));
+                } else {
+                    predicates.add(b.equal(root.get("isDeleted"), true));
+                }
+            }
+
+            String kw = params.get("kw");
+            if (kw != null && !kw.isEmpty()) {
+                Predicate pFullName = b.like(root.get("fullName"), String.format("%%%s%%", kw));
+                Predicate pUsername = b.like(root.get("username"), String.format("%%%s%%", kw));
+                Predicate pEmail = b.like(root.get("email"), String.format("%%%s%%", kw));
+
+                predicates.add(b.or(pFullName, pUsername, pEmail));
+            }
+
+            if (userRoles != null && userRoles.size() > 0) {
+                List<Predicate> pres = new ArrayList<>();
+
+                for (String role : userRoles) {
+                    pres.add(b.equal(root.get("userRole"), role));
+                }
+
+                if (pres.size() > 0) {
+                    Predicate[] predicateArray = pres.toArray(new Predicate[0]);
+                    predicates.add(b.or(predicateArray));
+                }
+            }
+
+            if (status != null && status.size() > 0) {
+                List<Predicate> pres = new ArrayList<>();
+
+                for (String st : status) {
+                    pres.add(b.equal(root.get("status"), st));
+                }
+                if (pres.size() > 0) {
+                    Predicate[] predicateArray = pres.toArray(new Predicate[0]);
+                    predicates.add(b.or(predicateArray));
+                }
+            }
+
+            String isConfirm = params.get("isConfirm");
+            if (isConfirm != null && !isConfirm.isEmpty()) {
+                if (isConfirm.equals("1")) {
+                    predicates.add(b.equal(root.get("isConfirm"), true));
+                } else if (isConfirm.equals("0")) {
+                    predicates.add(b.equal(root.get("isConfirm"), false));
+                }
+            }
+
+            q.where(predicates.toArray(new Predicate[0]));
+        }
+
+        Query query = s.createQuery(q);
+        Long count = (Long) query.getSingleResult();
         return count.intValue();
     }
 
@@ -113,10 +200,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getUserBySlug(String slug) {
+    public User getUserByUsername(String username) {
         Session session = this.factory.getObject().getCurrentSession();
-        Query query = session.createQuery("FROM User u WHERE u.slug = :slug");
-        query.setParameter("slug", slug);
+        Query query = session.createQuery("FROM User u WHERE u.username = :username");
+        query.setParameter("username", username);
 
         try {
             return (User) query.getSingleResult();
@@ -147,5 +234,65 @@ public class UserRepositoryImpl implements UserRepository {
             return false;
         }
     }
+
+    @Override
+    public boolean deleteUser(String username) {
+        Session s = this.factory.getObject().getCurrentSession();
+        User user = getUserByUsername(username);
+
+        if (user != null) {
+            user.setIsDeleted(true);
+            try {
+                s.update(user);
+                return true;
+            } catch (HibernateException ex) {
+                ex.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean destroyUser(String username) {
+        Session s = this.factory.getObject().getCurrentSession();
+        User user = getUserByUsername(username);
+
+        if (user != null && user.getIsDeleted()) {
+            try {
+                s.delete(user);
+                return true;
+            } catch (HibernateException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean restoreUser(String username) {
+        Session s = this.factory.getObject().getCurrentSession();
+        User user = getUserByUsername(username);
+
+        if (user != null) {
+            user.setIsDeleted(false);
+            try {
+                s.update(user);
+                return true;
+            } catch (HibernateException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+//    @Override
+//    public User getUserByUsername(String username) {
+//        Session session = this.factory.getObject().getCurrentSession();
+//        Query query = session.createQuery("FROM User u WHERE u.username = :username");
+//        query.setParameter("username", username);
+//        return (User) query.getSingleResult();
+//    }
 
 }

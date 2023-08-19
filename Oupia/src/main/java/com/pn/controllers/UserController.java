@@ -1,6 +1,7 @@
 package com.pn.controllers;
 
 import com.pn.enums.Gender;
+import com.pn.enums.Status;
 import com.pn.enums.UserRole;
 import com.pn.pojo.User;
 import com.pn.service.UserService;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -61,16 +63,56 @@ public class UserController {
         return Gender.values();
     }
 
-    @RequestMapping(value = "/users")
-    public String users(Model model, @RequestParam Map<String, String> params, @RequestParam(name = "userRole", required = false) List<String> userRoles) {
+    @ModelAttribute("status")
+    public Status[] getStatus() {
+        return Status.values();
+    }
 
-        int count = this.userService.countUsers();
+    @RequestMapping(value = "/users")
+    public String users(Model model, @RequestParam Map<String, String> params,
+            @RequestParam(name = "userRole", required = false) List<String> userRoles,
+            @RequestParam(name = "status", required = false) List<String> status) {
+
+        params.put("isDeleted", "0");
+        if (params.get("page") == null) {
+            params.put("page", "1");
+        }
+
+        int count = this.userService.countUsers(params, userRoles, status);
         int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
-        List<User> u = userService.getUsers(params, userRoles);
+
+        List<User> u = userService.getUsers(params, userRoles, status);
+
+        model.addAttribute("users", u);
+        model.addAttribute("pages", Math.ceil(count * 1.0 / pageSize));
+        model.addAttribute("userRoleParams", userRoles);
+        model.addAttribute("statusParams", status);
+        model.addAttribute("params", params);
+
+        return "users";
+    }
+
+    @RequestMapping(value = "/users/bin")
+    public String deletedUsers(Model model, @RequestParam Map<String, String> params,
+            @RequestParam(name = "userRole", required = false) List<String> userRoles,
+            @RequestParam(name = "status", required = false) List<String> status) {
+
+        params.put("isDeleted", "1");
+        if (params.get("page") == null) {
+            params.put("page", "1");
+        }
+
+        int count = this.userService.countUsers(params, userRoles, status);
+        int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
+
+        List<User> u = userService.getUsers(params, userRoles, status);
 
         model.addAttribute("users", u);
         model.addAttribute("pages", Math.ceil(count * 1.0 / pageSize));
         model.addAttribute("test", count);
+        model.addAttribute("userRoleParams", userRoles);
+        model.addAttribute("statusParams", status);
+        model.addAttribute("params", params);
 
         return "users";
     }
@@ -86,9 +128,9 @@ public class UserController {
         return "error";
     }
 
-    @GetMapping("/users/storage/{slug}")
-    public String update(Model model, @PathVariable(value = "slug") String slug) {
-        User u = this.userService.getUserBySlug(slug);
+    @GetMapping("/users/storage/{username}")
+    public String update(Model model, @PathVariable(value = "username") String username) {
+        User u = this.userService.getUserByUsername(username);
         if (u == null) {
             return "error";
         }
@@ -101,18 +143,15 @@ public class UserController {
         if (!rs.hasErrors()) {
             System.out.println("ok");
             if (this.userService.addOrUpdateUser(u) == true) {
-                if (u.getId() != null) {
-                    redirectAttributes.addFlashAttribute("successMessage", "Sửa thành công.");
-                } else {
-                    redirectAttributes.addFlashAttribute("successMessage", "Thêm thành công người dùng mới.");
-                }
-
+                redirectAttributes.addFlashAttribute("successMessage", "Thêm/sửa thành công người dùng.");
                 return "redirect:/users";
-
             }
-
         }
-
         return "userDetail";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 }

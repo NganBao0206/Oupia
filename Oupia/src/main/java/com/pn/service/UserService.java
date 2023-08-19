@@ -7,14 +7,18 @@ package com.pn.service;
 import java.util.List;
 import com.pn.pojo.User;
 import java.util.Map;
+import org.springframework.security.core.userdetails.UserDetailsService;
 /**
  *
  * @author yuumm
  */
-public interface UserService {
-    List<User> getUsers(Map<String, String> params, List<String> userRoles);
-    int countUsers();
+public interface UserService extends UserDetailsService{
+    List<User> getUsers(Map<String, String> params, List<String> userRoles, List<String> status);
+    int countUsers(Map<String, String> params, List<String> userRoles, List<String> status);
     boolean addOrUpdateUser(User u);
-    User getUserBySlug(String slug);
+    User getUserByUsername(String username);
     boolean existsByUsername(String username, int id);
+    boolean deleteUser(String username);
+    boolean destroyUser(String username);
+    boolean restoreUser(String username);
 }

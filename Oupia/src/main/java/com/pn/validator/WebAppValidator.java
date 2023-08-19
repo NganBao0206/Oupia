@@ -28,7 +28,7 @@ public class WebAppValidator implements Validator {
     }
 
     @Autowired
-    private javax.validation.Validator beanValidator;
+    private javax.validation.Validator validator;
     private Set<Validator> springValidators = new HashSet<>();
 
     @Override
@@ -39,7 +39,7 @@ public class WebAppValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Set<ConstraintViolation<Object>> constraintViolations
-                = beanValidator.validate(target);
+                = validator.validate(target);
         for (ConstraintViolation<Object> obj : constraintViolations) {
             errors.rejectValue(obj.getPropertyPath().toString(),
                     obj.getMessageTemplate(), obj.getMessage());
