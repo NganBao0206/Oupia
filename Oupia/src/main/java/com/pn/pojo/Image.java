@@ -28,6 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "image")
 @XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i"),
+    @NamedQuery(name = "Image.findById", query = "SELECT i FROM Image i WHERE i.id = :id")})
 public class Image implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,17 +39,15 @@ public class Image implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-  
     @Basic(optional = false)
     @NotNull
     @Lob
     @Size(min = 1, max = 65535)
     @Column(name = "image")
     private String image;
-    
-    @JoinColumn(name = "motel_id", referencedColumnName = "id")
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Motel motelId;
+    private Post postId;
 
     public Image() {
     }
@@ -76,12 +77,12 @@ public class Image implements Serializable {
         this.image = image;
     }
 
-    public Motel getMotelId() {
-        return motelId;
+    public Post getPostId() {
+        return postId;
     }
 
-    public void setMotelId(Motel motelId) {
-        this.motelId = motelId;
+    public void setPostId(Post postId) {
+        this.postId = postId;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class Image implements Serializable {
             return false;
         }
         Image other = (Image) object;
-        if ((this.image == null && other.image != null) || (this.image != null && !this.image.equals(other.image))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;

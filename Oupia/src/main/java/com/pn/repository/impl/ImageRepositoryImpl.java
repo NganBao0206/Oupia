@@ -29,28 +29,28 @@ public class ImageRepositoryImpl implements ImageRepository {
     private LocalSessionFactoryBean factory;
 
     @Override
-    public List<Image> getImagesByMotel(int motelId) {
+    public List<Image> getImagesByPost(int postId) {
         Session session = this.factory.getObject().getCurrentSession();
-        Query query = session.createQuery("FROM Image i WHERE i.motelId = :motelId");
-        query.setParameter("motelId", motelId);
+        Query query = session.createQuery("FROM Image i WHERE i.postId = :postId");
+        query.setParameter("postId", postId);
 
         return query.getResultList();
     }
 
     @Override
-    public int countImage(int motelId) {
+    public int countImage(int postId) {
         Session session = this.factory.getObject().getCurrentSession();
-        Query query = session.createQuery("SELECT COUNT (*) FROM Image WHERE motelId.id = :motelId");
-        query.setParameter("motelId", motelId);
+        Query query = session.createQuery("SELECT COUNT (*) FROM Image WHERE postId.id = :postId");
+        query.setParameter("postId", postId);
         query.setMaxResults(1);
         return (int) query.getSingleResult();
     }
 
     @Override
-    public Image getImageByMotel(int motelId) {
+    public Image getImageByPost(int postId) {
         Session session = this.factory.getObject().getCurrentSession();
-        Query query = session.createQuery("FROM Image i WHERE i.motelId.id = :motelId");
-        query.setParameter("motelId", motelId);
+        Query query = session.createQuery("FROM Image i WHERE i.postId.id = :postId");
+        query.setParameter("postId", postId);
         query.setMaxResults(1);
         return (Image) query.getSingleResult();
     }

@@ -6,21 +6,28 @@ package com.pn.controllers;
 
 import com.pn.enums.Status;
 import com.pn.pojo.Motel;
+import com.pn.pojo.Post;
+import com.pn.pojo.PostRentDetail;
 import com.pn.pojo.User;
-import com.pn.service.ImageService;
 import com.pn.service.MotelService;
 import com.pn.service.UserService;
+import com.pn.validator.WebAppValidator;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +49,19 @@ public class MotelController {
     @Autowired
     private MotelService motelService;
     @Autowired
-    private ImageService imageService;
+    private WebAppValidator postRentValidator;
+    @Autowired
+    private WebAppValidator motelValidator;
+    @Autowired
+    private WebAppValidator postValidator;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setValidator(postRentValidator);
+        binder.setValidator(motelValidator);
+        binder.setValidator(postValidator);
+
+    }
 
     @ModelAttribute("users")
     public List<User> getOwnerUser() {
@@ -74,9 +93,7 @@ public class MotelController {
         int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
 
         List<Motel> motels = motelService.getMotels(params, status);
-        for (Motel motel : motels) {
-            motel.setImage(imageService.getImageByMotel(motel.getId()).getImage());
-        }
+
         model.addAttribute("motels", motels);
         model.addAttribute("pages", Math.ceil(count * 1.0 / pageSize));
         model.addAttribute("statusParams", status);
@@ -88,34 +105,41 @@ public class MotelController {
     @RequestMapping(value = "/motels/storage")
     public String motel(Model model) {
         Motel motel = new Motel();
-        model.addAttribute("motel", motel);
-        return "motelDetail";
-    }
-
-    @GetMapping(value = "/motels/storage/{slug}")
-    public String motelDetail(Model model, @PathVariable(value = "slug") String slug) {
-        Motel motel = this.motelService.getMotelBySlug(slug);
-        if (motel == null) {
-            return "error";
-        }
-        model.addAttribute("motel", motel);
-        return "motelDetail";
+        Post post = new Post();
+        PostRentDetail detail = new PostRentDetail();
+        detail.setPostId(post);
+        detail.setMotelId(motel);
+        model.addAttribute("detail", detail);
+        return "addMotel";
     }
 
     @PostMapping("/motels/storage/")
-    public String add(@ModelAttribute(value = "motel") @Valid Motel motel, BindingResult rs, RedirectAttributes redirectAttributes) {
+    public String add(@ModelAttribute(value = "detail") @Valid PostRentDetail detail, BindingResult rs, RedirectAttributes redirectAttributes) {
         if (!rs.hasErrors()) {
-            System.out.println("ok");
+            Motel motel = detail.getMotelId();
+            Set<PostRentDetail> detailSet = new HashSet<>();
+            detailSet.add(detail);
+            motel.setPostRentDetailSet(detailSet);
             if (this.motelService.addOrUpdateMotel(motel) == true) {
                 redirectAttributes.addFlashAttribute("successMessage", "Thêm/sửa thành công nhà trọ.");
                 return "redirect:/motels";
             }
         }
-        return "motelDetail";
+        return "addMotel";
     }
+//
+//    @GetMapping(value = "/motels/storage/{slug}")
+//    public String motelDetail(Model model, @PathVariable(value = "slug") String slug) {
+//        Motel motel = this.motelService.getMotelBySlug(slug);
+//        if (motel == null) {
+//            return "error";
+//        }
+//        model.addAttribute("motel", motel);
+//        return "motelDetail";
+//    }
 
     @RequestMapping(value = "/motels/bin")
-    public String deletedUsers(Model model, @RequestParam Map<String, String> params,
+    public String deletedMotels(Model model, @RequestParam Map<String, String> params,
             @RequestParam(name = "status", required = false) List<String> status) {
 
         params.put("isDeleted", "1");
@@ -127,9 +151,7 @@ public class MotelController {
         int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
 
         List<Motel> motels = motelService.getMotels(params, status);
-        for (Motel motel : motels) {
-            motel.setImage(imageService.getImageByMotel(motel.getId()).getImage());
-        }
+
         model.addAttribute("motels", motels);
         model.addAttribute("pages", Math.ceil(count * 1.0 / pageSize));
         model.addAttribute("statusParams", status);

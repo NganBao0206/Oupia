@@ -30,5 +30,4 @@ public interface MotelService {
     boolean destroyMotel(String slug);
 
     boolean restoreMotel(String slug);
-    Set<Image> getImageSetOfMotel(int motelId);
 }

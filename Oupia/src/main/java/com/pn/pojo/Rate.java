@@ -6,78 +6,74 @@ package com.pn.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author yuu
  */
 @Entity
-@Table(name = "comment")
+@Table(name = "rate")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
-    @NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c WHERE c.id = :id"),
-    @NamedQuery(name = "Comment.findByCreatedAt", query = "SELECT c FROM Comment c WHERE c.createdAt = :createdAt")})
-public class Comment implements Serializable {
+    @NamedQuery(name = "Rate.findAll", query = "SELECT r FROM Rate r"),
+    @NamedQuery(name = "Rate.findById", query = "SELECT r FROM Rate r WHERE r.id = :id"),
+    @NamedQuery(name = "Rate.findByRateStars", query = "SELECT r FROM Rate r WHERE r.rateStars = :rateStars"),
+    @NamedQuery(name = "Rate.findByContent", query = "SELECT r FROM Rate r WHERE r.content = :content"),
+    @NamedQuery(name = "Rate.findByCreatedAt", query = "SELECT r FROM Rate r WHERE r.createdAt = :createdAt"),
+    @NamedQuery(name = "Rate.findByUpdatedAt", query = "SELECT r FROM Rate r WHERE r.updatedAt = :updatedAt")})
+public class Rate implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
+    @Size(min = 1, max = 45)
+    @Column(name = "rate_stars")
+    private String rateStars;
+    @Size(max = 45)
     @Column(name = "content")
     private String content;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "commentParentId")
-    private Set<Comment> commentSet;
-    @JoinColumn(name = "comment_parent_id", referencedColumnName = "id")
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+    @JoinColumn(name = "motel_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Comment commentParentId;
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Post postId;
+    private Motel motelId;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User userId;
 
-    public Comment() {
+    public Rate() {
     }
 
-    public Comment(Integer id) {
+    public Rate(Integer id) {
         this.id = id;
     }
 
-    public Comment(Integer id, String content) {
+    public Rate(Integer id, String rateStars) {
         this.id = id;
-        this.content = content;
+        this.rateStars = rateStars;
     }
 
     public Integer getId() {
@@ -86,6 +82,14 @@ public class Comment implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getRateStars() {
+        return rateStars;
+    }
+
+    public void setRateStars(String rateStars) {
+        this.rateStars = rateStars;
     }
 
     public String getContent() {
@@ -104,29 +108,20 @@ public class Comment implements Serializable {
         this.createdAt = createdAt;
     }
 
-    @XmlTransient
-    public Set<Comment> getCommentSet() {
-        return commentSet;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setCommentSet(Set<Comment> commentSet) {
-        this.commentSet = commentSet;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Comment getCommentParentId() {
-        return commentParentId;
+    public Motel getMotelId() {
+        return motelId;
     }
 
-    public void setCommentParentId(Comment commentParentId) {
-        this.commentParentId = commentParentId;
-    }
-
-    public Post getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Post postId) {
-        this.postId = postId;
+    public void setMotelId(Motel motelId) {
+        this.motelId = motelId;
     }
 
     public User getUserId() {
@@ -147,10 +142,10 @@ public class Comment implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Comment)) {
+        if (!(object instanceof Rate)) {
             return false;
         }
-        Comment other = (Comment) object;
+        Rate other = (Rate) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -159,7 +154,7 @@ public class Comment implements Serializable {
 
     @Override
     public String toString() {
-        return "com.pn.pojo.Comment[ id=" + id + " ]";
+        return "com.pn.pojo.Rate[ id=" + id + " ]";
     }
     
 }

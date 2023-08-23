@@ -6,6 +6,7 @@ package com.pn.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -20,28 +21,25 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
- * @author yuumm
+ * @author yuu
  */
 @Entity
 @Table(name = "post")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p"),
-    @NamedQuery(name = "Post.findById", query = "SELECT p FROM Post p WHERE p.id = :id"),
-    @NamedQuery(name = "Post.findByTitle", query = "SELECT p FROM Post p WHERE p.title = :title"),
-    @NamedQuery(name = "Post.findByCreatedAt", query = "SELECT p FROM Post p WHERE p.createdAt = :createdAt"),
-    @NamedQuery(name = "Post.findByUpdatedAt", query = "SELECT p FROM Post p WHERE p.updatedAt = :updatedAt"),
-    @NamedQuery(name = "Post.findBySlug", query = "SELECT p FROM Post p WHERE p.slug = :slug")})
 public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,35 +48,76 @@ public class Post implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotNull(message = "{post.title.notNull}")
+    @Size(min = 20, max = 255, message = "{post.title.size}")
     @Column(name = "title")
     private String title;
+
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{post.description.size}")
     @Lob
-    @Size(min = 1, max = 65535)
+    @Size(min = 50, max = 65535, message = "{post.description.size}")
     @Column(name = "description")
     private String description;
+
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "slug")
     private String slug;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
+    private Set<Image> imageSet;
+
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User userId;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
-    private Set<PostDetail> postDetailSet;
+    private Set<PostRentDetail> postRentDetailSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
     private Set<Comment> commentSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
+    private Set<Favourite> favouriteSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
+    private Set<PostFindDetail> postFindDetailSet;
+
+    /**
+     * @return the imgImport
+     */
+    public MultipartFile[] getImgImport() {
+        return imgImport;
+    }
+
+    /**
+     * @param imgImport the imgImport to set
+     */
+    public void setImgImport(MultipartFile[] imgImport) {
+        this.imgImport = imgImport;
+    }
+
+    @Transient
+    private MultipartFile[] imgImport;
+
+    @Transient
+    private List<String> imgGoogle;
+
+    public List<String> getImgGoogle() {
+        return imgGoogle;
+    }
+
+    public void setImgGoogle(List<String> imgGoogle) {
+        this.imgGoogle = imgGoogle;
+    }
 
     public Post() {
     }
@@ -142,6 +181,15 @@ public class Post implements Serializable {
         this.slug = slug;
     }
 
+    @XmlTransient
+    public Set<Image> getImageSet() {
+        return imageSet;
+    }
+
+    public void setImageSet(Set<Image> imageSet) {
+        this.imageSet = imageSet;
+    }
+
     public User getUserId() {
         return userId;
     }
@@ -151,12 +199,12 @@ public class Post implements Serializable {
     }
 
     @XmlTransient
-    public Set<PostDetail> getPostDetailSet() {
-        return postDetailSet;
+    public Set<PostRentDetail> getPostRentDetailSet() {
+        return postRentDetailSet;
     }
 
-    public void setPostDetailSet(Set<PostDetail> postDetailSet) {
-        this.postDetailSet = postDetailSet;
+    public void setPostRentDetailSet(Set<PostRentDetail> postRentDetailSet) {
+        this.postRentDetailSet = postRentDetailSet;
     }
 
     @XmlTransient
@@ -166,6 +214,24 @@ public class Post implements Serializable {
 
     public void setCommentSet(Set<Comment> commentSet) {
         this.commentSet = commentSet;
+    }
+
+    @XmlTransient
+    public Set<Favourite> getFavouriteSet() {
+        return favouriteSet;
+    }
+
+    public void setFavouriteSet(Set<Favourite> favouriteSet) {
+        this.favouriteSet = favouriteSet;
+    }
+
+    @XmlTransient
+    public Set<PostFindDetail> getPostFindDetailSet() {
+        return postFindDetailSet;
+    }
+
+    public void setPostFindDetailSet(Set<PostFindDetail> postFindDetailSet) {
+        this.postFindDetailSet = postFindDetailSet;
     }
 
     @Override
@@ -192,5 +258,16 @@ public class Post implements Serializable {
     public String toString() {
         return "com.pn.pojo.Post[ id=" + id + " ]";
     }
-    
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
+
 }

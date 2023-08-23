@@ -5,9 +5,8 @@
 package com.pn.pojo;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,28 +16,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author yuumm
+ * @author yuu
  */
 @Entity
-@Table(name = "post_detail")
+@Table(name = "post_rent_detail")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "PostDetail.findAll", query = "SELECT p FROM PostDetail p"),
-    @NamedQuery(name = "PostDetail.findById", query = "SELECT p FROM PostDetail p WHERE p.id = :id"),
-    @NamedQuery(name = "PostDetail.findByPrice", query = "SELECT p FROM PostDetail p WHERE p.price = :price"),
-    @NamedQuery(name = "PostDetail.findByMaxPeople", query = "SELECT p FROM PostDetail p WHERE p.maxPeople = :maxPeople"),
-    @NamedQuery(name = "PostDetail.findByArea", query = "SELECT p FROM PostDetail p WHERE p.area = :area"),
-    @NamedQuery(name = "PostDetail.findByNumOfBedrooms", query = "SELECT p FROM PostDetail p WHERE p.numOfBedrooms = :numOfBedrooms"),
-    @NamedQuery(name = "PostDetail.findByNumOfBathrooms", query = "SELECT p FROM PostDetail p WHERE p.numOfBathrooms = :numOfBathrooms")})
-public class PostDetail implements Serializable {
+public class PostRentDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,41 +39,58 @@ public class PostDetail implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "price")
-    private double price;
+    @NotNull(message = "{postRentDetail.price.notNull}")
+    @DecimalMin(value = "100000.0", inclusive = true, message = "{postRentDetail.price.decimalMin}")
+    @DecimalMax(value = "1000000000000.00", inclusive = true, message = "{postRentDetail.price.decimalMax}")
+    @Column(name = "price", precision = 15, scale = 2)
+    private BigDecimal price;
+
     @Basic(optional = false)
-    @NotNull
+    @Min(value = 1, message = "{postRentDetail.minPeople.min}")
+    @Column(name = "min_people")
+    private int minPeople;
+
+    @Basic(optional = false)
+    @Min(value = 1, message = "{postRentDetail.maxPeople.min}")
     @Column(name = "max_people")
     private int maxPeople;
+
     @Basic(optional = false)
-    @NotNull
+    @DecimalMin(value = "0.0", inclusive = false, message = "{postRentDetail.area.decimalMin}")
+    @NotNull(message = "{postRentDetail.area.notNull}")
     @Column(name = "area")
     private double area;
+
     @Column(name = "num_of_bedrooms")
     private Integer numOfBedrooms;
+
     @Column(name = "num_of_bathrooms")
     private Integer numOfBathrooms;
+
     @JoinColumn(name = "motel_id", referencedColumnName = "id")
+    @NotNull(message = "{postRentDetail.motelId.notNull}")
+    @Valid
     @ManyToOne(optional = false)
     private Motel motelId;
+
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @Valid
     private Post postId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postDetailId")
-    private Set<PostDetailImage> postDetailImageSet;
 
-    public PostDetail() {
+    public PostRentDetail() {
     }
 
-    public PostDetail(Integer id) {
+    public PostRentDetail(Integer id) {
         this.id = id;
     }
 
-    public PostDetail(Integer id, double price, int maxPeople, double area) {
+    public PostRentDetail(Integer id, BigDecimal price, int minPeople, int maxPeople, double area) {
         this.id = id;
         this.price = price;
+        this.minPeople = minPeople;
         this.maxPeople = maxPeople;
         this.area = area;
     }
@@ -93,12 +103,20 @@ public class PostDetail implements Serializable {
         this.id = id;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public int getMinPeople() {
+        return minPeople;
+    }
+
+    public void setMinPeople(int minPeople) {
+        this.minPeople = minPeople;
     }
 
     public int getMaxPeople() {
@@ -149,15 +167,6 @@ public class PostDetail implements Serializable {
         this.postId = postId;
     }
 
-    @XmlTransient
-    public Set<PostDetailImage> getPostDetailImageSet() {
-        return postDetailImageSet;
-    }
-
-    public void setPostDetailImageSet(Set<PostDetailImage> postDetailImageSet) {
-        this.postDetailImageSet = postDetailImageSet;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -168,10 +177,10 @@ public class PostDetail implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PostDetail)) {
+        if (!(object instanceof PostRentDetail)) {
             return false;
         }
-        PostDetail other = (PostDetail) object;
+        PostRentDetail other = (PostRentDetail) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -180,7 +189,7 @@ public class PostDetail implements Serializable {
 
     @Override
     public String toString() {
-        return "com.pn.pojo.PostDetail[ id=" + id + " ]";
+        return "com.pn.pojo.PostRentDetail[ id=" + id + " ]";
     }
-    
+
 }

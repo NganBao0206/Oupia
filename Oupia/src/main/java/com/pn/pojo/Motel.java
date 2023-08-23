@@ -43,7 +43,13 @@ import org.springframework.web.multipart.MultipartFile;
 @XmlRootElement
 public class Motel implements Serializable {
 
-    
+    @Basic(optional = false)
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motelId")
+    private Set<PostRentDetail> postRentDetailSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motelId")
+    private Set<Rate> rateSet;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,13 +63,6 @@ public class Motel implements Serializable {
     @Size(min = 10, max = 100, message = "{motel.name.size}")
     @Column(name = "name")
     private String name;
-
-    @Basic(optional = false)
-    @NotNull(message = "{motel.description.notNull}")
-    @Lob
-    @Size(min = 50, max = 65535, message = "{motel.description.size}")
-    @Column(name = "description")
-    private String description;
 
     @Basic(optional = false)
     @NotNull(message = "{motel.fullLocation.notNull}")
@@ -82,9 +81,6 @@ public class Motel implements Serializable {
     @Basic(optional = false)
     @Column(name = "slug")
     private String slug;
-
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
 
     @Basic(optional = false)
     @NotNull
@@ -111,45 +107,16 @@ public class Motel implements Serializable {
     @Column(name = "status")
     private String status;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motelId")
-    private Set<Image> imageSet;
-
-    @Transient
-    private List<String> imgGoogle;
-    
     @Transient
     private String image;
-    
-    /**
-     * @return the image
-     */
+
     public String getImage() {
         return image;
     }
 
-    /**
-     * @param image the image to set
-     */
     public void setImage(String image) {
         this.image = image;
     }
-
-    /**
-     * @return the imgImport
-     */
-    public MultipartFile[] getImgImport() {
-        return imgImport;
-    }
-
-    /**
-     * @param imgImport the imgImport to set
-     */
-    public void setImgImport(MultipartFile[] imgImport) {
-        this.imgImport = imgImport;
-    }
-
-    @Transient
-    private MultipartFile[] imgImport;
 
     public Motel() {
         this.isDeleted = false;
@@ -160,10 +127,9 @@ public class Motel implements Serializable {
         this.id = id;
     }
 
-    public Motel(Integer id, String name, String description, String fullLocation, String slug, String phoneNumber, float locationLongitude, float locationLatitude) {
+    public Motel(Integer id, String name, String fullLocation, String slug, String phoneNumber, float locationLongitude, float locationLatitude) {
         this.id = id;
         this.name = name;
-        this.description = description;
         this.fullLocation = fullLocation;
         this.slug = slug;
         this.phoneNumber = phoneNumber;
@@ -196,14 +162,6 @@ public class Motel implements Serializable {
      */
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getFullLocation() {
@@ -278,14 +236,6 @@ public class Motel implements Serializable {
         this.userId = userId;
     }
 
-    public List<String> getImgGoogle() {
-        return imgGoogle;
-    }
-
-    public void setImgGoogle(List<String> imgGoogle) {
-        this.imgGoogle = imgGoogle;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -311,15 +261,6 @@ public class Motel implements Serializable {
         return "com.pn.pojo.Motel[ id=" + id + " ]";
     }
 
-    @XmlTransient
-    public Set<Image> getImageSet() {
-        return imageSet;
-    }
-
-    public void setImageSet(Set<Image> imageSet) {
-        this.imageSet = imageSet;
-    }
-
     @PrePersist
     protected void onCreate() {
         createdAt = new Date();
@@ -329,5 +270,23 @@ public class Motel implements Serializable {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Date();
+    }
+
+    @XmlTransient
+    public Set<PostRentDetail> getPostRentDetailSet() {
+        return postRentDetailSet;
+    }
+
+    public void setPostRentDetailSet(Set<PostRentDetail> postRentDetailSet) {
+        this.postRentDetailSet = postRentDetailSet;
+    }
+
+    @XmlTransient
+    public Set<Rate> getRateSet() {
+        return rateSet;
+    }
+
+    public void setRateSet(Set<Rate> rateSet) {
+        this.rateSet = rateSet;
     }
 }

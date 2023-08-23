@@ -20,8 +20,8 @@ public class ImageServiceImpl implements ImageService{
     @Autowired
     private ImageRepository imageRepository;
     @Override
-    public List<Image> getImagesByMotel(int motelId) {
-        return imageRepository.getImagesByMotel(motelId);
+    public List<Image> getImagesByPost(int motelId) {
+        return imageRepository.getImagesByPost(motelId);
     }
     
 
@@ -31,8 +31,8 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public Image getImageByMotel(int motelId) {
-        return imageRepository.getImageByMotel(motelId);
+    public Image getImageByPost(int motelId) {
+        return imageRepository.getImageByPost(motelId);
     }
     
 }

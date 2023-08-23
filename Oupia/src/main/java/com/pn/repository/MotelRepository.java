@@ -30,5 +30,4 @@ public interface MotelRepository {
 
     boolean restoreMotel(String slug);
 
-    Set<Image> getImageSetOfMotel(int motelId);
 }

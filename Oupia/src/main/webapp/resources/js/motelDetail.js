@@ -10,7 +10,7 @@ function initMap() {
     const CONFIGURATION = {
         "ctaTitle": "Checkout",
         "mapOptions": {"center": {"lat": lat, "lng": lng}, "fullscreenControl": true, "mapTypeControl": false, "streetViewControl": true, "zoom": 12, "zoomControl": true, "maxZoom": 22, "mapId": ""},
-        "mapsApiKey": "AIzaSyBzxzB92Cnje6rgg4kQzenDUPZpR9G4Taw",
+        "mapsApiKey": "AIzaSyA5sUsaAUPrpOhRyOyDxTZY-nbBa6aXVf0",
         "capabilities": {"addressAutocompleteControl": true, "mapDisplayControl": true, "ctaControl": true}
     };
     const map = new google.maps.Map(document.getElementById("gmp-map"), {
@@ -84,7 +84,7 @@ function initMap() {
                     let html = ""
                     for (let i = 0; i < place.photos.length; i++) {
                         html += ` <div class="position-relative m-1">
-                        <input type="hidden" name="imgGoogle[${i}]" value="${place.photos[i].getUrl()}"/>
+                        <input type="hidden" name="postId.imgGoogle[${i}]" value="${place.photos[i].getUrl()}"/>
                         <span onclick="removeImg(this)" class="cursor-hand position-absolute end-0 top-0 bg-dark text-white rounded text-center m-1 bg-opacity-50 shadow-sm" style="width: 25px; height:25px;">x</span>
                         <img style="width:200px; height:150px; object-fit: cover;" class="rounded-3" src="${place.photos[i].getUrl()}"/>
                     </div>`
@@ -114,36 +114,33 @@ function initMap() {
             }
         });
     }
-}
 
-function addImage(obj) {
-    if (obj.files && obj.files.length > 0) {
-        const container = document.querySelector("#imgsImport")
-        container.innerHTML = "";
-        for (let i = 0; i < obj.files.length; i++) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const imgSrc = e.target.result; // Lưu trữ giá trị src
-                const lastChild = container.lastElementChild;
+    function addImage(obj) {
+        if (obj.files && obj.files.length > 0) {
+            const container = document.querySelector("#imgsImport")
+            container.innerHTML = "";
+            for (let i = 0; i < obj.files.length; i++) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imgSrc = e.target.result; // Lưu trữ giá trị src
+                    const lastChild = container.lastElementChild;
 
-                const newHtml = `<div class="position-relative m-1">
+                    const newHtml = `<div class="position-relative m-1">
                                     <img style="width:200px; height:150px; object-fit: cover;" class="rounded-3" src="${imgSrc}"/>
                                  </div>`;
 
 
-                // Insert the HTML content after the lastChild
-                if (lastChild)
-                    lastChild.insertAdjacentHTML("afterend", newHtml);
-                else
-                    container.innerHTML = newHtml;
-            };
+                    // Insert the HTML content after the lastChild
+                    if (lastChild)
+                        lastChild.insertAdjacentHTML("afterend", newHtml);
+                    else
+                        container.innerHTML = newHtml;
+                };
 
 
-            reader.readAsDataURL(obj.files[i]);
+                reader.readAsDataURL(obj.files[i]);
+            }
         }
     }
 }
 
-function removeImg(obj) {
-    obj.parentElement.remove()
-}

@@ -9,6 +9,7 @@ import com.pn.formatters.MotelFormatter;
 import com.pn.formatters.UserFormatter;
 import com.pn.service.UserService;
 import com.pn.validator.ConfirmPasswordValidator;
+import com.pn.validator.MaxMinPeopleValidator;
 import com.pn.validator.PasswordValidator;
 import com.pn.validator.UsernameValidator;
 import com.pn.validator.WebAppValidator;
@@ -66,8 +67,6 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         registry.addFormatter(new UserFormatter());
         registry.addFormatter(new MotelFormatter());
     }
-    
-    
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
@@ -107,7 +106,32 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         validator.setSpringValidators(springValidators);
         return validator;
     }
+
+    @Bean
+    WebAppValidator postRentValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new MaxMinPeopleValidator());
+        WebAppValidator validator = new WebAppValidator();
+        validator.setSpringValidators(springValidators);
+        return validator;
+    }
     
+    @Bean
+    WebAppValidator postValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        WebAppValidator validator = new WebAppValidator();
+        validator.setSpringValidators(springValidators);
+        return validator;
+    }
+    
+    @Bean
+    WebAppValidator motelValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        WebAppValidator validator = new WebAppValidator();
+        validator.setSpringValidators(springValidators);
+        return validator;
+    }
+
     @Bean
     public Slugify slugify() {
         return new Slugify();

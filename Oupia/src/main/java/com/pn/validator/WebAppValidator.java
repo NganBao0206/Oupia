@@ -4,6 +4,9 @@
  */
 package com.pn.validator;
 
+import com.pn.pojo.Motel;
+import com.pn.pojo.Post;
+import com.pn.pojo.PostRentDetail;
 import com.pn.pojo.User;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +36,7 @@ public class WebAppValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return User.class.isAssignableFrom(clazz);
+        return User.class.isAssignableFrom(clazz) || PostRentDetail.class.isAssignableFrom(clazz) || Motel.class.isAssignableFrom(clazz) || Post.class.isAssignableFrom(clazz);
     }
 
     @Override

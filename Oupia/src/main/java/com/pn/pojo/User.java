@@ -44,6 +44,17 @@ import org.springframework.web.multipart.MultipartFile;
 @XmlRootElement
 public class User implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Set<Rate> rateSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Set<Comment> commentSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Set<Favourite> favouriteSet;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -162,9 +173,6 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "status")
     private String status;
-
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
 
     public User() {
         isDeleted = false;
@@ -455,5 +463,32 @@ public class User implements Serializable {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Date();
+    }
+
+    @XmlTransient
+    public Set<Rate> getRateSet() {
+        return rateSet;
+    }
+
+    public void setRateSet(Set<Rate> rateSet) {
+        this.rateSet = rateSet;
+    }
+
+    @XmlTransient
+    public Set<Comment> getCommentSet() {
+        return commentSet;
+    }
+
+    public void setCommentSet(Set<Comment> commentSet) {
+        this.commentSet = commentSet;
+    }
+
+    @XmlTransient
+    public Set<Favourite> getFavouriteSet() {
+        return favouriteSet;
+    }
+
+    public void setFavouriteSet(Set<Favourite> favouriteSet) {
+        this.favouriteSet = favouriteSet;
     }
 }

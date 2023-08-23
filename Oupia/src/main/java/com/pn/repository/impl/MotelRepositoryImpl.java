@@ -213,14 +213,4 @@ public class MotelRepositoryImpl implements MotelRepository {
         }
         return false;
     }
-
-    @Override
-    public Set<Image> getImageSetOfMotel(int motelId) {
-        Session s = this.factory.getObject().getCurrentSession();
-        Motel motel = s.get(Motel.class, motelId);        
-        Hibernate.initialize(motel.getImageSet());
-
-        return motel.getImageSet();
-    }
-
 }
