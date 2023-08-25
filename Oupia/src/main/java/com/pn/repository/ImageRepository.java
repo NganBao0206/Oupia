@@ -16,6 +16,8 @@ public interface ImageRepository {
     List<Image> getImagesByPost(int postId);
 
     List<String> getImagesByMotel(int motelId);
+    
+    String getImageByMotel(int motelId);
 
     Image getImageByPost(int postId);
 

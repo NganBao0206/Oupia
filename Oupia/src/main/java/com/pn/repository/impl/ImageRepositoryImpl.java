@@ -66,4 +66,20 @@ public class ImageRepositoryImpl implements ImageRepository {
         return images;
     }
 
+    @Override
+    public String getImageByMotel(int motelId) {
+        Session session = this.factory.getObject().getCurrentSession();
+        String hql = "SELECT img.image FROM Image img WHERE img.postId.id IN (SELECT prd.postId.id FROM PostRentDetail prd WHERE prd.motelId.id = :motelId)";
+        Query query = session.createQuery(hql);
+        query.setParameter("motelId", motelId);
+        query.setMaxResults(1);
+        List<String> results = query.getResultList();
+        if (results.isEmpty()) {
+            return null;
+        } else {
+            return results.get(0);
+        }
+
+    }
+
 }

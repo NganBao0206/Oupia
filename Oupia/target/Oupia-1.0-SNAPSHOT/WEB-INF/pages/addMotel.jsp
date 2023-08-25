@@ -163,7 +163,7 @@
 <script src="<c:url value="/js/selectorAutocomplete.js"/> "></script>
 <script src="<c:url value="/js/motelDetail.js"/>"></script>
 <script>
-
+                init();
                 function submitForm() {
                     document.querySelector("form").submit();
                 }

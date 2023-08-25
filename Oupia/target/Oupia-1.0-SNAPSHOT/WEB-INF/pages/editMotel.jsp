@@ -9,7 +9,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:url value="/motels/storage/${slug}/" var="action" />
 
-<form:form modelAttribute="motel" action="${action}" enctype="multipart/form-data">
+<form:form modelAttribute="motel" action="${action}" method="POST" enctype="multipart/form-data">
     <form:hidden path="id"/>
     <div class="container-fluid">
         <div class="row">
@@ -96,19 +96,8 @@
                 init()
     </c:if>
                 const form = document.querySelector('form');
-                form.addEventListener('submit', async (event) => {
-                    event.preventDefault();
-                    const data = new FormData(form);
-                    const response = await fetch(form.action, {
-                        method: 'PATCH',
-                        body: data
-                    });
-                });
-
-
                 function submitForm() {
-                    const event = new Event('submit');
-                    form.dispatchEvent(event);
+                    form.submit();
                 }
                 function hideLabel() {
                     document.querySelector("#labelOwner").classList.add("d-none");

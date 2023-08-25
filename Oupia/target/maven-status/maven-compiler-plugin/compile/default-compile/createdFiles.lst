@@ -1,6 +1,7 @@
 com/pn/configs/TilesConfig.class
 com/pn/pojo/Favourite_.class
 com/pn/pojo/Rate.class
+com/pn/repository/PostRepository.class
 com/pn/pojo/Comment_.class
 com/pn/pojo/Post_.class
 com/pn/pojo/PostFindDetail.class
@@ -37,10 +38,13 @@ com/pn/controllers/IndexController.class
 com/pn/validator/WebAppValidator.class
 com/pn/pojo/Image_.class
 com/pn/configs/WebApplicationContextConfig.class
+com/pn/utils/SlugUtils.class
 com/pn/pojo/Favourite.class
+com/pn/service/PostService.class
 com/pn/repository/ImageRepository.class
 com/pn/pojo/Motel.class
 com/pn/controllers/UserController.class
+com/pn/service/impl/PostServiceImpl.class
 com/pn/pojo/User_.class
 com/pn/controllers/ApiMotelController.class
 com/pn/repository/UserRepository.class
@@ -54,3 +58,4 @@ com/pn/service/MotelService.class
 com/pn/pojo/PostRentDetail.class
 com/pn/repository/impl/MotelRepositoryImpl.class
 com/pn/service/impl/MotelServiceImpl.class
+com/pn/repository/impl/PostRepositoryImpl.class

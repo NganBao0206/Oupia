@@ -12,7 +12,7 @@ import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-08-25T16:12:53", comments="EclipseLink-2.7.10.v20211216-rNA")
+@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-08-25T21:54:01", comments="EclipseLink-2.7.10.v20211216-rNA")
 @StaticMetamodel(Post.class)
 public class Post_ { 
 
@@ -25,6 +25,7 @@ public class Post_ {
     public static volatile SingularAttribute<Post, Date> createdAt;
     public static volatile SingularAttribute<Post, Boolean> isDeleted;
     public static volatile SetAttribute<Post, Comment> commentSet;
+    public static volatile SingularAttribute<Post, Image> thumbnailId;
     public static volatile SingularAttribute<Post, Integer> id;
     public static volatile SetAttribute<Post, Favourite> favouriteSet;
     public static volatile SingularAttribute<Post, String> slug;

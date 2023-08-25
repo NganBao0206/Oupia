@@ -112,8 +112,8 @@
 
                                     <div>
                                         <img
-                                            src=""
-                                            alt="avatar"
+                                            src="${motel.image}"
+                                            alt="hình nhà trọ"
                                             style="width: 150px; height:150px; object-fit: cover"
                                             class="me-3 rounded-3"
                                             />

@@ -5,10 +5,12 @@
 package com.pn.controllers;
 
 import com.pn.enums.Status;
+import com.pn.pojo.Image;
 import com.pn.pojo.Motel;
 import com.pn.pojo.Post;
 import com.pn.pojo.PostRentDetail;
 import com.pn.pojo.User;
+import com.pn.service.ImageService;
 import com.pn.service.MotelService;
 import com.pn.service.PostService;
 import com.pn.service.UserService;
@@ -49,8 +51,10 @@ public class MotelController {
     private Environment env;
     @Autowired
     private MotelService motelService;
-     @Autowired
+    @Autowired
     private PostService postService;
+    @Autowired
+    private ImageService imageService;
     @Autowired
     private WebAppValidator postRentValidator;
     @Autowired
@@ -58,11 +62,16 @@ public class MotelController {
     @Autowired
     private WebAppValidator postValidator;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
+    @InitBinder("detail")
+    public void initDetailBinder(WebDataBinder binder) {
         binder.setValidator(motelValidator);
         binder.setValidator(postValidator);
         binder.setValidator(postRentValidator);
+    }
+
+    @InitBinder("motel")
+    public void initMotelBinder(WebDataBinder binder) {
+        binder.setValidator(motelValidator);
     }
 
     @ModelAttribute("users")
@@ -95,7 +104,10 @@ public class MotelController {
         int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
 
         List<Motel> motels = motelService.getMotels(params, status);
-
+        motels.forEach(motel -> {
+            String img = imageService.getImageByMotel(motel.getId());
+            motel.setImage(img);
+        });
         model.addAttribute("motels", motels);
         model.addAttribute("pages", Math.ceil(count * 1.0 / pageSize));
         model.addAttribute("statusParams", status);
@@ -130,8 +142,8 @@ public class MotelController {
         }
         return "addMotel";
     }
-    
-    @PatchMapping("/motels/storage/{slug}")
+
+    @PostMapping("/motels/storage/{slug}")
     public String edit(@ModelAttribute(value = "motel") @Valid Motel motel, BindingResult rs, RedirectAttributes redirectAttributes) {
         if (!rs.hasErrors()) {
             if (this.motelService.addOrUpdateMotel(motel) == true) {

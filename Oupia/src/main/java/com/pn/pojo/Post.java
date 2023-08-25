@@ -28,6 +28,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -42,7 +43,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Table(name = "post")
 @XmlRootElement
 public class Post implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,6 +82,10 @@ public class Post implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User userId;
+    
+    @JoinColumn(name = "thumbnail_id", referencedColumnName = "id")
+    @OneToOne(optional = true)
+    private Image thumbnailId;
     
     @Basic(optional = false)
     @Column(name = "is_deleted")
@@ -183,6 +187,15 @@ public class Post implements Serializable {
     public void setUserId(User userId) {
         this.userId = userId;
     }
+    
+    public Image getThumbnail() {
+        return thumbnailId;
+    }
+
+    public void setThumbnail(Image thumbnailId) {
+        this.thumbnailId = thumbnailId;
+    }
+
 
     @XmlTransient
     public PostRentDetail getPostRentDetail() {

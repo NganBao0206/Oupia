@@ -34,5 +34,10 @@ public class ImageServiceImpl implements ImageService{
     public Image getImageByPost(int motelId) {
         return imageRepository.getImageByPost(motelId);
     }
+
+    @Override
+    public String getImageByMotel(int motelId) {
+        return imageRepository.getImageByMotel(motelId);
+    }
     
 }

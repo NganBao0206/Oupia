@@ -88,6 +88,7 @@ public class PostServiceImpl implements PostService {
             }
         }
         post.setImageSet(imgSet);
+        post.setThumbnail(imgSet.iterator().next());
         return postRepository.addOrUpdatePost(post);
     }
 

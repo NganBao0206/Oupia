@@ -16,6 +16,7 @@ public interface ImageService {
 
     List<Image> getImagesByPost(int motelId);
     Image getImageByPost(int motelId);
+    String getImageByMotel(int motelId);
 
     int countImage(int motelId);
 }
