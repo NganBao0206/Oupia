@@ -9,6 +9,7 @@ import com.pn.formatters.MotelFormatter;
 import com.pn.formatters.UserFormatter;
 import com.pn.service.UserService;
 import com.pn.validator.ConfirmPasswordValidator;
+import com.pn.validator.ImagesValidator;
 import com.pn.validator.MaxMinPeopleValidator;
 import com.pn.validator.PasswordValidator;
 import com.pn.validator.UsernameValidator;
@@ -43,6 +44,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
     "com.pn.repository",
     "com.pn.service",
     "com.pn.formatters",
+    "com.pn.utils",
     "com.pn.validator",})
 @PropertySource("classpath:configs.properties")
 public class WebApplicationContextConfig implements WebMvcConfigurer {
@@ -111,11 +113,12 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
     WebAppValidator postRentValidator() {
         Set<Validator> springValidators = new HashSet<>();
         springValidators.add(new MaxMinPeopleValidator());
+        springValidators.add(new ImagesValidator());
         WebAppValidator validator = new WebAppValidator();
         validator.setSpringValidators(springValidators);
         return validator;
     }
-    
+
     @Bean
     WebAppValidator postValidator() {
         Set<Validator> springValidators = new HashSet<>();
@@ -123,7 +126,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         validator.setSpringValidators(springValidators);
         return validator;
     }
-    
+
     @Bean
     WebAppValidator motelValidator() {
         Set<Validator> springValidators = new HashSet<>();

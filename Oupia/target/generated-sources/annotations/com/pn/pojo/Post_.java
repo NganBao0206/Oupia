@@ -12,19 +12,20 @@ import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-08-23T21:37:23", comments="EclipseLink-2.7.10.v20211216-rNA")
+@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-08-25T16:12:53", comments="EclipseLink-2.7.10.v20211216-rNA")
 @StaticMetamodel(Post.class)
 public class Post_ { 
 
-    public static volatile SingularAttribute<Post, Date> createdAt;
     public static volatile SetAttribute<Post, Image> imageSet;
-    public static volatile SetAttribute<Post, Comment> commentSet;
-    public static volatile SetAttribute<Post, PostFindDetail> postFindDetailSet;
+    public static volatile SingularAttribute<Post, PostRentDetail> postRentDetail;
+    public static volatile SingularAttribute<Post, PostFindDetail> postFindDetail;
     public static volatile SingularAttribute<Post, String> description;
-    public static volatile SetAttribute<Post, PostRentDetail> postRentDetailSet;
-    public static volatile SingularAttribute<Post, Integer> id;
     public static volatile SingularAttribute<Post, String> title;
     public static volatile SingularAttribute<Post, User> userId;
+    public static volatile SingularAttribute<Post, Date> createdAt;
+    public static volatile SingularAttribute<Post, Boolean> isDeleted;
+    public static volatile SetAttribute<Post, Comment> commentSet;
+    public static volatile SingularAttribute<Post, Integer> id;
     public static volatile SetAttribute<Post, Favourite> favouriteSet;
     public static volatile SingularAttribute<Post, String> slug;
     public static volatile SingularAttribute<Post, Date> updatedAt;

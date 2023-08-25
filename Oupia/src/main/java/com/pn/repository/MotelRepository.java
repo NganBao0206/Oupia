@@ -29,5 +29,5 @@ public interface MotelRepository {
     boolean destroyMotel(String slug);
 
     boolean restoreMotel(String slug);
-
+    List<String> findSlugsStartingWith(String slug);
 }

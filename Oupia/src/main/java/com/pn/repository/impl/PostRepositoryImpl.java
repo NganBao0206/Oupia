@@ -7,7 +7,6 @@ package com.pn.repository.impl;
 import com.pn.pojo.Image;
 import com.pn.pojo.Motel;
 import com.pn.pojo.Post;
-import com.pn.pojo.PostRentDetail;
 import com.pn.repository.MotelRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import com.pn.repository.PostRepository;
 
 /**
  *
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 //@PropertySource("classpath:configs.properties")
 @Transactional
-public class MotelRepositoryImpl implements MotelRepository {
+public class PostRepositoryImpl implements PostRepository {
 
     @Autowired
     private LocalSessionFactoryBean factory;
@@ -43,11 +43,11 @@ public class MotelRepositoryImpl implements MotelRepository {
     private Environment env;
 
     @Override
-    public List<Motel> getMotels(Map<String, String> params, List<String> status) {
+    public List<Post> getPosts(Map<String, String> params, List<String> type) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
-        CriteriaQuery<Motel> q = b.createQuery(Motel.class);
-        Root root = q.from(Motel.class);
+        CriteriaQuery<Post> q = b.createQuery(Post.class);
+        Root root = q.from(Post.class);
         q.select(root);
 
         if (params != null) {
@@ -67,17 +67,17 @@ public class MotelRepositoryImpl implements MotelRepository {
                 predicates.add(namePredicate);
             }
 
-            if (status != null && status.size() > 0) {
-                List<Predicate> pres = new ArrayList<>();
-
-                for (String st : status) {
-                    pres.add(b.equal(root.get("status"), st));
-                }
-                if (pres.size() > 0) {
-                    Predicate[] predicateArray = pres.toArray(new Predicate[0]);
-                    predicates.add(b.or(predicateArray));
-                }
-            }
+//            if (type != null && type.size() > 0) {
+//                List<Predicate> pres = new ArrayList<>();
+//
+//                for (String st : status) {
+//                    pres.add(b.equal(root.get("status"), st));
+//                }
+//                if (pres.size() > 0) {
+//                    Predicate[] predicateArray = pres.toArray(new Predicate[0]);
+//                    predicates.add(b.or(predicateArray));
+//                }
+//            }
 
             q.where(predicates.toArray(Predicate[]::new));
         }
@@ -93,11 +93,11 @@ public class MotelRepositoryImpl implements MotelRepository {
     }
 
     @Override
-    public int countMotels(Map<String, String> params, List<String> status) {
+    public int countPosts(Map<String, String> params, List<String> type) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<Long> q = b.createQuery(Long.class);
-        Root root = q.from(Motel.class);
+        Root root = q.from(Post.class);
         q.select(b.count(root));
 
         if (params != null) {
@@ -117,17 +117,17 @@ public class MotelRepositoryImpl implements MotelRepository {
                 predicates.add(namePredicate);
             }
 
-            if (status != null && status.size() > 0) {
-                List<Predicate> pres = new ArrayList<>();
-
-                for (String st : status) {
-                    pres.add(b.equal(root.get("status"), st));
-                }
-                if (pres.size() > 0) {
-                    Predicate[] predicateArray = pres.toArray(new Predicate[0]);
-                    predicates.add(b.or(predicateArray));
-                }
-            }
+//            if (status != null && status.size() > 0) {
+//                List<Predicate> pres = new ArrayList<>();
+//
+//                for (String st : status) {
+//                    pres.add(b.equal(root.get("status"), st));
+//                }
+//                if (pres.size() > 0) {
+//                    Predicate[] predicateArray = pres.toArray(new Predicate[0]);
+//                    predicates.add(b.or(predicateArray));
+//                }
+//            }
 
             q.where(predicates.toArray(Predicate[]::new));
         }
@@ -137,13 +137,13 @@ public class MotelRepositoryImpl implements MotelRepository {
     }
 
     @Override
-    public boolean addOrUpdateMotel(Motel motel) {
+    public boolean addOrUpdatePost(Post post) {
         Session s = this.factory.getObject().getCurrentSession();
         try {
-            if (motel.getId() == null) {
-                s.save(motel);
+            if (post.getId() == null) {
+                s.save(post);
             } else {
-                s.update(motel);
+                s.update(post);
             }
 
             return true;
@@ -154,28 +154,26 @@ public class MotelRepositoryImpl implements MotelRepository {
     }
 
     @Override
-    public Motel getMotelBySlug(String slug) {
+    public Post getPostBySlug(String slug) {
         Session session = this.factory.getObject().getCurrentSession();
-        Query query = session.createQuery("FROM Motel WHERE slug = :slug");
+        Query query = session.createQuery("FROM Post WHERE slug = :slug");
         query.setParameter("slug", slug);
-
         try {
-            return (Motel) query.getSingleResult();
+            return (Post) query.getSingleResult();
         } catch (NoResultException ex) {
             return null; // Trả về null nếu không tìm thấy kết quả
         }
     }
 
     @Override
-    public boolean deleteMotel(String slug) {
+    public boolean deletePost(String slug) {
         Session s = this.factory.getObject().getCurrentSession();
-        Motel motel = getMotelBySlug(slug);
+        Post post = getPostBySlug(slug);
 
-        if (motel != null) {
-
-            motel.setIsDeleted(true);
+        if (post != null) {
+            post.setIsDeleted(true);
             try {
-                s.update(motel);
+                s.update(post);
                 return true;
             } catch (HibernateException ex) {
                 ex.printStackTrace();
@@ -185,17 +183,13 @@ public class MotelRepositoryImpl implements MotelRepository {
     }
 
     @Override
-    public boolean destroyMotel(String slug) {
+    public boolean destroyPost(String slug) {
         Session s = this.factory.getObject().getCurrentSession();
-        Motel motel = getMotelBySlug(slug);
-        for (PostRentDetail postRentDetail : motel.getPostRentDetailSet()) {
-            Post post = postRentDetail.getPostId();
-            s.delete(post); // Xóa đối tượng Post
-            s.delete(postRentDetail); // Xóa đối tượng PostRentDetail
-        }
-        if (motel != null && motel.getIsDeleted()) {
+        Post post = getPostBySlug(slug);
+
+        if (post != null && post.getIsDeleted()) {
             try {
-                s.delete(motel);
+                s.delete(post);
                 return true;
             } catch (HibernateException ex) {
                 ex.printStackTrace();
@@ -205,14 +199,14 @@ public class MotelRepositoryImpl implements MotelRepository {
     }
 
     @Override
-    public boolean restoreMotel(String slug) {
+    public boolean restorePost(String slug) {
         Session s = this.factory.getObject().getCurrentSession();
-        Motel motel = getMotelBySlug(slug);
+        Post post = getPostBySlug(slug);
 
-        if (motel != null) {
-            motel.setIsDeleted(false);
+        if (post != null) {
+            post.setIsDeleted(false);
             try {
-                s.update(motel);
+                s.update(post);
                 return true;
             } catch (HibernateException ex) {
                 ex.printStackTrace();
@@ -220,15 +214,4 @@ public class MotelRepositoryImpl implements MotelRepository {
         }
         return false;
     }
-
-    public List<String> findSlugsStartingWith(String slug) {
-        Session s = this.factory.getObject().getCurrentSession();
-        CriteriaBuilder cb = s.getCriteriaBuilder();
-        CriteriaQuery<String> query = cb.createQuery(String.class);
-        Root<Motel> root = query.from(Motel.class);
-        query.select(root.get("slug"))
-                .where(cb.like(root.get("slug"), slug + "%"));
-        return s.createQuery(query).getResultList();
-    }
-
 }

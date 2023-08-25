@@ -7,6 +7,7 @@ com/pn/pojo/PostFindDetail.class
 com/pn/service/UserService.class
 com/pn/pojo/Post.class
 com/pn/validator/MaxMinPeopleValidator.class
+com/pn/validator/ImagesValidator.class
 com/pn/pojo/PostRentDetail_.class
 com/pn/configs/DispatcherServletInitializer.class
 com/pn/pojo/Motel_.class

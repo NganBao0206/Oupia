@@ -16,13 +16,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -64,9 +67,11 @@ public class PostRentDetail implements Serializable {
     private double area;
 
     @Column(name = "num_of_bedrooms")
+    @Min(value = 1, message = "{postRentDetail.numOfBedrooms.min}")
     private Integer numOfBedrooms;
 
     @Column(name = "num_of_bathrooms")
+    @Min(value = 1, message = "{postRentDetail.numOfBathrooms.min}")
     private Integer numOfBathrooms;
 
     @JoinColumn(name = "motel_id", referencedColumnName = "id")
@@ -76,11 +81,16 @@ public class PostRentDetail implements Serializable {
     private Motel motelId;
 
     @JoinColumn(name = "post_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @Valid
     private Post postId;
 
+    @Transient
+    private MultipartFile[] imgImport;
+    
     public PostRentDetail() {
+        numOfBedrooms = 1;
+        numOfBathrooms = 1;
     }
 
     public PostRentDetail(Integer id) {
@@ -166,6 +176,15 @@ public class PostRentDetail implements Serializable {
     public void setPostId(Post postId) {
         this.postId = postId;
     }
+    
+    
+    public MultipartFile[] getImgImport() {
+        return imgImport;
+    }
+    public void setImgImport(MultipartFile[] imgImport) {
+        this.imgImport = imgImport;
+    }
+
 
     @Override
     public int hashCode() {

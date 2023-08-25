@@ -10,9 +10,13 @@ import com.cloudinary.utils.ObjectUtils;
 import com.github.slugify.Slugify;
 import com.pn.pojo.Image;
 import com.pn.pojo.Motel;
+import com.pn.pojo.Post;
+import com.pn.pojo.PostRentDetail;
 import com.pn.pojo.User;
+import com.pn.repository.ImageRepository;
 import com.pn.repository.MotelRepository;
 import com.pn.service.MotelService;
+import com.pn.utils.SlugUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,63 +41,23 @@ public class MotelServiceImpl implements MotelService {
     @Autowired
     private MotelRepository motelRepository;
     @Autowired
+    private ImageRepository imageRepository;
+    @Autowired
     private Cloudinary cloudinary;
     @Autowired
     private Slugify slugify;
+    @Autowired
+    private SlugUtils slugUtils;
 
     @Override
     public boolean addOrUpdateMotel(Motel motel) {
-        motel.setSlug(slugify.slugify(motel.getName()));
-//        Set<Image> imgSet = motel.getImageSet();
-//        if (imgSet == null) {
-//            imgSet = new HashSet<>();
-//        }
-//        if (motel.getImgImport() != null && motel.getImgImport().length > 0) {
-//            for (MultipartFile file : motel.getImgImport()) {
-//                if (file.isEmpty() == false) {
-//                    try {
-//                        if (!file.isEmpty()) {
-//                            Map res;
-//                            res = this.cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
-//
-//                            String publicId = (String) res.get("public_id");
-//                            String url = cloudinary.url().generate(publicId);
-//                            Image img = new Image();
-//                            img.setImage(url);
-//                            img.setMotelId(motel);
-//                            imgSet.add(img);
-//                        }
-//
-//                    } catch (IOException ex) {
-//                        Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//
-//            }
-//        }
-
-//        if (motel.getImgGoogle() != null && !motel.getImgGoogle().isEmpty()) {
-//            for (String file : motel.getImgGoogle()) {
-//                if (file != null) {
-//                    try {
-//                        Map res;
-//                        res = this.cloudinary.uploader().upload(file, ObjectUtils.asMap("resource_type", "auto"));
-//
-//                        String publicId = (String) res.get("public_id");
-//                        String url = cloudinary.url().generate(publicId);
-//                        Image img = new Image();
-//                        img.setImage(url);
-//                        img.setMotelId(motel);
-//                        imgSet.add(img);
-//
-//                    } catch (IOException ex) {
-//                        Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//
-//            }
-//        }
-//        motel.setImageSet(imgSet);
+        if (motel.getId() == null) {
+            String slug = slugify.slugify(motel.getName());
+            List<String> existingSlugs = motelRepository.findSlugsStartingWith(slug);
+            slug = slugUtils.generateUniqueSlug(slug, existingSlugs);
+            motel.setSlug(slug);
+            
+        }
         return motelRepository.addOrUpdateMotel(motel);
     }
 
@@ -120,27 +84,25 @@ public class MotelServiceImpl implements MotelService {
     @Override
     public boolean destroyMotel(String slug) {
         Motel motel = getMotelBySlug(slug);
-//        Set<Image> imageSet = getImageSetOfMotel(motel.getId());
-//        List<String> images = new ArrayList<>();
-//        imageSet.forEach(image -> images.add(image.getImage()));
+        List<String> images = imageRepository.getImagesByMotel(motel.getId());
         boolean result = motelRepository.destroyMotel(slug);
-//        if (result) {
-//            CompletableFuture.runAsync(() -> {
-//                List<String> publicIds = new ArrayList<>();
-//                images.forEach(image -> {
-//                    if (image != null) {
-//                        String[] part = image.split("/");
-//                        String publicId = part[part.length - 1];
-//                        publicIds.add(publicId);
-//                    }
-//                });
-//                try {
-//                    Map res = this.cloudinary.api().deleteResources(publicIds, ObjectUtils.asMap("invalidate", true));
-//                } catch (Exception ex) {
-//                    Logger.getLogger(MotelServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            });
-//        }
+        if (result) {
+            CompletableFuture.runAsync(() -> {
+                List<String> publicIds = new ArrayList<>();
+                images.forEach(image -> {
+                    if (image != null) {
+                        String[] part = image.split("/");
+                        String publicId = part[part.length - 1];
+                        publicIds.add(publicId);
+                    }
+                });
+                try {
+                    Map res = this.cloudinary.api().deleteResources(publicIds, ObjectUtils.asMap("invalidate", true));
+                } catch (Exception ex) {
+                    Logger.getLogger(MotelServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
         return result;
     }
 

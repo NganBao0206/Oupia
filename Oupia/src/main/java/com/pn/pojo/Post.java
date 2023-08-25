@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -81,45 +82,22 @@ public class Post implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User userId;
+    
+    @Basic(optional = false)
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
-    private Set<PostRentDetail> postRentDetailSet;
+    @OneToOne(mappedBy = "postId", cascade = CascadeType.ALL)
+    private PostRentDetail postRentDetail;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
     private Set<Comment> commentSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
     private Set<Favourite> favouriteSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
-    private Set<PostFindDetail> postFindDetailSet;
-
-    /**
-     * @return the imgImport
-     */
-    public MultipartFile[] getImgImport() {
-        return imgImport;
-    }
-
-    /**
-     * @param imgImport the imgImport to set
-     */
-    public void setImgImport(MultipartFile[] imgImport) {
-        this.imgImport = imgImport;
-    }
-
-    @Transient
-    private MultipartFile[] imgImport;
-
-    @Transient
-    private List<String> imgGoogle;
-
-    public List<String> getImgGoogle() {
-        return imgGoogle;
-    }
-
-    public void setImgGoogle(List<String> imgGoogle) {
-        this.imgGoogle = imgGoogle;
-    }
+    @OneToOne(mappedBy = "postId", cascade = CascadeType.ALL)
+    private PostFindDetail postFindDetail;
 
     public Post() {
+        isDeleted = false;
     }
 
     public Post(Integer id) {
@@ -172,6 +150,14 @@ public class Post implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+    
+     public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 
     public String getSlug() {
         return slug;
@@ -199,12 +185,12 @@ public class Post implements Serializable {
     }
 
     @XmlTransient
-    public Set<PostRentDetail> getPostRentDetailSet() {
-        return postRentDetailSet;
+    public PostRentDetail getPostRentDetail() {
+        return postRentDetail;
     }
 
-    public void setPostRentDetailSet(Set<PostRentDetail> postRentDetailSet) {
-        this.postRentDetailSet = postRentDetailSet;
+    public void setPostRentDetail(PostRentDetail postRentDetail) {
+        this.postRentDetail = postRentDetail;
     }
 
     @XmlTransient
@@ -226,12 +212,12 @@ public class Post implements Serializable {
     }
 
     @XmlTransient
-    public Set<PostFindDetail> getPostFindDetailSet() {
-        return postFindDetailSet;
+    public PostFindDetail getPostFindDetail() {
+        return postFindDetail;
     }
 
-    public void setPostFindDetailSet(Set<PostFindDetail> postFindDetailSet) {
-        this.postFindDetailSet = postFindDetailSet;
+    public void setPostFindDetail(PostFindDetail postFindDetail) {
+        this.postFindDetail = postFindDetail;
     }
 
     @Override

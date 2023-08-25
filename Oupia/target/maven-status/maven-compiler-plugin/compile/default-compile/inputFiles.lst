@@ -11,6 +11,7 @@
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/validator/WebAppValidator.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/configs/SpringSecurityConfig.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/pojo/Post.java
+/home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/validator/ImagesValidator.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/repository/UserRepository.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/service/impl/ImageServiceImpl.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/service/ImageService.java

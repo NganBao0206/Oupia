@@ -10,6 +10,7 @@ import com.pn.repository.ImageRepository;
 import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import org.hibernate.HibernateException;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,16 @@ public class ImageRepositoryImpl implements ImageRepository {
         query.setParameter("postId", postId);
         query.setMaxResults(1);
         return (Image) query.getSingleResult();
+    }
+
+    @Override
+    public List<String> getImagesByMotel(int motelId) {
+        Session session = this.factory.getObject().getCurrentSession();
+        String hql = "SELECT img.image FROM Image img WHERE img.postId.id IN (SELECT prd.postId.id FROM PostRentDetail prd WHERE prd.motelId.id = :motelId)";
+        Query query = session.createQuery(hql);
+        query.setParameter("motelId", motelId);
+        List<String> images = query.getResultList();
+        return images;
     }
 
 }

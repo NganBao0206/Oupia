@@ -99,7 +99,7 @@ public class Image implements Serializable {
             return false;
         }
         Image other = (Image) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.image == null && other.image != null) || (this.image != null && !this.image.equals(other.image))) {
             return false;
         }
         return true;

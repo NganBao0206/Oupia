@@ -11,7 +11,6 @@
 
 <form:form modelAttribute="detail" action="${action}" method="POST" enctype="multipart/form-data">
     <form:hidden path="id"/>
-    <form:errors path="*" element="div" cssClass="text-danger"/>
     <div class="container-fluid">
         <div class="row">
             <h3 class="my-4 fw-bold">Thông tin trọ</h3>
@@ -23,23 +22,27 @@
 
                 <div class="form-floating mb-3">
                     <form:input path="motelId.name" type="text" class="form-control" id="nameInput" placeholder="name"/>
-                    <form:errors path="motelId.name" element="div" cssClass="text-danger"/>
+                    <form:errors path="motelId.name" element="div" cssClass="text-danger my-2 px-2"/>
 
                     <label for="nameInput">Tên nhà trọ</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <form:input path="motelId.fullLocation" type="text" class="form-control" id="addressInput" placeholder="address"/>
-                    <form:errors path="motelId.fullLocation" element="div" cssClass="text-danger"/>
+                    <form:input path="motelId.fullLocation" type="text" data-bs-toggle="dropdown" aria-expanded="false" class="form-control position-relative" id="addressInput" placeholder="address"/>
+                    <ul id="resultAddress" style="z-index: 99;" class="dropdown-menu p-3 shadow-sm bg-light border border-1 w-100">
+                    </ul>
+                    <form:errors path="motelId.fullLocation" element="div" cssClass="text-danger my-2 px-2"/>
 
                     <label for="addressInput">Địa chỉ</label>
                 </div>
 
 
-                <div class="row align-items-stretch">
+                <div class="row">
                     <div class="col-xs-12 col-md-6 mb-3">
-                        <div class="form-floating h-100">
-                            <label id="label" for="ownerInput">Chọn chủ trọ</label>
+                        <div class="form-floating">
+                            <c:if test="${empty detail.motelId.userId}">
+                                <label id="labelOwner" for="ownerInput">Chọn chủ trọ</label>
+                            </c:if>
                             <form:select onchange="hideLabel()" path="motelId.userId" class="py-3 selectpicker form-control h-100" id="ownerInput" aria-label="user">
                                 <c:if test="${empty detail.motelId.userId}">
                                     <option disabled selected></option>
@@ -56,20 +59,14 @@
                                 </c:forEach>
                             </form:select>
                         </div>
+                        <form:errors path="motelId.userId" element="div" cssClass="text-danger w-100 my-2 px-2"/>
                     </div>
                     <div class="col-xs-12 col-md-6 mb-3">
-                        <div class="form-floating h-100">
+                        <div class="form-floating">
                             <form:input path="motelId.phoneNumber" type="number" class="form-control h-100" id="phoneInput" placeholder="phoneNumber"/>
                             <label for="phoneInput">Số điện thoại trọ</label>
                         </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="col-5">
-                        <form:errors path="motelId.userId" element="div" cssClass="text-danger w-100"/>
-                    </div>
-                    <div class="col-5">
-                        <form:errors path="motelId.phoneNumber" element="div" cssClass="text-danger w-100"/>
+                        <form:errors path="motelId.phoneNumber" element="div" cssClass="text-danger w-100 my-2 px-2"/>
                     </div>
                 </div>
             </div>
@@ -83,75 +80,74 @@
             <h3 class="my-4 fw-bold">Bài đăng đầu tiên</h3>
             <div class="form-floating mb-3">
                 <form:input path="postId.title" type="text" class="form-control" id="titleInput" placeholder="title"/>
-                <form:errors path="postId.title" element="div" cssClass="text-danger"/>
+                <form:errors path="postId.title" element="div" cssClass="text-danger my-2 px-2"/>
                 <label for="titleInput">Tiêu đề</label>
             </div>
             <div class="form-floating mb-3">
                 <form:textarea path="postId.description" class="form-control" placeholder="Chi tiết" id="i" style="min-height: 200px"/>
-                <form:errors path="postId.description" element="div" cssClass="text-danger"/>
+                <form:errors path="postId.description" element="div" cssClass="text-danger my-2 px-2"/>
                 <label for="i">Chi tiết</label>
             </div>
-            <div class="row align-items-stretch">
+            <div class="row">
                 <div class="col-xs-12 col-md-6 mb-3">
-                    <div class="input-group form-floating h-100">
+                    <div class="input-group form-floating">
                         <form:input path="area" type="number" class="form-control h-100" id="areaInput" placeholder="area"/>
                         <span class="input-group-text rounded-end-3">m²</span>
-                        <form:errors path="area" element="div" cssClass="text-danger"/>
                         <label for="areaInput">Diện tích</label>
                     </div>
+                    <form:errors path="area" element="div" cssClass="text-danger my-2 px-2"/>
+
                 </div>
                 <div class="col-xs-12 col-md-6 mb-3">
-                    <div class="input-group form-floating h-100">
+                    <div class="input-group form-floating">
                         <form:input path="price" type="number" class="form-control h-100" id="priceInput" placeholder="price"/>
                         <span class="input-group-text rounded-end-3">đ/tháng</span>
-                        <form:errors path="price" element="div" cssClass="text-danger"/>
                         <label for="priceInput">Giá</label>
                     </div>
+                    <form:errors path="price" element="div" cssClass="text-danger my-2 px-2"/>
                 </div>
             </div>
-            <div class="row align-items-stretch">
+            <div class="row">
                 <div class="col-xs-12 col-md-6 mb-3">
-                    <div class="form-floating h-100">
+                    <div class="form-floating">
                         <form:input path="numOfBedrooms" type="number" class="form-control h-100" id="bedInput" placeholder="area"/>
-                        <form:errors path="numOfBedrooms" element="div" cssClass="text-danger"/>
                         <label for="bedInput">Số phòng ngủ</label>
                     </div>
+                    <form:errors path="numOfBedrooms" element="div" cssClass="text-danger my-2 px-2"/>
+
                 </div>
                 <div class="col-xs-12 col-md-6 mb-3">
-                    <div class="form-floating h-100">
+                    <div class="form-floating">
                         <form:input path="numOfBathrooms" type="number" class="form-control h-100" id="bathInput" placeholder="price"/>
-                        <form:errors path="numOfBathrooms" element="div" cssClass="text-danger"/>
                         <label for="bathInput">Số phòng tắm</label>
                     </div>
+                    <form:errors path="numOfBathrooms" element="div" cssClass="text-danger my-2 px-2"/>
+
                 </div>
             </div>
-            <div class="row align-items-stretch">
+            <div class="row">
                 <div class="col-xs-12 col-md-6 mb-3">
-                    <div class="form-floating h-100">
+                    <div class="form-floating">
                         <form:input path="minPeople" type="number" class="form-control h-100" id="minPeopleInput" placeholder="minPeople"/>
-                        <form:errors path="minPeople" element="div" cssClass="text-danger"/>
                         <label for="minPeopleInput">Số người tối thiểu</label>
-                    </div>
+                    </div>             
+                    <form:errors path="minPeople" element="div" cssClass="text-danger my-2 px-2"/>
+
                 </div>
                 <div class="col-xs-12 col-md-6 mb-3">
-                    <div class="form-floating h-100">
+                    <div class="form-floating">
                         <form:input path="maxPeople" type="number" class="form-control h-100" id="maxPeopleInput" placeholder="maxPeople"/>
-                        <form:errors path="maxPeople" element="div" cssClass="text-danger"/>
                         <label for="maxPeopleInput">Số người tối đa</label>
-                    </div>
+                    </div>               
+                    <form:errors path="maxPeople" element="div" cssClass="text-danger my-2 px-2"/>
                 </div>
             </div>
             <div class="mt-3 col-12">
-                <div class="d-flex">
-                    <p class="my-2">Ảnh nhà trọ cho bài đăng (ít nhất 3 ảnh)</p>
-                    <button id="btnGetGoogleImgs" class="btn btn-dark ms-2" type="button">Nạp ảnh từ google</button>
-                </div>
-                <input name="portId.imgImport" onchange="addImage(this)" multiple class="py-3 form-control my-3" type="file" id="inputFile" accept="image/jpeg, image/png"/>
+                <p class="my-2">Ảnh nhà trọ cho bài đăng (ít nhất 3 ảnh)</p>
+                <input placeholder="Thêm ảnh minh họa" name="imgImport" onchange="addImage(this)" multiple class="py-3 form-control mt-3 mb-2" type="file" id="inputFile" accept="image/jpeg, image/png"/>
                 <div id="imgsImport" class="d-flex flex-wrap">
                 </div>
-                <div id="imgsFromGoogle" class="d-flex flex-wrap">
-                    <div class="bg-my-primary-5"></div>
-                </div>
+                <form:errors path="imgImport" element="div" cssClass="text-danger px-2"/>
             </div>
         </div>
     </div>
@@ -166,14 +162,13 @@
 </form:form>
 <script src="<c:url value="/js/selectorAutocomplete.js"/> "></script>
 <script src="<c:url value="/js/motelDetail.js"/>"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5sUsaAUPrpOhRyOyDxTZY-nbBa6aXVf0&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC" async defer></script>
-
 <script>
 
                 function submitForm() {
                     document.querySelector("form").submit();
                 }
                 function hideLabel() {
+                    document.querySelector("#labelOwner").classList.add("d-none");
                 }
                 function removeImg(obj) {
                     obj.parentElement.remove()

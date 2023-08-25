@@ -289,4 +289,5 @@ public class Motel implements Serializable {
     public void setRateSet(Set<Rate> rateSet) {
         this.rateSet = rateSet;
     }
+
 }

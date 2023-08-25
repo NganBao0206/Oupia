@@ -13,8 +13,11 @@ import java.util.List;
  */
 public interface ImageRepository {
 
-    List<Image> getImagesByPost(int motelId);
-    Image getImageByPost(int motelId);
+    List<Image> getImagesByPost(int postId);
 
-    int countImage(int motelId);
+    List<String> getImagesByMotel(int motelId);
+
+    Image getImageByPost(int postId);
+
+    int countImage(int postId);
 }
