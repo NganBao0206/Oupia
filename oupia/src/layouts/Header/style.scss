@@ -1,0 +1,33 @@
+.header {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  color: #FFF;
+  background-color: transparent;
+}
+
+.bg-header{
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  color: #000;
+  background-color: #FFF;
+  top:0;
+}
+.nav-item.active {
+  position: relative;
+  color: var(--blueTemplate);
+  text-shadow: rgba($color: #000000, $alpha: 0.2) 2px 2px 2px;
+}
+.nav-item.active::after{
+  content: "";
+  background: var(--blueTemplate);
+  width: 80%;
+  height: 3px;
+  display: block;
+  position: absolute;
+  top:100%;
+  left: 50%;
+  border-radius: 10px;
+  transform: translate(-50%, 100%);
+}

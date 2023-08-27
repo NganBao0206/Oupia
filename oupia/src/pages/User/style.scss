@@ -1,0 +1,11 @@
+.bg-wallpaper {
+    background: url("https://wallpaper.dog/large/17205051.jpg");
+    background-repeat: no-repeat;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+}
+
+.img-translate-y{
+    transform: translate(-50%, -50%);
+}
