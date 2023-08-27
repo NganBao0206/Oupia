@@ -89,7 +89,6 @@ public class ApiUserController {
                 return result;
 
             } catch (Exception e) {
-                System.out.println("loixne");
                 e.printStackTrace();
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

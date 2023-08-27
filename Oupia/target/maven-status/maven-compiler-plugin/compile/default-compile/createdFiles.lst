@@ -22,7 +22,6 @@ com/pn/pojo/Follow_.class
 com/pn/pojo/Message.class
 com/pn/configs/SpringSecurityConfig.class
 com/pn/pojo/Follow.class
-com/pn/controllers/MotelController.class
 com/pn/enums/Status.class
 com/pn/pojo/User.class
 com/pn/repository/impl/ImageRepositoryImpl.class
@@ -35,15 +34,12 @@ com/pn/formatters/MotelFormatter.class
 com/pn/validator/ConfirmPasswordValidator.class
 com/pn/pojo/Comment.class
 com/pn/controllers/IndexController.class
-com/pn/validator/WebAppValidator.class
 com/pn/pojo/Image_.class
-com/pn/configs/WebApplicationContextConfig.class
 com/pn/utils/SlugUtils.class
 com/pn/pojo/Favourite.class
 com/pn/service/PostService.class
 com/pn/repository/ImageRepository.class
 com/pn/pojo/Motel.class
-com/pn/controllers/UserController.class
 com/pn/service/impl/PostServiceImpl.class
 com/pn/pojo/User_.class
 com/pn/controllers/ApiMotelController.class

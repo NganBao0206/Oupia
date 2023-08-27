@@ -41,6 +41,21 @@
         <put-attribute name="content" 
                        value="/WEB-INF/pages/editMotel.jsp" />
     </definition>    
+     <definition name="posts" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý bài đăng" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/posts.jsp" />
+    </definition>
+     <definition name="postRentDetail" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý bài đăng" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/postRentDetail.jsp" />
+    </definition>
+    <definition name="postFindDetail" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý bài đăng" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/postFindDetail.jsp" />
+    </definition>
     <definition name="error" extends="baseLayout">
         <put-attribute name="title" value="Thông tin user" />
         <put-attribute name="content" 

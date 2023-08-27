@@ -20,19 +20,19 @@ public class ImageServiceImpl implements ImageService{
     @Autowired
     private ImageRepository imageRepository;
     @Override
-    public List<Image> getImagesByPost(int motelId) {
-        return imageRepository.getImagesByPost(motelId);
+    public List<Image> getImagesByPost(int postId) {
+        return imageRepository.getImagesByPost(postId);
     }
     
 
     @Override
-    public int countImage(int motelId) {
-        return imageRepository.countImage(motelId);
+    public int countImage(int postId) {
+        return imageRepository.countImage(postId);
     }
 
     @Override
-    public Image getImageByPost(int motelId) {
-        return imageRepository.getImageByPost(motelId);
+    public Image getImageByPost(int postId) {
+        return imageRepository.getImageByPost(postId);
     }
 
     @Override

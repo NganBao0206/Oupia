@@ -17,11 +17,10 @@ public class ImagesValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         PostRentDetail detail = (PostRentDetail) target;
-        if (detail.getPostId()!= null) {
+        if (detail.getId() == null && detail.getPostId()!= null) {
             Post post = detail.getPostId();
             int countNewImages = detail.getImgImport() != null ? detail.getImgImport().length : 0;
-            int countOldImages = post.getImageSet() != null ? post.getImageSet().size() : 0;
-            if (countNewImages + countOldImages < 3) {
+            if (countNewImages < 3) {
                 errors.rejectValue("imgImport", "post.imageSet.size");
             }
         }

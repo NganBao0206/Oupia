@@ -41,7 +41,6 @@ body {
 .btn-my-primary:hover{
     background-color: transparent !important;
     border-color: var(--my-primary) !important;
-    border-width: 2px;
     color: var(--my-primary) !important;
     font-weight: 700;
 }
@@ -105,4 +104,8 @@ input[type=radio]:checked, input[type=checkbox]:checked {
 .label-selected {
     color: rgba(var(--bs-body-color-rgb),.65);
     transform: scale(.85) translateY(-.5rem) translateX(.15rem);
+}
+
+.choices__list--single{
+    padding: 0;
 }

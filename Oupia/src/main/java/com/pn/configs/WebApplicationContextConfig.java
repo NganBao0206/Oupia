@@ -118,6 +118,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         validator.setSpringValidators(springValidators);
         return validator;
     }
+   
 
     @Bean
     WebAppValidator postValidator() {
@@ -129,6 +130,14 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 
     @Bean
     WebAppValidator motelValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        WebAppValidator validator = new WebAppValidator();
+        validator.setSpringValidators(springValidators);
+        return validator;
+    }
+    
+    @Bean
+    WebAppValidator postFindValidator() {
         Set<Validator> springValidators = new HashSet<>();
         WebAppValidator validator = new WebAppValidator();
         validator.setSpringValidators(springValidators);

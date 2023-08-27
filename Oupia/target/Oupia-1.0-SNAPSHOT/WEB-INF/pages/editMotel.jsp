@@ -15,6 +15,8 @@
         <div class="row">
             <h3 class="my-4 fw-bold">Thông tin trọ</h3>
             <div class="col-12">
+                <form:hidden path="userId"/>
+
                 <form:hidden path="locationLongitude" id="longitudeInput"/>
                 <form:errors path="locationLongitude" element="div" cssClass="text-danger"/>
                 <form:hidden path="locationLatitude" id="latitudeInput"/>
@@ -38,32 +40,7 @@
 
 
                 <div class="row">
-                    <div class="col-xs-12 col-md-6 mb-3">
-                        <div class="form-floating">
-                            <c:if test="${empty motel.userId}">
-                                <label id="labelOwner" for="ownerInput">Chọn chủ trọ</label>
-                            </c:if>
-                            <form:select onchange="hideLabel()" path="userId" class="py-3 selectpicker form-control h-100" id="ownerInput" aria-label="user">
-                                <c:if test="${empty detail.motelId.userId}">
-                                    <option disabled selected></option>
-                                </c:if>
-                                <c:forEach items="${users}" var="user">
-                                    <div>${user} + ${userId.userRole}</div>
-                                    <c:choose>
-                                        <c:when test="${user == motel.userId}">
-                                            <option selected value="${user.id}">${user.username} - ${user.fullName}</option>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <option value="${user.id}">${user.username} - ${user.fullName}</option>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
-                            </form:select>
-
-                        </div>
-                        <form:errors path="userId" element="div" cssClass="text-danger w-100 my-2 px-2"/>
-                    </div>
-                    <div class="col-xs-12 col-md-6 mb-3">
+                    <div class="col-xs-12 col-md-12 mb-3">
                         <div class="form-floating">
                             <form:input path="phoneNumber" type="number" class="form-control h-100" id="phoneInput" placeholder="phoneNumber"/>
                             <label for="phoneInput">Số điện thoại trọ</label>
@@ -89,7 +66,7 @@
     </div>
 </form:form>
 <script src="<c:url value="/js/selectorAutocomplete.js"/> "></script>
-<script src="<c:url value="/js/motelDetail.js"/>"></script>
+<script src="<c:url value="/js/map.js"/>"></script>
 <script>
     <c:if test="${not empty motel.id}">
                 setLatLng(${motel.locationLatitude}, ${motel.locationLongitude})

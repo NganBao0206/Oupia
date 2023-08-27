@@ -161,7 +161,9 @@
     </div>
 </form:form>
 <script src="<c:url value="/js/selectorAutocomplete.js"/> "></script>
-<script src="<c:url value="/js/motelDetail.js"/>"></script>
+<script src="<c:url value="/js/map.js"/>"></script>
+<script src="<c:url value="/js/addImage.js"/>"></script>
+
 <script>
                 init();
                 function submitForm() {

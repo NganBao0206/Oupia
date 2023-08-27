@@ -67,6 +67,18 @@ public class MotelRepositoryImpl implements MotelRepository {
                 predicates.add(namePredicate);
             }
 
+            String username = params.get("username");
+            if (username != null && !username.isEmpty()) {
+                Predicate userPredicate = b.equal(root.get("userId").get("username"), username);
+                predicates.add(userPredicate);
+            }
+
+            String userId = params.get("userId");
+            if (userId != null && !userId.isEmpty()) {
+                Predicate userPredicate = b.equal(root.get("userId").get("id"), userId);
+                predicates.add(userPredicate);
+            }
+
             if (status != null && status.size() > 0) {
                 List<Predicate> pres = new ArrayList<>();
 
@@ -115,6 +127,18 @@ public class MotelRepositoryImpl implements MotelRepository {
             if (kw != null && !kw.isEmpty()) {
                 Predicate namePredicate = b.like(root.get("name"), "%" + kw + "%");
                 predicates.add(namePredicate);
+            }
+
+            String username = params.get("username");
+            if (username != null && !username.isEmpty()) {
+                Predicate userPredicate = b.equal(root.get("userId").get("username"), username);
+                predicates.add(userPredicate);
+            }
+
+            String userId = params.get("userId");
+            if (userId != null && !userId.isEmpty()) {
+                Predicate userPredicate = b.equal(root.get("userId").get("id"), userId);
+                predicates.add(userPredicate);
             }
 
             if (status != null && status.size() > 0) {
@@ -193,7 +217,7 @@ public class MotelRepositoryImpl implements MotelRepository {
             s.delete(post); // Xóa đối tượng Post
             s.delete(postRentDetail); // Xóa đối tượng PostRentDetail
         }
-        if (motel != null && motel.getIsDeleted()) {
+        if (motel != null) {
             try {
                 s.delete(motel);
                 return true;
@@ -220,7 +244,8 @@ public class MotelRepositoryImpl implements MotelRepository {
         }
         return false;
     }
-
+    
+    @Override
     public List<String> findSlugsStartingWith(String slug) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder cb = s.getCriteriaBuilder();

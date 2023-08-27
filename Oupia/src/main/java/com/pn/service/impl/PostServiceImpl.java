@@ -13,10 +13,12 @@ import com.pn.pojo.Motel;
 import com.pn.pojo.Post;
 import com.pn.pojo.PostRentDetail;
 import com.pn.pojo.User;
+import com.pn.repository.ImageRepository;
 import com.pn.repository.MotelRepository;
 import com.pn.repository.PostRepository;
 import com.pn.service.MotelService;
 import com.pn.service.PostService;
+import com.pn.utils.SlugUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,31 +45,40 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private Slugify slugify;
     @Autowired
+    private SlugUtils slugUtils;
+    @Autowired
     private Cloudinary cloudinary;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Override
-    public List<Post> getPosts(Map<String, String> params, List<String> type) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Post> getPosts(Map<String, String> params) {
+        return postRepository.getPosts(params);
     }
 
     @Override
-    public int countPosts(Map<String, String> params, List<String> type) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public int countPosts(Map<String, String> params) {
+        return postRepository.countPosts(params);
     }
 
     @Override
     public boolean addOrUpdatePost(Post post) {
         String slug = slugify.slugify(post.getTitle());
-//        List<String> existingSlugs = motelRepository.findSlugsStartingWith(slug);
-//        slug = slugUtils.generateUniqueSlug(slug, existingSlugs);
+        List<String> existingSlugs = postRepository.findSlugsStartingWith(slug);
+        slug = slugUtils.generateUniqueSlug(slug, existingSlugs);
         post.setSlug(slug);
-        PostRentDetail detail = post.getPostRentDetail();
+        MultipartFile[] imgImports = null;
+        if (post.getPostRentDetail() != null) {
+            imgImports = post.getPostRentDetail().getImgImport();
+        } else {
+            imgImports = post.getPostFindDetail().getImgImport();
+        }
         Set<Image> imgSet = post.getImageSet();
         if (imgSet == null) {
             imgSet = new HashSet<>();
         }
-        if (detail.getImgImport() != null && detail.getImgImport().length > 0) {
-            for (MultipartFile file : detail.getImgImport()) {
+        if (imgImports != null && imgImports.length > 0) {
+            for (MultipartFile file : imgImports) {
                 if (file.isEmpty() == false) {
                     try {
                         if (!file.isEmpty()) {
@@ -88,28 +99,49 @@ public class PostServiceImpl implements PostService {
             }
         }
         post.setImageSet(imgSet);
-        post.setThumbnail(imgSet.iterator().next());
         return postRepository.addOrUpdatePost(post);
     }
 
     @Override
     public Post getPostBySlug(String slug) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return postRepository.getPostBySlug(slug);
     }
 
     @Override
     public boolean deletePost(String slug) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return postRepository.deletePost(slug);
     }
 
     @Override
     public boolean destroyPost(String slug) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Post post = getPostBySlug(slug);
+        List<Image> images = imageRepository.getImagesByPost(post.getId());
+        List<String> imgs = new ArrayList<>();
+        images.forEach(i -> imgs.add(i.getImage()));        
+        boolean result = postRepository.destroyPost(slug);
+        if (result) {
+            CompletableFuture.runAsync(() -> {
+                List<String> publicIds = new ArrayList<>();
+                imgs.forEach(i -> {
+                    if (i != null) {
+                        String[] part = i.split("/");
+                        String publicId = part[part.length - 1];
+                        publicIds.add(publicId);
+                    }
+                });
+                try {
+                    Map res = this.cloudinary.api().deleteResources(publicIds, ObjectUtils.asMap("invalidate", true));
+                } catch (Exception ex) {
+                    Logger.getLogger(MotelServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+        return result;
     }
 
     @Override
     public boolean restorePost(String slug) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return postRepository.restorePost(slug);
     }
 
 }

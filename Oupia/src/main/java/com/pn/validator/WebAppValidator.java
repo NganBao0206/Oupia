@@ -6,6 +6,7 @@ package com.pn.validator;
 
 import com.pn.pojo.Motel;
 import com.pn.pojo.Post;
+import com.pn.pojo.PostFindDetail;
 import com.pn.pojo.PostRentDetail;
 import com.pn.pojo.User;
 import java.util.HashSet;
@@ -13,6 +14,8 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -36,7 +39,7 @@ public class WebAppValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return User.class.isAssignableFrom(clazz) || PostRentDetail.class.isAssignableFrom(clazz) || Motel.class.isAssignableFrom(clazz) || Post.class.isAssignableFrom(clazz);
+        return User.class.isAssignableFrom(clazz) || PostRentDetail.class.isAssignableFrom(clazz) ||  PostFindDetail.class.isAssignableFrom(clazz) || Motel.class.isAssignableFrom(clazz) || Post.class.isAssignableFrom(clazz);
     }
 
     @Override
@@ -51,5 +54,11 @@ public class WebAppValidator implements Validator {
             obj.validate(target, errors);
         }
     }
-  
+    
+   
+    public Set<ConstraintViolation<Object>> validatorErrors(Object target) {
+        Set<ConstraintViolation<Object>> constraintViolations
+                = validator.validate(target);
+        return constraintViolations;
+    }
 }

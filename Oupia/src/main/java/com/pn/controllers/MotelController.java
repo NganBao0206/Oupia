@@ -21,12 +21,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.AbstractBindingResult;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -60,18 +65,11 @@ public class MotelController {
     @Autowired
     private WebAppValidator motelValidator;
     @Autowired
-    private WebAppValidator postValidator;
+    Validator validator;
 
     @InitBinder("detail")
     public void initDetailBinder(WebDataBinder binder) {
-        binder.setValidator(motelValidator);
-        binder.setValidator(postValidator);
         binder.setValidator(postRentValidator);
-    }
-
-    @InitBinder("motel")
-    public void initMotelBinder(WebDataBinder binder) {
-        binder.setValidator(motelValidator);
     }
 
     @ModelAttribute("users")
@@ -130,8 +128,13 @@ public class MotelController {
 
     @PostMapping("/motels/storage/")
     public String add(@ModelAttribute(value = "detail") @Valid PostRentDetail detail, BindingResult rs, RedirectAttributes redirectAttributes) {
+        Motel motel = detail.getMotelId();
+        Set<ConstraintViolation<Object>> constraintViolations = motelValidator.validatorErrors(motel);
+        for (ConstraintViolation<Object> obj : constraintViolations) {
+            rs.rejectValue("motelId." + obj.getPropertyPath().toString(), obj.getMessageTemplate(), obj.getMessage());
+        }
         if (!rs.hasErrors()) {
-            Motel motel = detail.getMotelId();
+
             Post post = detail.getPostId();
             post.setUserId(motel.getUserId());
             post.setPostRentDetail(detail);

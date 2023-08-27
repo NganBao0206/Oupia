@@ -17,9 +17,9 @@
                 <li class="breadcrumb-item active" aria-current="page">Bài đăng</li>
                 </c:when>
                 <c:otherwise>
-                    <c:url value="/posts" var="usersUrl"/>
+                    <c:url value="/posts" var="postsUrl"/>
 
-                <li class="breadcrumb-item"><a href="${usersUrl}">Bài đăng</a></li>
+                <li class="breadcrumb-item"><a href="${postsUrl}">Bài đăng</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Thùng rác</li>
 
             </c:otherwise>
@@ -33,8 +33,7 @@
         <c:choose>
             <c:when test="${params.isDeleted == '0'}">
                 <h3 class="fw-bold text-my-primary w-fit-content m-0 me-2">Quản lý bài đăng</h3>
-                <c:url value="/posts/storage/" var="url"/>
-                <a href="${url}" type="button" class="btn text-white btn-my-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px">
+                <a data-bs-toggle="modal" data-bs-target="#selectModal" type="button" class="btn text-white btn-my-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px">
                     <i class="d-flex align-items-center bi bi-plus display-6"></i>
                 </a>
                 <c:url value="/posts/bin/" var="urlBin"/>
@@ -51,29 +50,36 @@
 
     </div>
 
-    <div class="row align-items-center">
+    <div class="row align-items-center ms-auto">
         <div class="col-12 col-md-4 mt-3">
             <input value="${params.kw}" id="kw" type="text" name="kw" class="form-control shadow-sm" placeholder="Nhập từ khóa" aria-label="Nhập từ khóa" aria-describedby="button-addon2">
         </div>
         <div class="col-12 col-md-2 mt-3">
             <button type="button" class="w-100 btn border shadow-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-badge text-my-primary"></i> Loại bài đăng
+                <i class="bi bi-postcard text-my-primary"></i> Loại bài đăng
             </button>
-            <ul class="dropdown-menu p-3 border shadow-sm">
+            <ul class="dropdown-menu p-3 border-light-subtle shadow-sm">
+                <c:set var="checkTenant" value=""/>
+                <c:set var="checkLandlord" value=""/>
+                <c:choose>
+                    <c:when test="${params.type == 'tenantPost'}">
+                        <c:set var="checkTenant" value="checked"/>
+                    </c:when>
+                    <c:when test="${params.type == 'landlordPost'}">
+                        <c:set var="checkLandlord" value="checked"/>
+                    </c:when>
+                </c:choose>
                 <li>
-                    <div class="form-check form-check-inline">
-                        <%--<c:set var="checked" value=""/>--%>
-                        <%--<c:forEach items="${typeParams}" var="paramType">--%>
-                        <%--<c:if test="${paramType eq role.toString()}">--%>
-                        <%--<c:set var="checked" value="checked"/>--%>
-                        <%--</c:if>--%>
-                        <%--</c:forEach>--%>
-                        <input class="form-check-input" type="checkbox" name="postType" value="tenantPost" id="tenantPost">
+                    <div>
+                        <input class="form-check-input" type="radio" name="type" value="tenantPost" id="tenantPost" ${checkTenant}>
                         <label class="form-check-label" for="tenantPost">Bài đăng tìm trọ</label>
-                        <input class="form-check-input" type="checkbox" name="postType" value="landlordPost" id="landlordPost">
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <input class="form-check-input" type="radio" name="type" value="landlordPost" id="landlordPost" ${checkLandlord}>
                         <label class="form-check-label" for="landlordPost">Bài đăng cho thuê</label>
                     </div>
-
                 </li>
                 <div class="w-100">
                     <p class="cursor-hand" onclick="uncheckAllType()">
@@ -83,6 +89,7 @@
                 </div>
             </ul>
         </div>
+
         <div class="col-12 col-md-2 mt-3">
             <button class="w-100 btn text-white btn-my-primary border shadow-sm" type="button" onclick="searchFilter()" id="button-addon2">Tìm kiếm</button>
         </div>
@@ -119,27 +126,40 @@
 
                     <c:forEach items="${posts}" var="post">
                         <tr>
-                            <td style="width: 370px">
+                            <td style="width: 150px">
                                 <div>
-                                    <img
-                                        src="${post.thumnailId.image}"
-                                        alt="Ảnh thumnail"
-                                        style="width: 350px; height:350px; object-fit: cover"
-                                        class="rounded-1 me-3"
-                                        />
+                                    <c:choose>
+                                        <c:when test="${not empty post.image}">
+                                            <img
+                                                src="${post.image}"
+                                                alt="Ảnh thumbnail"
+                                                style="width: 150px; height:150px; object-fit: cover"
+                                                class="rounded-1 me-3"
+                                                />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img
+                                                src="https://www.erindavidson.ca/wp-content/uploads/2018/11/house-illustration-rentback-erin-davidson.png"
+                                                alt="Ảnh thumbnail"
+                                                style="width: 150px; height:150px; object-fit: cover"
+                                                class="rounded-1 me-3"
+                                                />
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </div>
                             </td>
-                            <td>
+                            <td style="max-width: 400px">
                                 <p>${post.title}</p>
                             </td>
-                            <td>
-                                <p>${post.description}</p>
+                            <td style="max-width: 300px">
+                                <p class="overflow-auto px-3" style="height: 150px">${post.description}</p>
                             </td>               
                             <td>
-                                <p>${post.userId.fullName}</p>
-                                <p>${post.userId.username}</p>
+                                <p class="fw-bold">${post.userId.fullName}</p>
+                                <p class="text-mute">@${post.userId.username}</p>
                             </td>
-                            
+
                             <td>
                                 <c:choose>
                                     <c:when test="${params.isDeleted == '1'}">
@@ -152,7 +172,10 @@
                                         </a>
                                     </c:when>
                                     <c:otherwise>
-                                        <c:url value="/posts/storage/${post.slug}/" var="editUrl"/>
+                                        <c:url value="/posts/find/storage/${post.slug}/" var="editUrl"/>
+                                        <c:if test="${not empty post.postRentDetail}">
+                                            <c:url value="/posts/rent/storage/${post.slug}/" var="editUrl"/>
+                                        </c:if>
                                         <a href="${editUrl}" type="button" class="btn btn-lg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Chỉnh sửa">
                                             <i class="bi bi-pencil text-my-primary"></i>
                                         </a>
@@ -188,14 +211,34 @@
         </nav>
     </c:if>
 </form>
+<div class="modal" id="selectModal" tabindex="-1" aria-labelledby="Chọn loại bài đăng" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chọn loại bài đăng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Hủy"></button>
+            </div>
+            <div class="modal-body">
+                <p>Vui lòng chọn loại bài đăng muốn thêm.</p>
+            </div>
+            <div class="modal-footer">
+                <c:url value="/posts/find/storage/" var="urlFind"/>
+                <c:url value="/posts/rent/storage/" var="urlRent"/>
+                <a href="${urlFind}" type="button" class="btn btn-my-primary">Bài đăng tìm trọ</a>
+                <a href="${urlRent}" type="button" class="btn btn-my-primary">Bài đăng cho thuê</a>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function selectPage(obj) {
         let inputPage = document.querySelector("#page");
-                let roleChecked = [<c:forEach items="${userRoleParams}" var="role" varStatus="vs">${vs.index > 0 ? ', ' : ''}'${role}'</c:forEach>];
-                let statusChecked = [<c:forEach items="${statusParams}" var="s" varStatus="vs">${vs.index > 0 ? ', ' : ''}'${s}'</c:forEach>];
+
 
         let kw = "${empty params.kw ? '' : params.kw}";
-       
+
 
 //        let userRoleInputs = document.querySelectorAll("input[name=userRole]");
 //        userRoleInputs.forEach(roleInput => {
@@ -241,10 +284,10 @@
     }
 
     function uncheckAllType() {
-        let userRoleInputs = document.querySelectorAll("input[name=postType]");
+        let userRoleInputs = document.querySelectorAll("input[name=type]");
         userRoleInputs.forEach(input => input.checked = false);
     }
-    
+
 
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))

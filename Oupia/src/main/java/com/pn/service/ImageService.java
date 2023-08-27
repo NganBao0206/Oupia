@@ -14,9 +14,9 @@ import java.util.List;
 public interface ImageService {
 
 
-    List<Image> getImagesByPost(int motelId);
-    Image getImageByPost(int motelId);
+    List<Image> getImagesByPost(int postId);
+    Image getImageByPost(int postId);
     String getImageByMotel(int motelId);
 
-    int countImage(int motelId);
+    int countImage(int postId);
 }

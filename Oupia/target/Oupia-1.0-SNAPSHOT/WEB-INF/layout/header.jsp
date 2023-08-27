@@ -11,6 +11,7 @@
 <c:url value="/" var="homeUrl"/>
 <c:url value="/users/" var="usersUrl"/>
 <c:url value="/motels/" var="motelsUrl"/>
+<c:url value="/posts/" var="postsUrl"/>
 
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -26,13 +27,16 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav ms-5 mb-lg-0 w-100">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="${homeUrl}">Dashboard</a>
+                        <a id="dashboardNav" class="nav-link text-nowrap" aria-current="page" href="${homeUrl}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-nowrap" href="${usersUrl}">Người dùng</a>
+                        <a id="usersNav" class="nav-link text-nowrap" href="${usersUrl}">Người dùng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-nowrap" href="${motelsUrl}">Nhà trọ</a>
+                        <a id="motelsNav" class="nav-link text-nowrap" href="${motelsUrl}">Nhà trọ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="postsNav" class="nav-link text-nowrap" href="${postsUrl}">Bài đăng</a>
                     </li>
                 </ul>
             </div>

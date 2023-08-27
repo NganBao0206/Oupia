@@ -51,7 +51,7 @@
 
     </div>
     <div class="input-group mb-3 mt-3">
-        <input value="${params.kw}" id="kw" type="text" name="kw" class="form-control" placeholder="Nhập từ khóa" aria-label="Nhập từ khóa" aria-describedby="button-addon2">
+        <input value="${params.kw}" id="kw" type="text" name="kw" class="form-control" placeholder="Nhập từ khóa..." aria-label="Nháº­p tá»« khÃ³a" aria-describedby="button-addon2">
         <button class="btn btn-dark" type="button" onclick="searchFilter()" id="button-addon2">Tìm kiếm</button>
     </div>
     <div class="row mt-2 mx-2 w-100">
@@ -99,7 +99,7 @@
                         <th>Tên</th>
                         <th>Chủ trọ</th>
                         <th>Số điện thoại</th>
-                        <th>Tình trạng</th>
+                        <th>Trạng thái</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -113,7 +113,7 @@
                                     <div>
                                         <img
                                             src="${motel.image}"
-                                            alt="hình nhà trọ"
+                                            alt="Hình ảnh trọ"
                                             style="width: 150px; height:150px; object-fit: cover"
                                             class="me-3 rounded-3"
                                             />
@@ -138,8 +138,8 @@
                                         <p><span class="badge rounded-pill text-dark bg-warning bg-opacity-25 border border-warning">${status[0].displayName}</span></p>
 
                                     </c:when>
-                                    <c:when test="${u.userRole == 'ACCEPTED'}">
-                                        <p><span class="badge rounded-pill text-dark bg-success border border-my-success">${status[1].displayName}</span></p>
+                                    <c:when test="${motel.status == 'ACCEPTED'}">
+                                        <p><span class="badge rounded-pill text-dark bg-success bg-opacity-25 border border-my-success">${status[1].displayName}</span></p>
                                         </c:when>
                                         <c:otherwise>
                                         <p><span class="badge rounded-pill text-dark bg-danger bg-opacity-25 border border-danger">${status[2].displayName}</span></p>

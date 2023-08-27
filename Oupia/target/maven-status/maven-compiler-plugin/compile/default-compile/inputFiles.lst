@@ -28,6 +28,7 @@
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/controllers/IndexController.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/repository/impl/MotelRepositoryImpl.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/enums/UserRole.java
+/home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/controllers/PostController.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/configs/SecurityWebApplicationInitializer.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/pojo/PostFindDetail.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/validator/WebAppValidator.java

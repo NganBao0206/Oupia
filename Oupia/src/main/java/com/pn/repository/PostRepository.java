@@ -15,9 +15,9 @@ import java.util.Map;
  */
 public interface PostRepository {
 
-    List<Post> getPosts(Map<String, String> params, List<String> type);
+    List<Post> getPosts(Map<String, String> params);
 
-    int countPosts(Map<String, String> params, List<String> type);
+    int countPosts(Map<String, String> params);
 
     boolean addOrUpdatePost(Post post);
 
@@ -28,5 +28,6 @@ public interface PostRepository {
     boolean destroyPost(String slug);
 
     boolean restorePost(String slug);
+    List<String> findSlugsStartingWith(String slug);
 
 }

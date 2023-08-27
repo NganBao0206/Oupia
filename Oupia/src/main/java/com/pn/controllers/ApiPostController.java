@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.pn.pojo.Image;
 import com.pn.pojo.Motel;
+import com.pn.pojo.Post;
 import com.pn.pojo.User;
 import com.pn.service.ImageService;
 import com.pn.service.MotelService;
+import com.pn.service.PostService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,18 +39,18 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yuu
  */
 @RestController
-@RequestMapping(value = "/api/motels", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ApiMotelController {
+@RequestMapping(value = "/api/posts", produces = MediaType.APPLICATION_JSON_VALUE)
+public class ApiPostController {
 
     @Autowired
-    private MotelService motelService;
+    private PostService postService;
     @Autowired
     private ImageService imageService;
 
     @PatchMapping("/bin/{slug}/")
     @CrossOrigin
-    public ResponseEntity<Void> restoreMotel(@PathVariable("slug") String slug) {
-        boolean restored = motelService.restoreMotel(slug);
+    public ResponseEntity<Void> restorePost(@PathVariable("slug") String slug) {
+        boolean restored = postService.restorePost(slug);
 
         if (restored) {
             return ResponseEntity.ok().build();
@@ -58,8 +61,8 @@ public class ApiMotelController {
 
     @DeleteMapping("/{slug}/")
     @CrossOrigin
-    public ResponseEntity<Void> deleteMotel(@PathVariable("slug") String slug) {
-        boolean deleted = motelService.deleteMotel(slug);
+    public ResponseEntity<Void> deletePost(@PathVariable("slug") String slug) {
+        boolean deleted = postService.deletePost(slug);
 
         if (deleted) {
             return ResponseEntity.noContent().build();
@@ -70,8 +73,8 @@ public class ApiMotelController {
 
     @DeleteMapping("/bin/{slug}/")
     @CrossOrigin
-    public ResponseEntity<Void> destroyMotel(@PathVariable("slug") String slug) {
-        boolean destroyed = motelService.destroyMotel(slug);
+    public ResponseEntity<Void> destroyPost(@PathVariable("slug") String slug) {
+        boolean destroyed = postService.destroyPost(slug);
 
         if (destroyed) {
             return ResponseEntity.noContent().build();
@@ -82,15 +85,14 @@ public class ApiMotelController {
 
     @GetMapping("/")
     @CrossOrigin
-    public ResponseEntity<List<Motel>> getMotels(@RequestParam Map<String, String> params,
-            @RequestParam(name = "status", required = false) List<String> status) {
-        List<Motel> motels = motelService.getMotels(params, status);
-        motels.forEach(motel -> {
-            String img = imageService.getImageByMotel(motel.getId());
-            motel.setImage(img);
+    public ResponseEntity<List<Post>> getPosts(@RequestParam Map<String, String> params) {
+        List<Post> posts = postService.getPosts(params);
+        posts.forEach(p -> {
+            Image img = imageService.getImageByPost(p.getId());
+            p.setImage(img.getImage());
         });
         try {
-            ResponseEntity<List<Motel>> result = new ResponseEntity<>(motels, HttpStatus.OK);
+            ResponseEntity<List<Post>> result = new ResponseEntity<>(posts, HttpStatus.OK);
             return result;
 
         } catch (Exception e) {

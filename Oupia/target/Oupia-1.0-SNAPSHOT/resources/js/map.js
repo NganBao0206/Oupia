@@ -7,6 +7,12 @@ function setLatLng(x, y, isLocation) {
     isHaveLocation = isLocation;
 }
 
+let zoom = 20;
+ 
+function setZoom(value) {
+    zoom = value;
+}
+
 const latitudeInput = document.querySelector("#latitudeInput");
 const longitudeInput = document.querySelector("#longitudeInput");
 
@@ -16,23 +22,9 @@ var suggestions = document.getElementById("resultAddress");
 const addressInput = document.getElementById('addressInput')
 
 
-const selectAddress = async (event) => {
-    if (event && event.target.tagName === 'LI') {
-        const address = event.target.innerHTML;
-        addressInput.value = address;
-        const place_id = event.target.attributes.place_id.nodeValue;
-        const res = await fetch(`https://rsapi.goong.io/Place/Detail?place_id=${place_id}&api_key=08uNnfGux51y9qbK9SIcFHlu3OTSOH0ouxT2xOYT`);
-        const data = await res.json();
-        latitudeInput.value = data.result.geometry.location.lat;
-        longitudeInput.value = data.result.geometry.location.lng;
-        marker.setLngLat([data.result.geometry.location.lng, data.result.geometry.location.lat])
-        map.flyTo({center: [data.result.geometry.location.lng, data.result.geometry.location.lat]});
-    }
-}
-
 function throttle(func, limit) {
     let inThrottle;
-    return function() {
+    return function () {
         const args = arguments;
         const context = this;
         if (!inThrottle) {
@@ -49,13 +41,27 @@ function init() {
         container: 'gmp-map',
         style: 'https://tiles.goong.io/assets/goong_map_web.json', // stylesheet location
         center: [lng, lat], // starting position [lng, lat]
-        zoom: 20 // starting zoom
+        zoom: zoom // starting zoom
     });
 
 
     var marker = new goongjs.Marker()
             .setLngLat([lng, lat])
             .addTo(map);
+
+    const selectAddress = async (event) => {
+        if (event && event.target.tagName === 'LI') {
+            const address = event.target.innerHTML;
+            addressInput.value = address;
+            const place_id = event.target.attributes.place_id.nodeValue;
+            const res = await fetch(`https://rsapi.goong.io/Place/Detail?place_id=${place_id}&api_key=08uNnfGux51y9qbK9SIcFHlu3OTSOH0ouxT2xOYT`);
+            const data = await res.json();
+            latitudeInput.value = data.result.geometry.location.lat;
+            longitudeInput.value = data.result.geometry.location.lng;
+            marker.setLngLat([data.result.geometry.location.lng, data.result.geometry.location.lat])
+            map.flyTo({center: [data.result.geometry.location.lng, data.result.geometry.location.lat]});
+        }
+    }
 
     suggestions.addEventListener('click', selectAddress);
 

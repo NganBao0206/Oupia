@@ -49,10 +49,13 @@ public class User implements Serializable {
     @Column(name = "is_deleted")
     private boolean isDeleted;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @JsonIgnore
     private Set<Rate> rateSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @JsonIgnore
     private Set<Comment> commentSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @JsonIgnore
     private Set<Favourite> favouriteSet;
 
     private static final long serialVersionUID = 1L;
@@ -466,6 +469,8 @@ public class User implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
+
     public Set<Rate> getRateSet() {
         return rateSet;
     }
@@ -475,6 +480,8 @@ public class User implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
+
     public Set<Comment> getCommentSet() {
         return commentSet;
     }
@@ -484,6 +491,8 @@ public class User implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
+
     public Set<Favourite> getFavouriteSet() {
         return favouriteSet;
     }

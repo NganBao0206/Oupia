@@ -32,7 +32,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     @Override
     public List<Image> getImagesByPost(int postId) {
         Session session = this.factory.getObject().getCurrentSession();
-        Query query = session.createQuery("FROM Image i WHERE i.postId = :postId");
+        Query query = session.createQuery("FROM Image i WHERE i.postId.id = :postId");
         query.setParameter("postId", postId);
 
         return query.getResultList();
@@ -53,7 +53,11 @@ public class ImageRepositoryImpl implements ImageRepository {
         Query query = session.createQuery("FROM Image i WHERE i.postId.id = :postId");
         query.setParameter("postId", postId);
         query.setMaxResults(1);
-        return (Image) query.getSingleResult();
+        try {
+            return (Image) query.getSingleResult();
+        } catch (NoResultException exception) {
+            return null;
+        }
     }
 
     @Override

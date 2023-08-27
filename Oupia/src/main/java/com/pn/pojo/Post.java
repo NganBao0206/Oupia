@@ -4,6 +4,7 @@
  */
 package com.pn.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +44,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Table(name = "post")
 @XmlRootElement
 public class Post implements Serializable {
+
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,23 +85,47 @@ public class Post implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User userId;
-    
-    @JoinColumn(name = "thumbnail_id", referencedColumnName = "id")
-    @OneToOne(optional = true)
-    private Image thumbnailId;
-    
+
     @Basic(optional = false)
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
     @OneToOne(mappedBy = "postId", cascade = CascadeType.ALL)
     private PostRentDetail postRentDetail;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
-    private Set<Comment> commentSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
-    private Set<Favourite> favouriteSet;
     @OneToOne(mappedBy = "postId", cascade = CascadeType.ALL)
     private PostFindDetail postFindDetail;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
+    @JsonIgnore
+    private Set<Comment> commentSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
+    @JsonIgnore
+    private Set<Favourite> favouriteSet;
+
+    @Transient
+    private String image;
+
+    @Transient
+    private String type;
+
+    public String getType() {
+        if (postFindDetail != null) {
+            return "tenantPost";
+        } else if (postRentDetail != null) {
+            return "landlordPost";
+        }
+        return "";
+    }
+   
+
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public Post() {
         isDeleted = false;
@@ -154,8 +181,8 @@ public class Post implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
-     public Boolean getIsDeleted() {
+
+    public Boolean getIsDeleted() {
         return isDeleted;
     }
 
@@ -187,15 +214,6 @@ public class Post implements Serializable {
     public void setUserId(User userId) {
         this.userId = userId;
     }
-    
-    public Image getThumbnail() {
-        return thumbnailId;
-    }
-
-    public void setThumbnail(Image thumbnailId) {
-        this.thumbnailId = thumbnailId;
-    }
-
 
     @XmlTransient
     public PostRentDetail getPostRentDetail() {

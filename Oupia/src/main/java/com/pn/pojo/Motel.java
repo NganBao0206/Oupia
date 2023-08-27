@@ -4,6 +4,8 @@
  */
 package com.pn.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pn.enums.Status;
 import java.io.Serializable;
 import java.util.Date;
@@ -46,9 +48,13 @@ public class Motel implements Serializable {
     @Basic(optional = false)
     @Column(name = "is_deleted")
     private boolean isDeleted;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "motelId")
+    @JsonIgnore
     private Set<PostRentDetail> postRentDetailSet;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "motelId")
+    @JsonIgnore
     private Set<Rate> rateSet;
 
     private static final long serialVersionUID = 1L;
@@ -72,10 +78,12 @@ public class Motel implements Serializable {
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
 
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatedAt;
 
     @Basic(optional = false)
@@ -273,6 +281,7 @@ public class Motel implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
     public Set<PostRentDetail> getPostRentDetailSet() {
         return postRentDetailSet;
     }
@@ -282,6 +291,7 @@ public class Motel implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
     public Set<Rate> getRateSet() {
         return rateSet;
     }

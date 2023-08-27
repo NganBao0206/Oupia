@@ -43,7 +43,7 @@ public class PostRepositoryImpl implements PostRepository {
     private Environment env;
 
     @Override
-    public List<Post> getPosts(Map<String, String> params, List<String> type) {
+    public List<Post> getPosts(Map<String, String> params) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<Post> q = b.createQuery(Post.class);
@@ -63,21 +63,18 @@ public class PostRepositoryImpl implements PostRepository {
             }
             String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
-                Predicate namePredicate = b.like(root.get("name"), "%" + kw + "%");
+                Predicate namePredicate = b.like(root.get("title"), "%" + kw + "%");
                 predicates.add(namePredicate);
             }
 
-//            if (type != null && type.size() > 0) {
-//                List<Predicate> pres = new ArrayList<>();
-//
-//                for (String st : status) {
-//                    pres.add(b.equal(root.get("status"), st));
-//                }
-//                if (pres.size() > 0) {
-//                    Predicate[] predicateArray = pres.toArray(new Predicate[0]);
-//                    predicates.add(b.or(predicateArray));
-//                }
-//            }
+            String type = params.get("type");
+            if (type != null && !type.isEmpty()) {
+                if (type.equals("tenantPost")) {
+                    predicates.add(b.isNotNull(root.get("postFindDetail").get("id")));
+                } else if (type.equals("landlordPost")) {
+                    predicates.add(b.isNotNull(root.get("postRentDetail").get("id")));
+                }
+            }
 
             q.where(predicates.toArray(Predicate[]::new));
         }
@@ -93,7 +90,7 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public int countPosts(Map<String, String> params, List<String> type) {
+    public int countPosts(Map<String, String> params) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<Long> q = b.createQuery(Long.class);
@@ -113,22 +110,18 @@ public class PostRepositoryImpl implements PostRepository {
             }
             String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
-                Predicate namePredicate = b.like(root.get("name"), "%" + kw + "%");
+                Predicate namePredicate = b.like(root.get("title"), "%" + kw + "%");
                 predicates.add(namePredicate);
             }
 
-//            if (status != null && status.size() > 0) {
-//                List<Predicate> pres = new ArrayList<>();
-//
-//                for (String st : status) {
-//                    pres.add(b.equal(root.get("status"), st));
-//                }
-//                if (pres.size() > 0) {
-//                    Predicate[] predicateArray = pres.toArray(new Predicate[0]);
-//                    predicates.add(b.or(predicateArray));
-//                }
-//            }
-
+            String type = params.get("type");
+            if (type != null && !type.isEmpty()) {
+                if (type.equals("tenantPost")) {
+                    predicates.add(b.isNotNull(root.get("postFindDetail").get("id")));
+                } else if (type.equals("landlordPost")) {
+                    predicates.add(b.isNotNull(root.get("postRentDetail").get("id")));
+                }
+            }
             q.where(predicates.toArray(Predicate[]::new));
         }
         Query query = s.createQuery(q);
@@ -145,8 +138,25 @@ public class PostRepositoryImpl implements PostRepository {
             } else {
                 s.update(post);
             }
-
             return true;
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateThumbnailForPost(int postId, int thumbnailImageId) {
+        try {
+            Session s = this.factory.getObject().getCurrentSession();
+
+            String hql = "UPDATE Post p SET p.thumbnailId.id = :thumbnailImageId WHERE p.id = :postId";
+            Query query = s.createQuery(hql);
+            query.setParameter("thumbnailImageId", thumbnailImageId);
+            query.setParameter("postId", postId);
+
+            int updatedRows = query.executeUpdate();
+
+            return updatedRows > 0;
         } catch (HibernateException ex) {
             ex.printStackTrace();
             return false;
@@ -187,7 +197,7 @@ public class PostRepositoryImpl implements PostRepository {
         Session s = this.factory.getObject().getCurrentSession();
         Post post = getPostBySlug(slug);
 
-        if (post != null && post.getIsDeleted()) {
+        if (post != null) {
             try {
                 s.delete(post);
                 return true;
@@ -213,5 +223,16 @@ public class PostRepositoryImpl implements PostRepository {
             }
         }
         return false;
+    }
+    
+    @Override
+    public List<String> findSlugsStartingWith(String slug) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaQuery<String> query = cb.createQuery(String.class);
+        Root<Post> root = query.from(Post.class);
+        query.select(root.get("slug"))
+                .where(cb.like(root.get("slug"), slug + "%"));
+        return s.createQuery(query).getResultList();
     }
 }

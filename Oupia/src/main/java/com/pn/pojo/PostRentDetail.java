@@ -4,6 +4,7 @@
  */
 package com.pn.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
@@ -76,7 +77,6 @@ public class PostRentDetail implements Serializable {
 
     @JoinColumn(name = "motel_id", referencedColumnName = "id")
     @NotNull(message = "{postRentDetail.motelId.notNull}")
-    @Valid
     @ManyToOne(optional = false)
     private Motel motelId;
 
@@ -87,7 +87,7 @@ public class PostRentDetail implements Serializable {
 
     @Transient
     private MultipartFile[] imgImport;
-    
+
     public PostRentDetail() {
         numOfBedrooms = 1;
         numOfBathrooms = 1;
@@ -176,15 +176,14 @@ public class PostRentDetail implements Serializable {
     public void setPostId(Post postId) {
         this.postId = postId;
     }
-    
-    
+
     public MultipartFile[] getImgImport() {
         return imgImport;
     }
+
     public void setImgImport(MultipartFile[] imgImport) {
         this.imgImport = imgImport;
     }
-
 
     @Override
     public int hashCode() {
