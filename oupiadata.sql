@@ -120,7 +120,7 @@ CREATE TABLE `image` (
   PRIMARY KEY (`id`),
   KEY `image_ibfk_1_idx` (`post_id`),
   CONSTRAINT `fk_image_post` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +129,7 @@ CREATE TABLE `image` (
 
 LOCK TABLES `image` WRITE;
 /*!40000 ALTER TABLE `image` DISABLE KEYS */;
-INSERT INTO `image` VALUES (45,'https://res.cloudinary.com/dzba4fewa/image/upload/c9o9cwuv2g2nfpeb2vzh',8),(46,'https://res.cloudinary.com/dzba4fewa/image/upload/mxeaiffbn81qfpw47ymr',8),(47,'https://res.cloudinary.com/dzba4fewa/image/upload/wcfekls3amvfsqfggvfw',8);
+INSERT INTO `image` VALUES (45,'https://res.cloudinary.com/dzba4fewa/image/upload/c9o9cwuv2g2nfpeb2vzh',8),(46,'https://res.cloudinary.com/dzba4fewa/image/upload/mxeaiffbn81qfpw47ymr',8),(47,'https://res.cloudinary.com/dzba4fewa/image/upload/wcfekls3amvfsqfggvfw',8),(73,'https://res.cloudinary.com/dzba4fewa/image/upload/la7avhhjbfqoxo2d3jk1',19);
 /*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,7 +198,7 @@ CREATE TABLE `motel` (
 
 LOCK TABLES `motel` WRITE;
 /*!40000 ALTER TABLE `motel` DISABLE KEYS */;
-INSERT INTO `motel` VALUES (49,'Nhà trọ SẠCH SẼ 449/17 Trường Chinh','449/17 Trường Chinh, phường 14, Tân Bình, Hồ Chí Minh',16,'2023-08-25 15:50:34','2023-08-25 15:50:34','nha-tro-sach-se-449-17-truong-chinh',0,'0987654321',106.633,10.8141,'PENDING');
+INSERT INTO `motel` VALUES (49,'Nhà trọ SẠCH SẼ 449/17','449/17 Trường Chinh, phường 14, Tân Bình, Hồ Chí Minh',16,NULL,'2023-08-27 21:41:57','nha-tro-sach-se-449-17-truong-chinh',0,'0987654321',106.633,10.8141,'ACCEPTED');
 /*!40000 ALTER TABLE `motel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,7 +222,7 @@ CREATE TABLE `post` (
   UNIQUE KEY `slug` (`slug`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,7 +231,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
-INSERT INTO `post` VALUES (8,'Nhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.','Nhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.','2023-08-25 15:50:42','2023-08-25 15:50:42',0,'nha-tro-sach-se-449-17-truong-chinh-cho-thue-gia-re-bao-ien-nuoc',16);
+INSERT INTO `post` VALUES (8,'Nhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.','Nhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.\r\nNhà trọ SẠCH SẼ 449/17 Trường Chinh cho thuê giá rẻ bao điện nước.','2023-08-25 15:50:42','2023-08-25 15:50:42',0,'nha-tro-sach-se-449-17-truong-chinh-cho-thue-gia-re-bao-ien-nuoc',16),(19,'Tìm nhà trọ dành cho sinh viên khu vực quận 12','Em cần tìm nhà trọ giá sinh viên gần trong khu vực quận 12 ngay gần Tân Thới Nhất 8 để tiện đường đi học ạ.','2023-08-27 13:01:06','2023-08-27 13:01:06',0,'tim-nha-tro-danh-cho-sinh-vien-khu-vuc-quan-12',22);
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -243,16 +243,17 @@ DROP TABLE IF EXISTS `post_find_detail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `post_find_detail` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `location` varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `min_price` double NOT NULL,
-  `max_price` double NOT NULL,
-  `people` int NOT NULL,
+  `min_price` double DEFAULT NULL,
+  `max_price` double DEFAULT NULL,
   `post_id` int NOT NULL,
+  `location_longitude` varchar(45) NOT NULL,
+  `location_latitude` float NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_post_find_detail_1_idx` (`post_id`),
   CONSTRAINT `fk_post_find_detail_1` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -261,6 +262,7 @@ CREATE TABLE `post_find_detail` (
 
 LOCK TABLES `post_find_detail` WRITE;
 /*!40000 ALTER TABLE `post_find_detail` DISABLE KEYS */;
+INSERT INTO `post_find_detail` VALUES (1,'Tân Thới Nhất 8, Tân Thới Nhất, Quận 12, Hồ Chí Minh',0,3000000,19,'106.61093',10.8295);
 /*!40000 ALTER TABLE `post_find_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +288,7 @@ CREATE TABLE `post_rent_detail` (
   KEY `post_id` (`post_id`),
   CONSTRAINT `post_rent_detail_ibfk_1` FOREIGN KEY (`motel_id`) REFERENCES `motel` (`id`),
   CONSTRAINT `post_rent_detail_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,7 +359,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +368,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','$2a$10$XRitZf0XqYI1aF.sYqMcsOYS/bwFDL7K4oW4SHPGLv5l1fHVByUx.','Admin','admin@gmail.com','1234567890','OTHER','2023-06-02 00:00:00','2023-08-08 00:00:00','2023-08-24 11:55:44','ADMIN','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/xxzugrejvq0hgtan1v8t',0,'PENDING',0),(16,'Dung','$2a$10$/4s.fbiI5mHwQdW1OZYMtuDHaWdP/PSEH4Yj/ZiISUrRS0Qm73qBO','Trần Ngọc Dung','Dung@gmail.com','1234567890987','FEMALE','2023-08-01 00:00:00','2023-08-11 00:00:00','2023-08-14 13:49:55','LANDLORD','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/uclxeg8j2owjkvx0noqj',0,'ACCEPTED',0),(21,'hoanganh1234','$2a$10$lB5DFFRQs52nY7BibQiOMekz4DqpGVsUtFt9M68u2HlKwlzoUCcka','Hoàng Ánh','hoanganh@gmail.com','654345676543','MALE','2022-10-02 00:00:00','2023-08-19 00:00:00','2023-08-19 08:14:22','TENANT','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/zq0woxqa1pzx6xx2xqoa',0,'PENDING',0);
+INSERT INTO `user` VALUES (1,'admin','$2a$10$XRitZf0XqYI1aF.sYqMcsOYS/bwFDL7K4oW4SHPGLv5l1fHVByUx.','Admin','admin@gmail.com','1234567890','OTHER','2023-06-02 00:00:00','2023-08-08 00:00:00','2023-08-24 11:55:44','ADMIN','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/xxzugrejvq0hgtan1v8t',0,'PENDING',0),(16,'Dung','$2a$10$/4s.fbiI5mHwQdW1OZYMtuDHaWdP/PSEH4Yj/ZiISUrRS0Qm73qBO','Trần Ngọc Dung','Dung@gmail.com','1234567890987','FEMALE','2023-08-01 00:00:00','2023-08-11 00:00:00','2023-08-14 13:49:55','LANDLORD','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/uclxeg8j2owjkvx0noqj',0,'ACCEPTED',0),(21,'hoanganh1234','$2a$10$lB5DFFRQs52nY7BibQiOMekz4DqpGVsUtFt9M68u2HlKwlzoUCcka','Hoàng Ánh','hoanganh@gmail.com','654345676543','MALE','2022-10-02 00:00:00','2023-08-19 00:00:00','2023-08-27 21:36:27','TENANT','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/zq0woxqa1pzx6xx2xqoa',0,'PENDING',0),(22,'ngan0206','$2a$10$YTPjp3rFsmS5ga0xxVDOfepCC0TWpqH6G.JV4y2ex2dsrv/8LRxeW','Nguyễn Kim Bảo Ngân','ngannguyeny0206@gmail.com','12345678902131','FEMALE','2002-06-02 00:00:00','2023-08-25 00:00:00','2023-08-27 21:02:25','TENANT','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/iqzbc5dturx5ccb8bs3b',0,'PENDING',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -379,4 +381,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-25 18:16:42
+-- Dump completed on 2023-08-27 22:36:57

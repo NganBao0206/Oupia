@@ -39,6 +39,8 @@
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/configs/DispatcherServletInitializer.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/service/UserService.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/pojo/Rate.java
+/home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/controllers/ApiPostController.java
+/home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/components/JwtService.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/configs/WebApplicationContextConfig.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/repository/MotelRepository.java
 /home/yuu/Documents/WorkSpace/Oupia/Oupia/src/main/java/com/pn/controllers/UserController.java
