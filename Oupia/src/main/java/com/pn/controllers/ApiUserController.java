@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.pn.components.JwtService;
 import com.pn.pojo.User;
 import com.pn.service.UserService;
 import java.util.List;
 import java.util.Map;
+import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,13 +38,27 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yuu
  */
 @RestController
-@RequestMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ApiUserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private JwtService jwtService;
 
-    @PatchMapping("/bin/{username}/")
+    @PostMapping("/login/")
+    @CrossOrigin
+    public ResponseEntity<String> login(@RequestBody User user) {
+        if (this.userService.authUser(user.getUsername(), user.getPassword()) == true) {
+            String token = this.jwtService.generateTokenLogin(user.getUsername());
+
+            return new ResponseEntity<>(token, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
+    }
+
+    @PatchMapping("/users/bin/{username}/")
     @CrossOrigin
     public ResponseEntity<Void> restoreUser(@PathVariable("username") String username) {
         boolean restored = userService.restoreUser(username);
@@ -52,7 +70,7 @@ public class ApiUserController {
         }
     }
 
-    @DeleteMapping("/{username}/")
+    @DeleteMapping("/users/{username}/")
     @CrossOrigin
     public ResponseEntity<Void> deleteUser(@PathVariable("username") String username) {
         boolean deleted = userService.deleteUser(username);
@@ -64,7 +82,7 @@ public class ApiUserController {
         }
     }
 
-    @DeleteMapping("/bin/{username}/")
+    @DeleteMapping("/users/bin/{username}/")
     @CrossOrigin
     public ResponseEntity<Void> destroyUser(@PathVariable("username") String username) {
         boolean destroyed = userService.destroyUser(username);
@@ -75,8 +93,8 @@ public class ApiUserController {
             return ResponseEntity.notFound().build();
         }
     }
-    
-    @GetMapping("/authenticated-user/")
+
+    @GetMapping("/users/authenticated-user/")
     @CrossOrigin
     public ResponseEntity<User> getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -95,6 +113,13 @@ public class ApiUserController {
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @GetMapping(path = "/current-user/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public ResponseEntity<User> details(Principal user) {
+        User u = this.userService.getUserByUsername(user.getName());
+        return new ResponseEntity<>(u, HttpStatus.OK);
     }
 
 }

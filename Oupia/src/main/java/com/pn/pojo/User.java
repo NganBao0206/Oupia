@@ -75,7 +75,6 @@ public class User implements Serializable {
     @Basic(optional = false)
     @NotNull(message = "{user.password.notNull}")
     @Size(min = 8, max = 100, message = "{user.password.size}")
-    @JsonIgnore
     @Column(name = "password")
     private String password;
 

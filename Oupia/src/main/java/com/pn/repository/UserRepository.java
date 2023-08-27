@@ -29,4 +29,5 @@ public interface UserRepository {
     boolean destroyUser(String username);
 
     boolean restoreUser(String username);
+    boolean authUser(String username, String password);
 }
