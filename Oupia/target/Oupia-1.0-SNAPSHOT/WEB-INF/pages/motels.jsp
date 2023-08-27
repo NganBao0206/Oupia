@@ -135,14 +135,14 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${motel.status == 'PENDING'}">
-                                        <p><span class="badge rounded-pill text-dark bg-warning bg-opacity-25 border border-warning">${status[0].displayName}</span></p>
+                                        <p><span class="p-2 badge rounded-pill text-dark bg-warning bg-opacity-25 border border-warning">${status[0].displayName}</span></p>
 
                                     </c:when>
                                     <c:when test="${motel.status == 'ACCEPTED'}">
-                                        <p><span class="badge rounded-pill text-dark bg-success bg-opacity-25 border border-my-success">${status[1].displayName}</span></p>
+                                        <p><span class="p-2 badge rounded-pill text-dark bg-success bg-opacity-25 border border-success">${status[1].displayName}</span></p>
                                         </c:when>
                                         <c:otherwise>
-                                        <p><span class="badge rounded-pill text-dark bg-danger bg-opacity-25 border border-danger">${status[2].displayName}</span></p>
+                                        <p><span class="p-2 badge rounded-pill text-dark bg-danger bg-opacity-25 border border-danger">${status[2].displayName}</span></p>
                                         </c:otherwise>    
                                     </c:choose>
                             </td>

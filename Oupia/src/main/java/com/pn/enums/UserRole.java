@@ -9,11 +9,10 @@ package com.pn.enums;
  * @author yuumm
  */
 public enum UserRole {
-    ADMIN("Administrator"),
+    LANDLORD("Chủ trọ"),
     TENANT("Nguời thuê"),
-    LANDLORD("Chủ trọ");
-    
-    
+    ADMIN("Administrator");
+
     private final String displayName;
 
     private UserRole(String displayName) {

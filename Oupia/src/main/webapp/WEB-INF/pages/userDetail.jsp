@@ -15,7 +15,7 @@
         <c:set value="Thêm tài khoản" var="title"/>
     </c:if>
     <h3 class="fw-bold text-my-primary">${title}</h3>
-    <div class="shadow p-4 mb-5 bg-body-tertiary rounded mt-3">
+    <div class="shadow-sm border border-1 p-4 mb-5 bg-body-tertiary rounded mt-3">
         <form:form modelAttribute="user" action="${action}" method="POST" enctype="multipart/form-data">
             <form:hidden path="id" />
             <form:hidden path="avatar" />
@@ -53,7 +53,7 @@
 
                     </div>
                     <div class="form-floating">
-                        <form:select path="userRole" class="form-select" id="inputUserRole" aria-label="Floating label select example">
+                        <form:select onchange="checkStatus(this)" path="userRole" class="form-select" id="inputUserRole" aria-label="Floating label select example">
                             <c:forEach items="${userRoles}" var="role">
                                 <c:choose>
                                     <c:when test="${user.userRole == role}">
@@ -69,6 +69,7 @@
                         <label for="inputUserRole">Phân quyền</label>
                         <form:errors path="userRole" element="div" cssClass="text-danger" />
                     </div>
+
                 </div>
                 <div class="col justify-content-center d-flex">
                     <div class="bg-secondary bg-opacity-50 rounded-3 d-flex" style="width:350px; height:350px"> 
@@ -130,7 +131,27 @@
                     </div>
                     <form:errors path="dob" element="div" cssClass="text-danger" />
                 </div>
+
             </div>
+            <div class="mb-3 col-12">
+                <div class="form-floating">
+                    <form:select path="status" class="form-select" id="statusInput" aria-label="status">
+                        <c:forEach items="${status}" var="s">
+                            <c:choose>
+                                <c:when test="${user.status == s}">
+                                    <option selected value="${s}">${s.displayName}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${s}">${s.displayName}</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </form:select>
+                    <label for="inputUserRole">Tình trạng</label>
+                    <form:errors path="status" element="div" cssClass="text-danger" />
+                </div>
+            </div>
+
             <div class="row mb-3 mt-4">
                 <div class="col">
                     <c:url value="/users/" var="urlBack"/>
@@ -145,23 +166,17 @@
                     <buton type="submit" onclick="submitForm()" class="btn btn-dark btn-block mb-3 w-100 p-3">${btnText}</button>
                 </div>
             </div>
+
         </form:form>
     </div>
 
 </div>
+<script src="<c:url value="/js/userDetail.js"/>"></script>
 <script>
-    var userAvatar = '${user.avatar}';
+                        var userAvatar = '${user.avatar}';
+                        if (userAvatar !== '') {
+                            showAvatar(userAvatar)
+                        }
 
-    if (userAvatar !== '') {
-        // Nếu user.avatar không rỗng, thực hiện các tác vụ liên quan đến hiển thị hình ảnh
-        var imgAvatar = document.getElementById('imgAvatar');
-        imgAvatar.src = userAvatar;
-        imgAvatar.classList.remove('d-none');
-
-        var hiddenAvatar = document.getElementById('hiddenAvatar');
-        hiddenAvatar.classList.add('d-none');
-    }
-    function submitForm() {
-        document.querySelector("form").submit();
-    }
+                        checkStatus(document.querySelector("#inputUserRole"));
 </script>

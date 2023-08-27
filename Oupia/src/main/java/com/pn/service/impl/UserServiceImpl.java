@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean addOrUpdateUser(User u) {
         if (u.getId() == null) {
-            if (u.getUserRole().equals(UserRole.TENANT.toString())) {
+            if (!u.getUserRole().equals(UserRole.LANDLORD.toString())) {
                 u.setStatus(Status.ACCEPTED.toString());
             }
         }

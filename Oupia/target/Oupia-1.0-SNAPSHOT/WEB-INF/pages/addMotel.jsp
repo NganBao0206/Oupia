@@ -69,6 +69,24 @@
                         <form:errors path="motelId.phoneNumber" element="div" cssClass="text-danger w-100 my-2 px-2"/>
                     </div>
                 </div>
+                <div class="mb-3 col-12">
+                    <div class="form-floating">
+                        <form:select path="motelId.status" class="form-select" id="statusInput" aria-label="status">
+                            <c:forEach items="${status}" var="s">
+                                <c:choose>
+                                    <c:when test="${detail.motelId.status == s}">
+                                        <option selected value="${s}">${s.displayName}</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${s}">${s.displayName}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </form:select>
+                        <label for="statusInput">Tình trạng</label>
+                        <form:errors path="motelId.status" element="div" cssClass="text-danger" />
+                    </div>
+                </div>
             </div>
             <div class="col-12 mt-3" style="height: 500px">
                 <div class="map rounded-3" id="gmp-map" style="height: 100%"></div>
