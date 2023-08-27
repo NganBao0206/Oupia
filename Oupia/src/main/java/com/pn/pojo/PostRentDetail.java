@@ -83,6 +83,7 @@ public class PostRentDetail implements Serializable {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     @OneToOne(optional = false)
     @Valid
+    @JsonIgnore
     private Post postId;
 
     @Transient
@@ -168,7 +169,7 @@ public class PostRentDetail implements Serializable {
     public void setMotelId(Motel motelId) {
         this.motelId = motelId;
     }
-
+    @JsonIgnore
     public Post getPostId() {
         return postId;
     }

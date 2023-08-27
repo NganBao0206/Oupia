@@ -4,6 +4,7 @@
  */
 package com.pn.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
@@ -45,7 +46,6 @@ import org.springframework.web.multipart.MultipartFile;
 @XmlRootElement
 public class Post implements Serializable {
 
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,10 +68,12 @@ public class Post implements Serializable {
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
 
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatedAt;
 
     @Basic(optional = false)
@@ -80,6 +82,7 @@ public class Post implements Serializable {
     private String slug;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
+    @JsonIgnore
     private Set<Image> imageSet;
 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -116,8 +119,6 @@ public class Post implements Serializable {
         }
         return "";
     }
-   
-
 
     public String getImage() {
         return image;
@@ -225,6 +226,7 @@ public class Post implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
     public Set<Comment> getCommentSet() {
         return commentSet;
     }
@@ -234,6 +236,7 @@ public class Post implements Serializable {
     }
 
     @XmlTransient
+    @JsonIgnore
     public Set<Favourite> getFavouriteSet() {
         return favouriteSet;
     }

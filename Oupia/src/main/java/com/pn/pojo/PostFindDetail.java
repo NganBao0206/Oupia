@@ -4,6 +4,7 @@
  */
 package com.pn.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -55,6 +56,8 @@ public class PostFindDetail implements Serializable {
     private double maxPrice;
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     @OneToOne(optional = false)
+    @Valid
+    @JsonIgnore
     private Post postId;
 
     @Basic(optional = false)
@@ -126,7 +129,7 @@ public class PostFindDetail implements Serializable {
     public void setMaxPrice(double maxPrice) {
         this.maxPrice = maxPrice;
     }
-
+    @JsonIgnore
     public Post getPostId() {
         return postId;
     }

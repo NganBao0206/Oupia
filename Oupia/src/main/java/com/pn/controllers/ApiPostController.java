@@ -89,7 +89,8 @@ public class ApiPostController {
         List<Post> posts = postService.getPosts(params);
         posts.forEach(p -> {
             Image img = imageService.getImageByPost(p.getId());
-            p.setImage(img.getImage());
+            if (img != null)
+                p.setImage(img.getImage());
         });
         try {
             ResponseEntity<List<Post>> result = new ResponseEntity<>(posts, HttpStatus.OK);
