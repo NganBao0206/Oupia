@@ -10,16 +10,18 @@ export const endpoints = {
     "register": `${SERVER_CONTEXT}/api/users/`,
     "motels": `${SERVER_CONTEXT}/api/motels/`,
     "posts" : "https://jsonplaceholder.typicode.com/posts",
+    "userInfo": (username) => `${SERVER_CONTEXT}/api/users/${username}/`,
 }
 
-// export const authApi = () => {
-//     return axios.create({
-//         baseURL: SERVER,
-//         headers: {
-//             "Authorization":  cookie.load("token")
-//         }
-//     })
-// }
+
+export const authApi = () => {
+    return axios.create({
+        baseURL: SERVER,
+        headers: {
+            "Authorization":  cookie.load("token")
+        }
+    })
+}
 
 export default axios.create({
     baseURL: SERVER

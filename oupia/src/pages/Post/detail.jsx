@@ -1,7 +1,7 @@
 import { Breadcrumb } from 'flowbite-react';
 import React from 'react';
 import UserCard from '../../components/User/card';
-import RecommendItems from '../../components/RecommendItems';
+import RecommendList from '../../components/RecommendList';
 import PostDetail from '../../components/PostDetail/detail';
 import PostComment from '../../components/Comment/post';
 
@@ -18,7 +18,7 @@ const Post = () => {
                     <PostComment/>
                 </div>
             </div>
-            <RecommendItems title="Bài đăng liên quan" />
+            <RecommendList title="Bài đăng liên quan" />
         </div>
     );
 };

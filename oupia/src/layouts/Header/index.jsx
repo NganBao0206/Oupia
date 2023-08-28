@@ -10,11 +10,12 @@ import { AiOutlineUser } from "react-icons/ai";
 import { LuSettings } from "react-icons/lu";
 import { UserContext } from '../../App';
 
+
 const Header = () => {
     // User Profile or SignIn Button
 
-    const[user, dispatch] = useContext(UserContext);
-    
+    const [user, ] = useContext(UserContext);
+
     // Background Color & Scroll
 
     const [bgColor, setBgColor] = useState(false);
@@ -46,7 +47,7 @@ const Header = () => {
                     <Navbar.Brand className="mr-5">
                         <Link to="/">
                             <img
-                                alt="Flowbite React Logo"
+                                alt="logo"
                                 className="mr-3 h-6 sm:h-9"
                                 src={imgLogo}
                             />
@@ -71,28 +72,32 @@ const Header = () => {
                         <Dropdown
                             arrowIcon={null}
                             inline
-                            label={<Avatar className="w-15 h-15" alt="User Avatar" img={user.avatar} rounded />}
+                            label={<Avatar className="" alt="Avatar" img={user.avatar} rounded />}
                             className=""
                         >
                             <Dropdown.Header>
-                                <span className="block text-sm">
+                                <Avatar size="lg" className="w-full my-3 h-20" alt="Avatar" img={user.avatar} rounded />
+                                <span className="block text-lg text-center">
                                     {user.fullName}
                                 </span>
+                                <span className="block text-sm text-gray-500 text-gray text-center">
+                                    @{user.username}
+                                </span>
                             </Dropdown.Header>
-                            <Link to={`/${user.id}`} className="hover:text-white">
-                                <div className="items-center justify-center flex p-2 hover:bg-Dark ">
+                            <Link to={`/${user.username}`} className="hover:text-white">
+                                <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
                                     <AiOutlineUser size="20" className="mr-2" />
                                     <p className="text-sm">Trang cá nhân</p>
                                 </div>
                             </Link>
                             <Link to="" className="hover:text-white">
-                                <div className="items-center justify-center flex p-2 hover:bg-Dark ">
+                                <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
                                     <LuSettings size="20" className="mr-2" />
                                     <p className="text-sm">Cài đặt</p>
                                 </div>
                             </Link>
                             <Link to="" className="hover:text-white">
-                                <div className="items-center justify-center flex p-2 hover:bg-Dark ">
+                                <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
                                     <FiLogOut size="20" className="mr-2" />
                                     <p className="text-sm">Đăng xuất</p>
                                 </div>
@@ -120,7 +125,7 @@ const Header = () => {
                     </Navbar.Collapse>
                 </Navbar>
             </div>
-            {bgTrans ? <></> : <div className="py-9"></div>}
+            {bgTrans ? <></> : <div className="py-9 mt-3"></div>}
         </>
 
     );

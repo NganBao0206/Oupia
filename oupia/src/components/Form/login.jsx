@@ -20,27 +20,27 @@ const LoginForm = () => {
     const login = (evt) => {
         evt.preventDefault();
         setLoading(true);
-        // const process = async () => {
-        //     try {
-        //         let res = await APIs.post(endpoints['login'], {
-        //             "username": username,
-        //             "password": password
-        //         });
-        //         cookie.save("token", res.data);
+        const process = async () => {
+            try {
+                let res = await APIs.post(endpoints['login'], {
+                    "username": username,
+                    "password": password
+                });
+                cookie.save("token", res.data);
 
-        //         let { data } = await authApi().get(endpoints['current-user']);
-        //         cookie.save("user", data);
+                let { data } = await authApi().get(endpoints['current-user']);
+                cookie.save("user", data);
 
-        //         dispatch({
-        //             "type": "login",
-        //             "payload": data
-        //         });
-        //     } catch (err) {
-        //         console.error(err);
-        //         setLoading(false);
-        //     }
-        // }
-        // process();
+                dispatch({
+                    "type": "login",
+                    "payload": data
+                });
+            } catch (err) {
+                console.error(err);
+                setLoading(false);
+            }
+        }
+        process();
     }
 
     if (user !== null)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import "./style.scss";
 import { PiUsers } from "react-icons/pi";
 import { Button, Card } from 'flowbite-react';
@@ -8,36 +8,43 @@ import { Link, Outlet, useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { LuEdit, LuHeart } from "react-icons/lu";
 import { IoImageOutline } from "react-icons/io5";
-import UserPhotos from '../../pages/User/photos';
-import UserPosts from '../../pages/User/posts';
-import UserFavourite from '../../pages/User/favorite';
+import { UserContext } from '../../App';
+import APIs, { endpoints } from '../../configs/APIs';
 
-const UserLayout = (props) => {
-    const [component, setComponent] = useState(<UserPosts />);
+const UserLayout = () => {
     const { slugUser } = useParams();
 
-    const handleChangeComponent = (event) => {
-        const href = event.currentTarget.getAttribute('href');
-        if (href === `/${slugUser}/posts`)
-            setComponent(<UserPosts />);
-        if (href === `/${slugUser}/favourites`)
-            setComponent(<UserFavourite />);
-        if (href === `/${slugUser}/photos`)
-            setComponent(<UserPhotos />);
+    const [currentUser, ] = useContext(UserContext);
+
+    const [user, setUser] = useState(null);
+
+    useEffect (() => {
+        if (slugUser !== currentUser.username) {
+            const getUser = async () => {
+                try {
+                    const url = endpoints.userInfo(slugUser);
+
+                    let res = await APIs.get(url);    
+                    if (res.status === 200) {
+                        console.log(res.data);
+                        setUser(res.data);
+                    }
+            
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+            getUser();
+        }
+        else {
+            setUser(currentUser);
+        }
+    }, [slugUser])
+    if (user === null) {
+        return <>
+            đang loading nè
+        </>
     }
-
-
-    const user = {
-        id: "1",
-        fullName: "Nguyễn Kim Bảo Ngân",
-        username: "ngannguyen",
-        gender: "Nữ",
-        dob: "02/06/2002",
-        follows: "125",
-        posts: "46",
-        avatar: "https://scontent.fsgn3-1.fna.fbcdn.net/v/t39.30808-1/350118519_479477941022130_6544855667418265188_n.jpg?stp=dst-jpg_s320x320&_nc_cat=111&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=i3JyyOmw0B0AX9xslvR&_nc_ht=scontent.fsgn3-1.fna&oh=00_AfBYMGvrA3cGTvfGGX_oUXHZRnPQS2sQipFFKhar9TLx9w&oe=64E0EB9D",
-    }
-
     return (
         <>
             <div>
@@ -72,7 +79,11 @@ const UserLayout = (props) => {
                             </div>
                             <div className="flex gap-2">
                                 <BsGenderTrans size="21" />
-                                <h3 className=" font-thin">{user.follows}</h3>
+                                <h3 className=" font-thin">
+                                    {user.gender === "MALE" && 'Nam'}
+                                    {user.gender === "FEMALE" && 'Nữ'}
+                                    {user.gender === "ORTHER" && 'Khác'}
+                                </h3>
                             </div>
                             <div className="flex gap-2">
                                 <BsCalendar4 size="21" />
@@ -105,27 +116,26 @@ const UserLayout = (props) => {
                         <div className="pr-48">
                             <hr className="mt-10" />
                             <div class="flex text-center flex-wrap -mb-px border-b border-gray-200 dark:border-gray-700">
-                                <NavLink to={`/${user.id}/posts`} onClick={(event) => handleChangeComponent(event)} className="flex font-bold items-center justify-center p-4 text-sm first:ml-0 focus:outline-none rounded-t-lg border-b-2 border-transparent text-gray-500">
+                                <NavLink to={`/${user.username}/posts`} className="flex font-bold items-center justify-center p-4 text-sm first:ml-0 focus:outline-none rounded-t-lg border-b-2 border-transparent text-gray-500">
                                     <LuEdit size="20" className="mr-2" />
                                     <p className="mt-1">Bài viết</p>
                                 </NavLink>
-                                <NavLink to={`/${user.id}/favourites`} onClick={(event) => handleChangeComponent(event)} className="flex font-bold items-center justify-center p-4 text-sm first:ml-0 focus:outline-none rounded-t-lg border-b-2 border-transparent text-gray-500">
+                                <NavLink to={`/${user.username}/favourites`} className="flex font-bold items-center justify-center p-4 text-sm first:ml-0 focus:outline-none rounded-t-lg border-b-2 border-transparent text-gray-500">
                                     <LuHeart size="20" className="mr-2" />
                                     <p className="mt-1">Yêu thích</p>
                                 </NavLink>
-                                <NavLink to={`/${user.id}/photos`} onClick={(event) => handleChangeComponent(event)} className="flex font-bold items-center justify-center p-4 text-sm first:ml-0 focus:outline-none rounded-t-lg border-b-2 border-transparent text-gray-500">
+                                <NavLink to={`/${user.username}/photos`} className="flex font-bold items-center justify-center p-4 text-sm first:ml-0 focus:outline-none rounded-t-lg border-b-2 border-transparent text-gray-500">
                                     <IoImageOutline size="20" className="mr-2" />
                                     <p className="mt-1">Hình ảnh</p>
                                 </NavLink>
                             </div>
                             <div>
-                                {component}
+                                <Outlet />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <Outlet />
         </>
     );
 };
