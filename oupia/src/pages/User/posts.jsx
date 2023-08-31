@@ -1,20 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom/dist';
-import PostItem from '../../components/PostItem';
+import APIs, { endpoints } from '../../configs/APIs';
+import PostRentList from '../../components/PostRentList';
 
-const UserPosts = () => {
+const UserPosts = (props) => {
     const { slugUser } = useParams();
-    const post = {
-        title: "hehe",
-        createdAt: "12/12/2002",
-        description: "ewrtcyvubjnkh gvcfrtdgyuhjnbhvygeuhfndb rhefjadvb ẹm ndaefjajasi da ",
-        motelId: {
-            fullLocation: "123 nguyen haha"
-        }
+    const [type, setType] = useState(null);
+    const [posts, setPosts] = useState(null);
+    useEffect(() => {
+        if (props.userRole === "TENANT")
+            setType("tenantPost");
+        else setType("landlordPost");
+        const getPost = async () => {
+            try {
+                let res = await APIs.get(endpoints['posts'], {
+                    params: {
+                        username: slugUser,
+                        page: 1
+                    }
+                });
+                if (res.status === 200) {
+                    console.log(res.data)
+                    setPosts(res.data.posts);
+                }
 
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        getPost();
+
+    }, [])
+    if (posts === null) {
+        return <>doi xiu</>
     }
     return (
-        <PostItem post={post}></PostItem>
+        <PostRentList posts={posts}></PostRentList>
 
     );
 };

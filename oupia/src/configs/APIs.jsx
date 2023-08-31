@@ -9,10 +9,13 @@ export const endpoints = {
     "current-user": `${SERVER_CONTEXT}/api/current-user/`,
     "register": `${SERVER_CONTEXT}/api/users/`,
     "motels": `${SERVER_CONTEXT}/api/motels/`,
-    "posts" : "https://jsonplaceholder.typicode.com/posts",
+    "posts" : `${SERVER_CONTEXT}/api/posts/`,
     "userInfo": (username) => `${SERVER_CONTEXT}/api/users/${username}/`,
+    "postInfo": (slug) => `${SERVER_CONTEXT}/api/posts/${slug}/`,
+    "postImages": (slug) => `${SERVER_CONTEXT}/api/posts/${slug}/images/`,
+    "mapAutocomplate": `${SERVER_CONTEXT}/api/map/autocomplete/`,
+    "mapDetail": `${SERVER_CONTEXT}/api/map/detail/`,
 }
-
 
 export const authApi = () => {
     return axios.create({

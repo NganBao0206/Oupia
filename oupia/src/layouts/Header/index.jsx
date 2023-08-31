@@ -40,7 +40,7 @@ const Header = () => {
 
     return (
         <>
-            <div className={`${bgTrans ? (bgColor ? "bg-header" : "header") : "bg-header"}`} >
+            <div className={`${bgTrans ? (bgColor ? "bg-header shadow-sm border-b border-gray-200" : "header") : "bg-header shadow-sm border-b border-gray-200"}`} >
                 <Navbar
                     fluid
                     rounded className="py-5 bg-transparent">
@@ -125,7 +125,7 @@ const Header = () => {
                     </Navbar.Collapse>
                 </Navbar>
             </div>
-            {bgTrans ? <></> : <div className="py-9 mt-3"></div>}
+            {bgTrans ? <></> : <div className="py-16 mt-3"></div>}
         </>
 
     );

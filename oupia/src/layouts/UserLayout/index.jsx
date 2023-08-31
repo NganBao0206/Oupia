@@ -17,9 +17,8 @@ const UserLayout = () => {
     const [currentUser, ] = useContext(UserContext);
 
     const [user, setUser] = useState(null);
-
     useEffect (() => {
-        if (slugUser !== currentUser.username) {
+        if (currentUser == null || slugUser !== currentUser.username) {
             const getUser = async () => {
                 try {
                     const url = endpoints.userInfo(slugUser);
@@ -50,7 +49,7 @@ const UserLayout = () => {
             <div>
                 <div className=" bg-wallpaper bg-Dark">
                     <div className="grid grid-cols-10 gap-2 w-full">
-                        <div className=" relative col-span-3">
+                        <div className=" relative md:col-span-3 col-span-10 h-full">
                             <div className="absolute img-translate-y top-full z-999 left-1/2 w-56 h-56 ring-[5px] ring-white rounded-full shadow-xl">
                                 <img
                                     src={user.avatar}
@@ -59,14 +58,14 @@ const UserLayout = () => {
                                 />
                             </div>
                         </div>
-                        <div className="col-span-7">
+                        <div className="md:col-span-7 absolute sm:block">
 
                         </div>
                     </div>
                 </div>
                 <div className="grid grid-cols-10 grid-row-2 gap-2">
-                    <div className="col-span-3 row-span-2 mx-auto">
-                        <Card className="w-96 mt-36 pb-2x`">
+                    <div className="md:col-span-3 col-span-10 hidden md:block row-span-2 md:mx-16">
+                        <Card className="w-full mt-36 pb-2x">
                             <h5 className="tracking-tight text-gray-900 dark:text-white">
                                 <p className="text-xl font-bold ">
                                     Giới thiệu
@@ -96,11 +95,11 @@ const UserLayout = () => {
 
                         </Card>
                     </div>
-                    <div className="col-span-7">
+                    <div className="md:col-span-6 col-span-10 mt-36 md:mt-0">
                         <div className="flex flex-col pr-48 mt-5 gap-2">
                             <h1 className="text-3xl font-bold text-left">{user.fullName}</h1>
                             <div className="flex">
-                                <div className=" flex gap-2 text-gray-500">
+                                <div className="flex md:w-auto w-full gap-2 text-gray-500">
                                     <PiUsers size="21" />
                                     <h3 className=" font-bold">{user.follows} người theo dõi</h3>
                                     <h3 >•</h3>
@@ -113,7 +112,7 @@ const UserLayout = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="pr-48">
+                        <div>
                             <hr className="mt-10" />
                             <div class="flex text-center flex-wrap -mb-px border-b border-gray-200 dark:border-gray-700">
                                 <NavLink to={`/${user.username}/posts`} className="flex font-bold items-center justify-center p-4 text-sm first:ml-0 focus:outline-none rounded-t-lg border-b-2 border-transparent text-gray-500">
@@ -130,10 +129,11 @@ const UserLayout = () => {
                                 </NavLink>
                             </div>
                             <div>
-                                <Outlet />
+                                <Outlet userRole={user.userRole} />
                             </div>
                         </div>
                     </div>
+                    <div className="col-span-1 hidden md:block"></div>
                 </div>
             </div>
         </>
