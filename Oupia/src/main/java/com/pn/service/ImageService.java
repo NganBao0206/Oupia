@@ -13,10 +13,14 @@ import java.util.List;
  */
 public interface ImageService {
 
-
     List<Image> getImagesByPost(int postId);
+
     Image getImageByPost(int postId);
+
     String getImageByMotel(int motelId);
 
     int countImage(int postId);
+
+    List<String> getImagesBySlugPost(String slugPost);
+
 }

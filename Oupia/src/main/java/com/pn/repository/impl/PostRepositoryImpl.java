@@ -27,6 +27,11 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.pn.repository.PostRepository;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 
 /**
  *
@@ -46,10 +51,14 @@ public class PostRepositoryImpl implements PostRepository {
     public List<Post> getPosts(Map<String, String> params) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
-        CriteriaQuery<Post> q = b.createQuery(Post.class);
-        Root root = q.from(Post.class);
-        q.select(root);
+        CriteriaQuery<Object[]> q = b.createQuery(Object[].class);
+        Root<Post> root = q.from(Post.class);
+        Join<Post, Image> join = root.join("imageSet", JoinType.LEFT);
+        q.multiselect(root, join.get("image"));
 
+        Float lng = null;
+        Float lat = null;
+        Expression<Double> distance = null;
         if (params != null) {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -76,17 +85,69 @@ public class PostRepositoryImpl implements PostRepository {
                 }
             }
 
+            String isAccepted = params.get("isAccepted");
+            if (isAccepted != null && !isAccepted.isEmpty()) {
+                if (isAccepted.equals("accepted")) {
+                    predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
+                }
+            }
+
+            String username = params.get("username");
+            if (username != null && !username.isEmpty()) {
+                Predicate userPredicate = b.equal(root.get("userId").get("username"), username);
+                predicates.add(userPredicate);
+            }
+
+            String userId = params.get("userId");
+            if (userId != null && !userId.isEmpty()) {
+                Predicate userPredicate = b.equal(root.get("userId").get("id"), userId);
+                predicates.add(userPredicate);
+            }
+
+            String longitude = params.get("longitude");
+            String latitude = params.get("latitude");
+            if (longitude != null && !longitude.isEmpty() && latitude != null && !latitude.isEmpty())
+            try {
+                lng = Float.valueOf(longitude);
+                lat = Float.valueOf(latitude);
+                distance = b.function("getDistance", Double.class, root.get("postRentDetail").get("motelId").get("locationLatitude"), root.get("postRentDetail").get("motelId").get("locationLongitude"), b.literal(lat), b.literal(lng));
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+
             q.where(predicates.toArray(Predicate[]::new));
+        }
+        if (lng != null && lat != null && distance != null) {
+            q.groupBy(root.get("id"), join.get("id"), root.get("postRentDetail").get("motelId").get("id"));
+            q.orderBy(b.asc(distance), b.desc(root.get("id")));
+        } else {
+            q.groupBy(root.get("id"), join.get("id"));
+
+            q.orderBy(b.desc(root.get("id")));
         }
         Query query = s.createQuery(q);
         String page = params.get("page");
+
         if (page != null) {
             int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
             query.setFirstResult((Integer.parseInt(page) - 1) * pageSize);
             query.setMaxResults(pageSize);
         }
 
-        return query.getResultList();
+        List<Object[]> results = query.getResultList();
+
+        Set<Post> posts = new LinkedHashSet<>();
+        for (Object[] result : results) {
+            Post post = (Post) result[0];
+            String image = (String) result[1];
+            if (image != null) {
+                post.setImage(image);
+            }
+            posts.add(post);
+        }
+        List<Post> postList = new ArrayList<>();
+        postList.addAll(posts);
+        return postList;
     }
 
     @Override
@@ -122,6 +183,26 @@ public class PostRepositoryImpl implements PostRepository {
                     predicates.add(b.isNotNull(root.get("postRentDetail").get("id")));
                 }
             }
+
+            String isAccepted = params.get("isAccepted");
+            if (isAccepted != null && !isAccepted.isEmpty()) {
+                if (isAccepted.equals("accepted")) {
+                    predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
+                }
+            }
+
+            String username = params.get("username");
+            if (username != null && !username.isEmpty()) {
+                Predicate userPredicate = b.equal(root.get("userId").get("username"), username);
+                predicates.add(userPredicate);
+            }
+
+            String userId = params.get("userId");
+            if (userId != null && !userId.isEmpty()) {
+                Predicate userPredicate = b.equal(root.get("userId").get("id"), userId);
+                predicates.add(userPredicate);
+            }
+
             q.where(predicates.toArray(Predicate[]::new));
         }
         Query query = s.createQuery(q);
@@ -224,7 +305,7 @@ public class PostRepositoryImpl implements PostRepository {
         }
         return false;
     }
-    
+
     @Override
     public List<String> findSlugsStartingWith(String slug) {
         Session s = this.factory.getObject().getCurrentSession();

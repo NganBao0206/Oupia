@@ -86,4 +86,18 @@ public class ImageRepositoryImpl implements ImageRepository {
 
     }
 
+    @Override
+    public List<String> getImagesBySlugPost(String slugPost) {
+        Session session = this.factory.getObject().getCurrentSession();
+        String hql = "SELECT img.image FROM Image img WHERE img.postId.slug = :slugPost";
+        Query query = session.createQuery(hql);
+        query.setParameter("slugPost", slugPost);
+        List<String> results = query.getResultList();
+        if (results.isEmpty()) {
+            return null;
+        } else {
+            return results;
+        }
+    }
+
 }

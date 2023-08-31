@@ -16,10 +16,12 @@ public interface ImageRepository {
     List<Image> getImagesByPost(int postId);
 
     List<String> getImagesByMotel(int motelId);
-    
+
     String getImageByMotel(int motelId);
 
     Image getImageByPost(int postId);
 
     int countImage(int postId);
+
+    List<String> getImagesBySlugPost(String slugPost);
 }

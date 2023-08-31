@@ -47,7 +47,7 @@ public class PostRentDetail implements Serializable {
     @Basic(optional = false)
     @NotNull(message = "{postRentDetail.price.notNull}")
     @DecimalMin(value = "100000.0", inclusive = true, message = "{postRentDetail.price.decimalMin}")
-    @DecimalMax(value = "1000000000000.00", inclusive = true, message = "{postRentDetail.price.decimalMax}")
+    @DecimalMax(value = "100000000.00", inclusive = true, message = "{postRentDetail.price.decimalMax}")
     @Column(name = "price", precision = 15, scale = 2)
     private BigDecimal price;
 

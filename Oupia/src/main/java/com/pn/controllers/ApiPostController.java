@@ -11,9 +11,11 @@ import com.pn.pojo.User;
 import com.pn.service.ImageService;
 import com.pn.service.MotelService;
 import com.pn.service.PostService;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +43,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api/posts", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ApiPostController {
-
+    @Autowired
+    private Environment env;
     @Autowired
     private PostService postService;
     @Autowired
@@ -70,6 +73,16 @@ public class ApiPostController {
             return ResponseEntity.notFound().build();
         }
     }
+    
+    @GetMapping(path = "/{slug}/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public ResponseEntity<Post> getPostDetail(@PathVariable("slug") String slug) {
+        Post post = postService.getPostBySlug(slug);
+
+        if (post != null && post.getIsDeleted() == false)
+            return new ResponseEntity<>(post, HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+    }
 
     @DeleteMapping("/bin/{slug}/")
     @CrossOrigin
@@ -85,15 +98,38 @@ public class ApiPostController {
 
     @GetMapping("/")
     @CrossOrigin
-    public ResponseEntity<List<Post>> getPosts(@RequestParam Map<String, String> params) {
+    public ResponseEntity<String> getPosts(@RequestParam Map<String, String> params) {
+        params.put("isDeleted", "0");
+        params.put("isAccepted", "accepted");
         List<Post> posts = postService.getPosts(params);
-        posts.forEach(p -> {
-            Image img = imageService.getImageByPost(p.getId());
-            if (img != null)
-                p.setImage(img.getImage());
-        });
+        int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
+        int count = postService.countPosts(params);
+        int pages = (int) Math.ceil(count * 1.0 / pageSize);
         try {
-            ResponseEntity<List<Post>> result = new ResponseEntity<>(posts, HttpStatus.OK);
+ 
+            Map<String, Object> response = new HashMap<>();
+            response.put("pages", pages);
+            response.put("posts", posts);
+            response.put("total", count);
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(response);
+            ResponseEntity<String> result = new ResponseEntity<>(json, HttpStatus.OK);
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/{slug}/images/")
+    @CrossOrigin
+    public ResponseEntity<String> getImages(@PathVariable("slug") String slug) {
+        List<String> images = imageService.getImagesBySlugPost(slug);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(images);
+            ResponseEntity<String> result = new ResponseEntity<>(json, HttpStatus.OK);
             return result;
 
         } catch (Exception e) {

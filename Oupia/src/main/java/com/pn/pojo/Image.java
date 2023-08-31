@@ -4,6 +4,7 @@
  */
 package com.pn.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;

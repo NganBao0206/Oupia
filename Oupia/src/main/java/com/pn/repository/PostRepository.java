@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package com.pn.repository;
-
-import com.pn.pojo.Motel;
 import com.pn.pojo.Post;
 import java.util.List;
 import java.util.Map;
@@ -29,5 +27,5 @@ public interface PostRepository {
 
     boolean restorePost(String slug);
     List<String> findSlugsStartingWith(String slug);
-
+    
 }

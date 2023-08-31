@@ -1,6 +1,10 @@
 let lat = 10.8173119;
 let lng = 106.6763588;
 let isHaveLocation = false;
+
+const sessionToken = crypto.randomUUID();
+console.log(sessionToken);
+
 function setLatLng(x, y, isLocation) {
     lat = x;
     lng = y;
@@ -72,8 +76,7 @@ function init() {
             suggestions.innerHTML = '';
             return;
         }
-        // Use the Goong Places API to search for places matching the query
-        const res = await fetch(`https://rsapi.goong.io/Place/AutoComplete?input=${query}&api_key=08uNnfGux51y9qbK9SIcFHlu3OTSOH0ouxT2xOYT`);
+        const res = await fetch(`https://rsapi.goong.io/Place/AutoComplete?input=${query}&sessiontoken=${sessionToken}&api_key=08uNnfGux51y9qbK9SIcFHlu3OTSOH0ouxT2xOYT`);
         const data = await res.json();
         suggestions.innerHTML = '';
         let myInnerHTML = "";

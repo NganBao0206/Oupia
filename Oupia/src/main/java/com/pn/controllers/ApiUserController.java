@@ -81,6 +81,15 @@ public class ApiUserController {
             return ResponseEntity.notFound().build();
         }
     }
+    
+    @GetMapping(path = "/users/{username}/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public ResponseEntity<User> getUser(@PathVariable("username") String username) {
+        User u = this.userService.getUserByUsername(username);
+        if (u != null && u.getIsDeleted() == false)
+            return new ResponseEntity<>(u, HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+    }
 
     @DeleteMapping("/users/bin/{username}/")
     @CrossOrigin
