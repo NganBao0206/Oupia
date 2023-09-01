@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import MyBreadCrumb from '../../components/MyBreadCrumb';
 import { Button, Card } from 'flowbite-react';
-import AddMotelForm from '../../components/Form/AddMotelForm';
-import StepTwo from '../../components/Form/LandlordForm/StepTwoLandlordForm';
-import StepThree from '../../components/Form/LandlordForm/StepThreeLandlordForm';
+import AddMotelForm from '../../../components/Form/AddMotelForm';
 import "./style.scss";
-import AddMotelStepper from '../../components/Stepper/AddMotelStepper';
+import AddMotelStepper from '../../../components/Stepper/AddMotelStepper';
+import StepTwoLandlordForm from '../../../components/Form/LandlordForm/StepTwoLandlordForm';
+import StepThreeLandlordForm from '../../../components/Form/LandlordForm/StepThreeLandlordForm';
+import MyBreadCrumb from '../../../components/MyBreadCrumb';
 
 
 const AddMotel = () => {
@@ -31,8 +31,8 @@ const AddMotel = () => {
 
     useEffect(() => {
         const components = [<AddMotelForm />,
-        <StepTwo add={true}/>,
-        <StepThree />];
+        <StepTwoLandlordForm add={true}/>,
+        <StepThreeLandlordForm />];
         setComponent(components[step])
     }, [step])
 

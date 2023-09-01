@@ -19,6 +19,7 @@ import UserPhotos from './pages/User/UserPhotos';
 import Post from './pages/Post/PostDetail';
 import Posts from './pages/Post/Posts';
 import { v4 as uuid} from 'uuid';
+import AddMotel from './pages/Motel/AddMotel';
 
 export const UserContext = createContext();
 
@@ -38,6 +39,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/motels" element={<Motels />} />
+            <Route path="/motels/add" element={<AddMotel />} />
             <Route path="login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/posts/" element={<Posts />}></Route>
