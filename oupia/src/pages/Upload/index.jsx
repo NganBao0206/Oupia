@@ -15,7 +15,7 @@ const Upload = () => {
             <div className="container">
                 <MyBreadCrumb BreadCrumbName="Đăng tin" />
                 <Card className="w-full my-10 items-center my-card">
-                    {user.role === "TENANT" ? <TenantForm /> : <LandlordForm />}
+                    {user.userRole === "TENANT" ? <TenantForm /> : <LandlordForm />}
                 </Card>
             </div>
         </Fragment>)

@@ -27,29 +27,45 @@ const Register = () => {
     const avatarFile = useRef();
 
     const handleNextStep = () => {
-        if (step === 0 && !user.role) {
+        console.log("bam vao next: " + step);
+
+        if (step === 0 && !user.userRole) {
+            console.log("sau khi bam vao next: " + step);
+
             return;
         }
         if (step !== 3)
             setStep(prev => prev + 1);
+
+        console.log("sau khi bam vao next: " + step);
     }
 
     const handlePrevStep = () => {
+        console.log("bam vao prev: " + step);
+
         if (step !== 0)
             setStep(prev => prev - 1);
+        console.log("sau khi bam vao prev: " + step);
     }
 
     useEffect(() => {
-        if (user.role === "TENANT") {
-            setComponents([<StepOne />, <StepTwo />, <StepThree />, <LastStep />]);
-        } else if (user.role === "LANDLORD") {
-            setComponents([<StepOne />, <StepTwo />, <StepThree />, <StepFour />, <StepFive />, <StepSix />, <LastStep />]);
-        }
         setComponent(components[step])
+    }, [step])
+
+    useEffect(() => {
         if (user.username && user.password && user.confirmPass && avatarFile) {
             setIsEnable(true);
         }
-    }, [step])
+    }, [user.username, user.password, user.confirmPass, avatarFile])
+
+    useEffect(() => {
+        if (user.userRole === "TENANT") {
+            setComponents([<StepOne />, <StepTwo />, <StepThree />, <LastStep />]);
+        } else if (user.userRole === "LANDLORD") {
+            setComponents([<StepOne />, <StepTwo />, <StepThree />, <StepFour />, <StepFive />, <StepSix />, <LastStep />]);
+        }
+    }, [user.userRole])
+
 
     const register = (evt) => {
         evt.preventDefault();

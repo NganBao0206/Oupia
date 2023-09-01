@@ -4,11 +4,11 @@ import { HiOutlineHomeModern } from 'react-icons/hi2';
 import { FormContext } from '../../../../pages/Register';
 
 const StepOneRegister = () => {
-    const {user, setUser} = useContext(FormContext);
+    const { user, setUser, setComponents } = useContext(FormContext);
 
     const changeUser = (value, field) => {
         setUser(current => {
-            return {...current, [field] : value}
+            return { ...current, [field]: value }
         })
     }
 
@@ -17,7 +17,7 @@ const StepOneRegister = () => {
             <h3 className="mb-5 text-xl font-medium text-gray-900 dark:text-white">Bạn là?</h3>
             <ul className="grid w-full gap-6 md:grid-cols-2">
                 <li>
-                    <input type="radio" id="role-tenant" name="role" value="TENANT" className="hidden peer" required onChange={e => changeUser(e.target.value, "role")} checked={user.role === "TENANT"}/>
+                    <input type="radio" id="role-tenant" name="role" value="TENANT" className="hidden peer" required onChange={e => changeUser(e.target.value, "userRole")} checked={user.userRole === "TENANT"} />
                     <label htmlFor="role-tenant" className="inline-flex items-center justify-between w-full p-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blueTemplate peer-checked:border-blueTemplate peer-checked:text-blueTemplate hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
                         <div className="block">
                             <RiSearch2Line size="35"></RiSearch2Line>
@@ -27,7 +27,7 @@ const StepOneRegister = () => {
                     </label>
                 </li>
                 <li>
-                    <input type="radio" id="role-landlord" name="role" value="LANDLORD" className="hidden peer" onChange={e => changeUser(e.target.value, "role")} checked={user.role === "LANDLORD"}/>
+                    <input type="radio" id="role-landlord" name="role" value="LANDLORD" className="hidden peer" onChange={e => changeUser(e.target.value, "userRole")} checked={user.userRole === "LANDLORD"} />
                     <label htmlFor="role-landlord" className="inline-flex items-center justify-between w-full p-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blueTemplate peer-checked:border-blueTemplate peer-checked:text-blueTemplate hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
                         <div className="block">
                             <HiOutlineHomeModern size="35"></HiOutlineHomeModern>

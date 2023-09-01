@@ -8,7 +8,7 @@ import { FormContext } from '../../../pages/Register';
 const RegisterStepper = (props) => {
     const { user, setUser } = useContext(FormContext);
 
-    if (user.role === "TENANT") {
+    if (user.userRole === "TENANT") {
         return (<>
             <ol className="relative text-gray-500 border-l border-gray-200 dark:border-gray-700 dark:text-gray-400">
                 <li className="mb-10 ml-6">
@@ -58,7 +58,7 @@ const RegisterStepper = (props) => {
                 </li>
             </ol>
         </>);
-    } else if (user.role === "LANDLORD") {
+    } else if (user.userRole === "LANDLORD") {
         return (<>
             <ol className="relative text-gray-500 border-l border-gray-200 dark:border-gray-700 dark:text-gray-400">
                 <li className="mb-10 ml-6">
