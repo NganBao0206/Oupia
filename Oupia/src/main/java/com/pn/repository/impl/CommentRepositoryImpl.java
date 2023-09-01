@@ -38,7 +38,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     @Override
     public List<Comment> getComments(String slugPost) {
         Session s = this.factory.getObject().getCurrentSession();
-        String hql = "FROM Comment cmt WHERE cmt.postId.slug = :slugPost";
+        String hql = "FROM Comment cmt WHERE cmt.postId.slug = :slugPost ORDER BY cmt.id DESC";
         Query query = s.createQuery(hql);
         query.setParameter("slugPost", slugPost);
         try {
