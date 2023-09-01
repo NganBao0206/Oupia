@@ -305,4 +305,11 @@ public class UserRepositoryImpl implements UserRepository {
 //        return (User) query.getSingleResult();
 //    }
 
+    @Override
+    public User addUser(User u) {
+        Session s = this.factory.getObject().getCurrentSession();
+        s.save(u);
+        return u;
+    }
+
 }

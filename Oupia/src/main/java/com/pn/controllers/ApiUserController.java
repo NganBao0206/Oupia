@@ -27,7 +27,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -129,6 +131,15 @@ public class ApiUserController {
     public ResponseEntity<User> details(Principal user) {
         User u = this.userService.getUserByUsername(user.getName());
         return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+    
+     @PostMapping(path = "/users/", 
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, 
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @CrossOrigin
+    public ResponseEntity<User> addUser(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
+        User user = this.userService.addUser(params, avatar);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
 }
