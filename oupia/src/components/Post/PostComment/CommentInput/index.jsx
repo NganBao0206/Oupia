@@ -7,7 +7,7 @@ import { authApi, endpoints } from "../../../../configs/APIs";
 const CommentInput = () => {
     const { post } = useContext(PostContext);
     const [content, setContent] = useState("");
-    const [currentUser,] = UserContext(UserContext);
+    const [currentUser,] = useContext(UserContext);
 
     const sendComment = () => {
         if (!content)
