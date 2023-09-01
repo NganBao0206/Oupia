@@ -53,7 +53,7 @@ const Post = () => {
                 let res = await APIs.get(url);
                 if (res.status === 200) {
                     console.log(res.data)
-                    setImages(res.data);
+                    setComments(res.data);
                 }
 
             } catch (err) {
@@ -63,6 +63,7 @@ const Post = () => {
 
         getPostDetail();
         getImages();
+        getComments();
     }, [])
 
     if (!post || !images) {
@@ -77,7 +78,7 @@ const Post = () => {
         </>)
     }
     return (
-        <PostContext.Provider value={{post, images}}>
+        <PostContext.Provider value={{post, images, comments, setComments}}>
             <div className="lg:px-32">
                 <Breadcrumb BreadCrumbName="Nhà trọ giá rẻ" />
                 <div className="grid grid-cols-7 gap-5">

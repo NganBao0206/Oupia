@@ -6,17 +6,17 @@ import { PostContext } from '../../pages/Post/detail';
 
 const UserCard = () => {
     const {post} = useContext(PostContext)
-    const {user} = post.userId;
     return (
+        // <div>{post.userId}</div>
         <Card className='items-center'>
             <div className=" z-999 w-56 h-56 ring-[5px] ring-white rounded-full shadow-xl">
                 <img
-                    src={user.avatar}
+                    src={post.userId.avatar}
                     alt="Avatar"
                     className="w-full h-full rounded-full"
                 />
             </div>
-            <div id="title" className="font-bold mt-2 mx-auto text-lg">{user.fullName}</div>
+            <div id="title" className="font-bold mt-2 mx-auto text-lg">{post.userId.fullName}</div>
             <div id="stats" className="flex justify-between items-center my-4 mx-auto">
                 <div className="flex flex-col items-center mr-10">
                     <div className="font-bold text-lg">172</div>
