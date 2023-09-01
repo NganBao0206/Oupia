@@ -1,11 +1,11 @@
-import Header from './layouts/Header/index';
-import Home from './pages/Home/index';
-import Footer from './layouts/Footer/index';
-import UserLayout from './layouts/UserLayout/index';
+import Header from './layouts/Header';
+import Home from './pages/Home';
+import Footer from './layouts/Footer';
+import UserLayout from './layouts/UserLayout';
 
-import SignUp from './pages/Login/signUp';
-import Login from './pages/Login/login';
-import Upload from './pages/Upload/index';
+import Login from './pages/Login';
+import Upload from './pages/Upload';
+import Register from './pages/Register';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import "./App.css"
 import NotFound from './pages/NotFound';
@@ -13,11 +13,11 @@ import { createContext, useEffect, useReducer } from 'react';
 import UserReducer from './reducers/UserReducer';
 import cookie from "react-cookies";
 import Motels from './pages/Motel/motels';
-import UserPosts from './pages/User/posts';
-import UserFavourite from './pages/User/favorite';
-import UserPhotos from './pages/User/photos';
-import Post from './pages/Post/detail';
-import Posts from './pages/Post/posts';
+import UserPosts from './pages/User/UserPosts';
+import UserFavourite from './pages/User/UserFavorites';
+import UserPhotos from './pages/User/UserPhotos';
+import Post from './pages/Post/PostDetail';
+import Posts from './pages/Post/Posts';
 import { v4 as uuid} from 'uuid';
 
 export const UserContext = createContext();
@@ -39,12 +39,12 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/motels" element={<Motels />} />
             <Route path="login" element={<Login />} />
-            <Route path="/register" element={<SignUp />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/posts/" element={<Posts />}></Route>
 
             <Route path="/posts/:slugPost" element={<Post />}></Route>
             <Route path="/:slugUser" element={<UserLayout />}>
-              <Route index element={<UserPosts />} />
+              <Route element={<UserPosts />} />
               <Route path="posts" element={<UserPosts />} />
               <Route path="favourites" element={<UserFavourite />} />
               <Route path="photos" element={<UserPhotos />} />

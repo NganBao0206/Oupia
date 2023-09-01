@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import APIs, { endpoints } from '../../configs/APIs';
-import BreadCrumb from '../../components/BreadCrumb';
+import MyBreadCrumb from '../../components/MyBreadCrumb';
 
 
 const Motels = () => {
@@ -21,7 +21,7 @@ const Motels = () => {
 
     return (
         <div className="container h-screen my-auto">
-          <BreadCrumb BreadCrumbName="Phòng trọ" />
+          <MyBreadCrumb BreadCrumbName="Phòng trọ" />
             {motels && motels.map( motel => (
                 <div>{motel.name}</div>
             ))}

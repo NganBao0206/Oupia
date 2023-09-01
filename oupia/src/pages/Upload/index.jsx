@@ -1,52 +1,24 @@
 import { Card } from 'flowbite-react';
-import React, { Fragment, useState } from 'react';
-import PostForm from '../../components/PostForm';
+import React, { Fragment } from 'react';
 import './style.scss'
-import StepperButton from '../../components/StepperButton';
-import { TiTick } from 'react-icons/ti';
-import BreadCrumb from '../../components/BreadCrumb';
+import MyBreadCrumb from '../../components/MyBreadCrumb';
+import TenantForm from '../../components/Form/TenantForm';
+import LandlordForm from '../../components/Form/LandlordForm';
 
 const Upload = () => {
-    const steps = ["Khu vực", "Thông tin mô tả", "Xác thực", "Hoàn thành"];
-    const [currentStep, setCurrentStep] = useState(1);
-    const [complete, setComplete] = useState(false);
+    const user = {
+        role: "LANDLORD",
+    }
 
-
-    return (<Fragment>
-        <div className="container">
-            <BreadCrumb BreadCrumbName="Đăng tin" />
-            <div>
-                <div className="flex justify-center">
-                    {steps?.map((step, i) => (
-                        <div
-                            key={i}
-                            className={`step-item ${currentStep === i + 1 && "active"} ${(i + 1 < currentStep || complete) && "complete"
-                                }`}>
-                            <div className="step">
-                                {i + 1 < currentStep || complete ? <TiTick size={24} /> : i + 1}
-                            </div>
-                            <p className="text-gray-500">{step}</p>
-                        </div>
-                    ))}
-                </div>
+    return (
+        <Fragment>
+            <div className="container">
+                <MyBreadCrumb BreadCrumbName="Đăng tin" />
+                <Card className="w-full my-10 items-center my-card">
+                    {user.role === "TENANT" ? <TenantForm /> : <LandlordForm />}
+                </Card>
             </div>
-            <Card className="my-10">    
-                <form className="flex flex-col gap-4">
-
-                    <PostForm currentStep={currentStep} stepsLength={steps.length}></PostForm>
-                    {!complete && (
-                        <StepperButton
-                            currentStep={currentStep}
-                            stepsLength={steps.length}
-                            complete={complete}
-                            setComplete={setComplete}
-                            setCurrentStep={setCurrentStep}
-                        />
-                    )}
-                </form>
-            </Card>
-        </div>
-    </Fragment>)
+        </Fragment>)
 };
 
 export default Upload;
