@@ -15,6 +15,21 @@ const Post = () => {
     const [images, setImages] = useState();
     const [comments, setComments] = useState();
 
+    const getComments = async () => {
+        try {
+            const url = endpoints.postComments(slugPost);
+
+            let res = await APIs.get(url);
+            if (res.status === 200) {
+                console.log(res.data)
+                setComments(res.data);
+            }
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     useEffect(() => {
         const getPostDetail = async () => {
             try {
@@ -46,25 +61,12 @@ const Post = () => {
             }
         }
 
-        const getComments = async () => {
-            try {
-                const url = endpoints.postComments(slugPost);
-
-                let res = await APIs.get(url);
-                if (res.status === 200) {
-                    console.log(res.data)
-                    setComments(res.data);
-                }
-
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
         getPostDetail();
         getImages();
         getComments();
     }, [])
+
+
 
     if (!post || !images) {
         return (<>
@@ -78,7 +80,7 @@ const Post = () => {
         </>)
     }
     return (
-        <PostContext.Provider value={{post, images, comments, setComments}}>
+        <PostContext.Provider value={{post, images, comments, setComments, getComments}}>
             <div className="lg:px-32">
                 <Breadcrumb BreadCrumbName="Nhà trọ giá rẻ" />
                 <div className="grid grid-cols-7 gap-5">

@@ -7,7 +7,7 @@ const PostComment = () => {
     const { comments, setComments } = useContext(PostContext);
 
     return (
-        <div className='h-full block p-3 bg-white border border-gray-200 rounded-lg shadow-md'>
+        <div className='h-fit block p-3 bg-white border border-gray-200 rounded-lg shadow-md'>
             <CommentInput />
             {comments && <CommentList comments={comments} />
             }
