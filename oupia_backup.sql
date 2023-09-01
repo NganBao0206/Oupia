@@ -33,7 +33,7 @@ CREATE TABLE `comment` (
   KEY `fk_comment_user_idx` (`user_id`),
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`),
   CONSTRAINT `fk_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (1,'test','2023-09-01 00:04:11',29,21),(2,'toi thu','2023-09-01 00:05:34',29,21),(3,'ok','2023-09-01 00:11:08',29,21),(4,'thu khong','2023-09-01 00:13:14',29,21),(5,'nhu nay duoc khong','2023-09-01 00:15:40',29,21);
+INSERT INTO `comment` VALUES (1,'test','2023-09-01 00:04:11',29,21),(2,'toi thu','2023-09-01 00:05:34',29,21),(3,'ok','2023-09-01 00:11:08',29,21),(4,'thu khong','2023-09-01 00:13:14',29,21),(5,'nhu nay duoc khong','2023-09-01 00:15:40',29,21),(6,'bình luận mới nè','2023-09-01 15:15:44',29,21),(7,'test','2023-09-01 15:17:07',29,21),(8,'nhà đẹp thế','2023-09-01 15:17:40',29,21),(9,'123123131','2023-09-01 15:18:07',29,21),(10,'32131231313','2023-09-01 15:18:08',29,21),(11,'u la tri','2023-09-01 15:18:12',29,21),(12,'um ba','2023-09-01 15:18:19',29,21),(13,'lachimolala','2023-09-01 15:18:23',29,21),(14,'omg','2023-09-01 15:18:29',29,21);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -369,6 +369,45 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES (1,'admin','$2a$10$XRitZf0XqYI1aF.sYqMcsOYS/bwFDL7K4oW4SHPGLv5l1fHVByUx.','Admin','admin@gmail.com','1234567890','OTHER','2023-06-02 00:00:00','2023-08-08 00:00:00','2023-08-24 11:55:44','ADMIN','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/xxzugrejvq0hgtan1v8t',0,'PENDING',0),(16,'Dung','$2a$10$/4s.fbiI5mHwQdW1OZYMtuDHaWdP/PSEH4Yj/ZiISUrRS0Qm73qBO','Trần Ngọc Dung','Dung@gmail.com','1234567890987','FEMALE','2023-08-01 00:00:00','2023-08-11 00:00:00','2023-08-14 13:49:55','LANDLORD','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/uclxeg8j2owjkvx0noqj',0,'ACCEPTED',0),(21,'hoanganh1234','$2a$10$/WO09AXGrqg/ui8xUsIpW.fGW9VOg48a2ZErPp8fqa282QcoWKcn2','Hoàng Ánh','hoanganh@gmail.com','654345676543','MALE','2022-10-02 00:00:00','2023-08-19 00:00:00','2023-08-27 23:56:50','TENANT','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/zq0woxqa1pzx6xx2xqoa',0,'PENDING',0),(22,'ngan0206','$2a$10$YTPjp3rFsmS5ga0xxVDOfepCC0TWpqH6G.JV4y2ex2dsrv/8LRxeW','Nguyễn Kim Bảo Ngân','ngannguyeny0206@gmail.com','12345678902131','FEMALE','2002-06-02 00:00:00','2023-08-25 00:00:00','2023-08-27 21:02:25','TENANT','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/iqzbc5dturx5ccb8bs3b',0,'PENDING',0),(23,'lananh86','$2a$10$rbPmwGulWLixDnBO54lvIeq2O9bD41nkVpJEVn.ySQVkIS4xbt5da','Hoàng Thị Ánh Lan','LanAnh@gmail.com','1234567890','FEMALE','1986-05-05 00:00:00','2023-08-31 14:22:25','2023-08-31 14:22:25','LANDLORD','https://res.cloudinary.com/dzba4fewa/image/upload/c_fill,h_350,w_350/y9ywiqnqt5tvgtuhlesr',0,'ACCEPTED',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'oupia'
+--
+/*!50003 DROP FUNCTION IF EXISTS `getDistance` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getDistance`(lat1 DOUBLE, lon1 DOUBLE, lat2 DOUBLE, lon2 DOUBLE) RETURNS double
+    DETERMINISTIC
+BEGIN
+    DECLARE R INT DEFAULT 6371;
+    DECLARE dLat DOUBLE;
+    DECLARE dLon DOUBLE;
+    DECLARE lat1Rad DOUBLE;
+    DECLARE lat2Rad DOUBLE;
+    DECLARE a DOUBLE;
+    DECLARE c DOUBLE;
+
+    SET dLat = RADIANS(lat2 - lat1);
+    SET dLon = RADIANS(lon2 - lon1);
+    SET lat1Rad = RADIANS(lat1);
+    SET lat2Rad = RADIANS(lat2);
+
+    SET a = SIN(dLat / 2) * SIN(dLat / 2) + SIN(dLon / 2) * SIN(dLon / 2) * COS(lat1Rad) * COS(lat2Rad);
+    SET c = 2 * ATAN2(SQRT(a), SQRT(1 - a));
+    RETURN R * c;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -379,4 +418,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-01 15:05:22
+-- Dump completed on 2023-09-01 16:08:11
