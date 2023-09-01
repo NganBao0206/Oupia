@@ -12,11 +12,11 @@ import APIs, { endpoints } from "../../configs/APIs";
 const SearchPost = () => {
     const [isExtraFilter, setIsExtraFilter] = useState(false);
     const [results, setResults] = useState([]);
-    const [address, setAddress] = useState("");
+    const { params, setParams } = useContext(ParamsContext);
+    const [address, setAddress] = useState(params.location);
     const [isSelect, setIsSelect] = useState(false);
     const myQuery = useDebounce(address, 300);
     const [isFocused, setIsFocused] = useState(false);
-    const { params, setParams } = useContext(ParamsContext);
 
 
 
@@ -51,7 +51,7 @@ const SearchPost = () => {
 
     const handleSelectPlace = (e) => {
         setIsSelect(true);
-        document.querySelector("#location-search").value = e.target.innerHTML;
+        setAddress(e.target.innerHTML);
         setTimeout(() => {
             setIsSelect(false);
             geteocode(e.target.dataset.placeId);
@@ -63,6 +63,9 @@ const SearchPost = () => {
     useEffect(() => {
         if (!myQuery[0]) {
             setResults([]);
+            changeParams("", "location");
+            changeParams("", "latitude");
+            changeParams("", "longitude");
         }
         else if (myQuery[0] && isSelect === false) {
             getDatas(myQuery[0]);
@@ -82,15 +85,13 @@ const SearchPost = () => {
 
     return (<>
         <div className="grid grid-cols-12 gap-5 items-stretch">
-            <div className="col-span-5 relative"
-                // onBlur={() => setIsFocused(false)}
-            >
+            <div className="col-span-5 relative">
                 <label htmlFor="location-search" className="mb-2 text-sm font-medium sr-only text-gray-900">Search location</label>
                 <div className="relative h-full">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <HiOutlineLocationMarker className="text-gray-900" size={20} />
                     </div>
-                    <input value={params.location} type="search" id="location-search"
+                    <input value={address} type="search" id="location-search"
                         onChange={e => handleResult(e)}
                         onFocus={() => setIsFocused(true)}
                         className="h-full block w-full p-4 pl-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blueTemplate focus:border-blueTemplate" placeholder="Nhập khu vực..." />

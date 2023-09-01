@@ -1,10 +1,12 @@
 import { Button, Card } from 'flowbite-react';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import "./style.scss"
+import { PostContext } from '../../pages/Post/detail';
 
-const UserCard = (props) => {
-    const {user} = props;
+const UserCard = () => {
+    const {post} = useContext(PostContext)
+    const {user} = post.userId;
     return (
         <Card className='items-center'>
             <div className=" z-999 w-56 h-56 ring-[5px] ring-white rounded-full shadow-xl">

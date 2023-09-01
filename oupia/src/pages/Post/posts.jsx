@@ -11,7 +11,7 @@ import goongJs from '@goongmaps/goong-js';
 
 const Posts = () => {
     const [posts, setPosts] = useState(null);
-    const { params } = useContext(ParamsContext);
+    const { params, } = useContext(ParamsContext);
     const [debouncedParams] = useDebounce(params, 500);
     const [map, setMap] = useState(null);
     const navigate = useNavigate();

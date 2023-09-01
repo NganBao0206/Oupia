@@ -13,8 +13,10 @@ export const endpoints = {
     "userInfo": (username) => `${SERVER_CONTEXT}/api/users/${username}/`,
     "postInfo": (slug) => `${SERVER_CONTEXT}/api/posts/${slug}/`,
     "postImages": (slug) => `${SERVER_CONTEXT}/api/posts/${slug}/images/`,
+    "postComments": (slug) => `${SERVER_CONTEXT}/api/posts/${slug}/comments/`,
     "mapAutocomplate": `${SERVER_CONTEXT}/api/map/autocomplete/`,
     "mapDetail": `${SERVER_CONTEXT}/api/map/detail/`,
+    "addComment":  `${SERVER_CONTEXT}/api/comments/`,
 }
 
 export const authApi = () => {

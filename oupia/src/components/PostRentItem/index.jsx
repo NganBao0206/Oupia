@@ -39,12 +39,15 @@ const PostRentItem = (props) => {
                         <p className="text-sm">{post.postRentDetail.motelId.fullLocation}</p>
                     </Link>
                     <p className="mt-3 text-gray-500 line-clamp-3 text-justify text-sm">{post.description}</p>
-                    <Button className="ms-auto bg-blueTemplate mt-6">
-                        <p>
-                            Xem chi tiết
-                        </p>
-                        <HiOutlineArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
+                    <Link to={`/posts/${post.slug}`}>
+                        <Button className="ms-auto bg-blueTemplate mt-6">
+                            <p>
+                                Xem chi tiết
+                            </p>
+                            <HiOutlineArrowRight className="ml-2 h-5 w-5" />
+                        </Button>
+                    </Link>
+
                 </div>
             </div>
         </div>

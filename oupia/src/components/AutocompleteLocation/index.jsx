@@ -33,20 +33,20 @@ const AutocompleteLocation = () => {
       getDatas(myQuery[0]);
     }
   }, [myQuery[0]])
-  const key = process.env.REACT_APP_GOONG_MAPS_MAPTILES_KEY;
-  useEffect(() => {
-    goongJs.accessToken = key;
-    var map = new goongJs.Map({
-      container: 'map',
-      style: 'https://tiles.goong.io/assets/goong_map_web.json',
-      center: [105.83991, 21.02800],
-      zoom: 9
-    });
-  }, [])
+  // const key = process.env.REACT_APP_GOONG_MAPS_MAPTILES_KEY;
+  // useEffect(() => {
+  //   goongJs.accessToken = key;
+  //   var map = new goongJs.Map({
+  //     container: 'map',
+  //     style: 'https://tiles.goong.io/assets/goong_map_web.json',
+  //     center: [105.83991, 21.02800],
+  //     zoom: 9
+  //   });
+  // }, [])
 
   return (
     <div>
-      <div id="map"></div>
+      {/* <div id="map"></div> */}
       <input
         onChange={e => handleResult(e)}
       />

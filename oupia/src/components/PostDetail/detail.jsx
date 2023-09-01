@@ -1,5 +1,5 @@
 import { Card, Carousel } from 'flowbite-react';
-import React from 'react';
+import React, { useContext } from 'react';
 import { LuBedSingle, LuHeart } from "react-icons/lu";
 import { BiArea, BiBath } from 'react-icons/bi';
 import { PiShareFat, PiUsersThree } from 'react-icons/pi';
@@ -7,10 +7,11 @@ import { IoLocationOutline } from 'react-icons/io5';
 import { LiaPhoneSolid } from 'react-icons/lia';
 import { HiOutlineHomeModern } from 'react-icons/hi2';
 import formatCurrency from '../../utils/priceUtils';
+import { PostContext } from '../../pages/Post/detail';
 
 
-const PostDetail = (props) => {
-    const { post, images } = props;
+const PostDetail = () => {
+    const { post, images } = useContext(PostContext);
     const price = formatCurrency(post.postRentDetail.price)
     return (
         <Card className="h-full">
