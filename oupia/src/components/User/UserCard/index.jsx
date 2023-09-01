@@ -7,6 +7,7 @@ import { PostContext } from '../../../pages/Post/PostDetail';
 const UserCard = () => {
     const {post} = useContext(PostContext)
     return (
+        // <div>{post.userId}</div>
         <Card className='items-center'>
             <div className=" z-999 w-56 h-56 ring-[5px] ring-white rounded-full shadow-xl">
                 <img

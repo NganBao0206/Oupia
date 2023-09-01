@@ -96,7 +96,7 @@ const UserLayout = () => {
                         </Card>
                     </div>
                     <div className="md:col-span-6 col-span-10 mt-36 md:mt-0">
-                        <div className="flex flex-col pr-48 mt-5 gap-2">
+                        <div className="flex flex-col mt-5 gap-2">
                             <h1 className="text-3xl font-bold text-left">{user.fullName}</h1>
                             <div className="flex">
                                 <div className="flex md:w-auto w-full gap-2 text-gray-500">
