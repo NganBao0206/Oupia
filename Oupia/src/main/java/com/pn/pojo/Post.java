@@ -7,6 +7,7 @@ package com.pn.pojo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -46,6 +47,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Entity
 @Table(name = "post")
 @XmlRootElement
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;

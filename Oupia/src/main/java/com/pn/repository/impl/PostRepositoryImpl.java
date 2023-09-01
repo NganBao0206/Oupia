@@ -32,6 +32,7 @@ import java.util.LinkedHashSet;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Subquery;
 
 /**
  *
@@ -53,14 +54,21 @@ public class PostRepositoryImpl implements PostRepository {
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<Object[]> q = b.createQuery(Object[].class);
         Root<Post> root = q.from(Post.class);
-        Join<Post, Image> join = root.join("imageSet", JoinType.LEFT);
-        q.multiselect(root, join.get("image"));
+        Join<Post, Image> join = root.join("imageSet", JoinType.INNER);
+        Subquery<Long> subquery = q.subquery(Long.class);
+        Root<Image> subRoot = subquery.from(Image.class);
+        subquery.select(b.min(subRoot.get("id")));
+        subquery.where(b.equal(subRoot.get("postId"), root));
+
 
         Float lng = null;
         Float lat = null;
         Expression<Double> distance = null;
+        List<Predicate> predicates = new ArrayList<>();
+        q.multiselect(root, join.get("image"));
+
+        predicates.add(b.in(join.get("id")).value(subquery));
         if (params != null) {
-            List<Predicate> predicates = new ArrayList<>();
 
             String deleted = params.get("isDeleted");
             if (deleted != null && !deleted.isEmpty()) {

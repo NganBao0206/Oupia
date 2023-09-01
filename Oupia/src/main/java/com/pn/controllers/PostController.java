@@ -112,11 +112,6 @@ public class PostController {
         int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
 
         List<Post> posts = postService.getPosts(params);
-        posts.forEach(post -> {
-            Image img = imageService.getImageByPost(post.getId());
-            if (img != null)
-                post.setImage(img.getImage());
-        });
         model.addAttribute("posts", posts);
         model.addAttribute("pages", Math.ceil(count * 1.0 / pageSize));
         model.addAttribute("params", params);

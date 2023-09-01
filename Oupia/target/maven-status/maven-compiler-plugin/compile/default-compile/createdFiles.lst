@@ -1,5 +1,7 @@
 com/pn/configs/TilesConfig.class
 com/pn/pojo/Favourite_.class
+com/pn/service/CommentService.class
+com/pn/repository/CommentRepository.class
 com/pn/pojo/Rate.class
 com/pn/repository/PostRepository.class
 com/pn/filters/CustomAccessDeniedHandler.class
@@ -20,6 +22,7 @@ com/pn/service/impl/UserServiceImpl.class
 com/pn/formatters/UserFormatter.class
 com/pn/pojo/Message_.class
 com/pn/pojo/PostFindDetail_.class
+com/pn/repository/impl/CommentRepositoryImpl.class
 com/pn/pojo/Rate_.class
 com/pn/controllers/ApiUserController.class
 com/pn/controllers/PostController.class
@@ -33,6 +36,7 @@ com/pn/controllers/MotelController.class
 com/pn/controllers/ApiMapController.class
 com/pn/enums/Status.class
 com/pn/pojo/User.class
+com/pn/formatters/PostFormatter.class
 com/pn/repository/impl/ImageRepositoryImpl.class
 com/pn/pojo/Image.class
 com/pn/service/impl/ImageServiceImpl.class
@@ -48,12 +52,13 @@ com/pn/pojo/Image_.class
 com/pn/configs/WebApplicationContextConfig.class
 com/pn/utils/SlugUtils.class
 com/pn/pojo/Favourite.class
+com/pn/controllers/ApiCommentController.class
 com/pn/service/PostService.class
 com/pn/repository/ImageRepository.class
 com/pn/pojo/Motel.class
+com/pn/service/impl/CommentServiceImpl.class
 com/pn/controllers/UserController.class
 com/pn/service/impl/PostServiceImpl.class
-.netbeans_automatic_build
 com/pn/pojo/User_.class
 com/pn/controllers/ApiMotelController.class
 com/pn/repository/UserRepository.class

@@ -6,6 +6,7 @@ package com.pn.configs;
 
 import com.github.slugify.Slugify;
 import com.pn.formatters.MotelFormatter;
+import com.pn.formatters.PostFormatter;
 import com.pn.formatters.UserFormatter;
 import com.pn.service.UserService;
 import com.pn.validator.ConfirmPasswordValidator;
@@ -68,6 +69,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new UserFormatter());
         registry.addFormatter(new MotelFormatter());
+        registry.addFormatter(new PostFormatter());
     }
 
     @Bean

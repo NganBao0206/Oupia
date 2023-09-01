@@ -4,6 +4,7 @@
  */
 package com.pn.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -20,6 +21,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -56,12 +59,8 @@ public class Comment implements Serializable {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "commentParentId")
-    private Set<Comment> commentSet;
-    @JoinColumn(name = "comment_parent_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Comment commentParentId;
     @JoinColumn(name = "post_id", referencedColumnName = "id")
+    @JsonIdentityReference
     @ManyToOne(optional = false)
     private Post postId;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -103,24 +102,7 @@ public class Comment implements Serializable {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-
-    @XmlTransient
-    public Set<Comment> getCommentSet() {
-        return commentSet;
-    }
-
-    public void setCommentSet(Set<Comment> commentSet) {
-        this.commentSet = commentSet;
-    }
-
-    public Comment getCommentParentId() {
-        return commentParentId;
-    }
-
-    public void setCommentParentId(Comment commentParentId) {
-        this.commentParentId = commentParentId;
-    }
-
+    @JsonIdentityReference
     public Post getPostId() {
         return postId;
     }
@@ -160,6 +142,11 @@ public class Comment implements Serializable {
     @Override
     public String toString() {
         return "com.pn.pojo.Comment[ id=" + id + " ]";
+    }
+    
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
     }
     
 }

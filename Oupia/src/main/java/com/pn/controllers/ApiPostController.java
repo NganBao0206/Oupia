@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.pn.pojo.Comment;
 import com.pn.pojo.Image;
 import com.pn.pojo.Motel;
 import com.pn.pojo.Post;
 import com.pn.pojo.User;
+import com.pn.service.CommentService;
 import com.pn.service.ImageService;
 import com.pn.service.MotelService;
 import com.pn.service.PostService;
@@ -43,12 +45,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api/posts", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ApiPostController {
+
     @Autowired
     private Environment env;
     @Autowired
     private PostService postService;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private CommentService commentService;
 
     @PatchMapping("/bin/{slug}/")
     @CrossOrigin
@@ -73,15 +78,16 @@ public class ApiPostController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     @GetMapping(path = "/{slug}/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public ResponseEntity<Post> getPostDetail(@PathVariable("slug") String slug) {
         Post post = postService.getPostBySlug(slug);
 
-        if (post != null && post.getIsDeleted() == false)
+        if (post != null && post.getIsDeleted() == false) {
             return new ResponseEntity<>(post, HttpStatus.OK);
-        return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/bin/{slug}/")
@@ -106,7 +112,7 @@ public class ApiPostController {
         int count = postService.countPosts(params);
         int pages = (int) Math.ceil(count * 1.0 / pageSize);
         try {
- 
+
             Map<String, Object> response = new HashMap<>();
             response.put("pages", pages);
             response.put("posts", posts);
@@ -129,6 +135,22 @@ public class ApiPostController {
         try {
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(images);
+            ResponseEntity<String> result = new ResponseEntity<>(json, HttpStatus.OK);
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/{slug}/comments/")
+    @CrossOrigin
+    public ResponseEntity<String> getComments(@PathVariable("slug") String slug) {
+        List<Comment> comments = commentService.getComments(slug);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(comments);
             ResponseEntity<String> result = new ResponseEntity<>(json, HttpStatus.OK);
             return result;
 
