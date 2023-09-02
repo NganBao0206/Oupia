@@ -9,7 +9,7 @@ import StepFive from '../../components/Form/LandlordForm/StepTwoLandlordForm';
 import StepSix from '../../components/Form/LandlordForm/StepThreeLandlordForm';
 import LastStep from '../../components/Form/Register/StepFourRegister';
 import RegisterStepper from "../../components/Stepper/RegisterStepper";
-import APIs, { endpoints } from '../../configs/APIs';
+import APIs, { authApi, endpoints } from '../../configs/APIs';
 
 export const FormContext = createContext();
 
@@ -23,8 +23,14 @@ const Register = () => {
     const nav = useNavigate();
 
     const [user, setUser] = useState({});
+    const [motel, setMotel] = useState({});
+    const [post, setPost] = useState({});
+    const [postDetail, setPostDetail] = useState({});
+
     const [avatar, setAvatar] = useState(null);
-    const avatarFile = useRef();
+    const [avatarFile, setAvatarFile] = useState(null);
+    const [postImages, setPostImages] = useState([]);
+
 
     const handleNextStep = () => {
         console.log("bam vao next: " + step);
@@ -34,7 +40,7 @@ const Register = () => {
 
             return;
         }
-        if (step !== 3)
+        if (step !== components.length - 1)
             setStep(prev => prev + 1);
 
         console.log("sau khi bam vao next: " + step);
@@ -78,23 +84,20 @@ const Register = () => {
                 if (field !== "confirmPass")
                     form.append(field, user[field]);
 
-            form.append("avatar", avatarFile.current.files[0]);
+            form.append("avatar", avatarFile[0]);
 
             setLoading(true)
+            console.log(endpoints['register']);
             let res = await APIs.post(endpoints['register'], form);
             if (res.status === 201) {
                 nav("/login");
             }
         }
-
-        if (user.password === user.confirmPass)
-            process();
-        else {
-        }
+        process();
     }
 
     return (<>
-        <FormContext.Provider value={{ user, setUser, avatar, setAvatar, avatarFile }}>
+        <FormContext.Provider value={{ user, setUser, avatar, setAvatar, setAvatarFile }}>
             <div className="h-screen">
                 <div className="grid grid-cols-3 rounded-xl border shadow-lg m-20">
                     <div className=" col-span-1 bg-Dark flex items-center h-full rounded-l-xl py-24">
@@ -115,7 +118,7 @@ const Register = () => {
                                     <Button onClick={handlePrevStep} className="bg-Dark text-white hover:bg-Darker">
                                         <p className="font-bold text-base">Quay lại</p>
                                     </Button>
-                                    {step === 2 ? <Button onClick={handleNextStep} className="bg-blueTemplate w-full">
+                                    {step === components.length - 2 ? <Button onClick={register} className="bg-blueTemplate w-full">
                                         <p className="font-bold text-base">Hoàn tất</p>
                                     </Button> : <Button onClick={handleNextStep} type="button" className="bg-blueTemplate w-full">
                                         <p className="font-bold text-base">Tiếp tục</p>

@@ -17,6 +17,7 @@ export const endpoints = {
     "mapAutocomplate": `${SERVER_CONTEXT}/api/map/autocomplete/`,
     "mapDetail": `${SERVER_CONTEXT}/api/map/detail/`,
     "addComment":  `${SERVER_CONTEXT}/api/comments/`,
+    "register-landlord": `${SERVER_CONTEXT}/api/register-landlord/`,
 }
 
 export const authApi = () => {
