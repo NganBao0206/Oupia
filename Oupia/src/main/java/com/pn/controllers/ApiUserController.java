@@ -1,13 +1,8 @@
 package com.pn.controllers;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.pn.components.JwtService;
 import com.pn.pojo.User;
 import com.pn.service.UserService;
-import java.util.List;
 import java.util.Map;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -83,14 +77,15 @@ public class ApiUserController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     @GetMapping(path = "/users/{username}/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public ResponseEntity<User> getUser(@PathVariable("username") String username) {
         User u = this.userService.getUserByUsername(username);
-        if (u != null && u.getIsDeleted() == false)
+        if (u != null && u.getIsDeleted() == false) {
             return new ResponseEntity<>(u, HttpStatus.OK);
-        return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/users/bin/{username}/")
@@ -132,10 +127,8 @@ public class ApiUserController {
         User u = this.userService.getUserByUsername(user.getName());
         return new ResponseEntity<>(u, HttpStatus.OK);
     }
-    
-     @PostMapping(path = "/users/", 
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, 
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+
+    @PostMapping(path = "/users/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @CrossOrigin
     public ResponseEntity<User> addUser(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
         User user = this.userService.addUser(params, avatar);
