@@ -1,6 +1,6 @@
 {
   "name": "oupia",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@goongmaps/goong-geocoder": "^1.1.1",
@@ -63,5 +63,8 @@
   "browser": {
     "path": false,
     "stream": false
-  }
+  },
+  "description": "website rent hostel",
+  "main": "index.js",
+  "license": "MIT"
 }

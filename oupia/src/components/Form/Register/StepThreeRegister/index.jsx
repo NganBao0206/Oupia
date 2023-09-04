@@ -5,7 +5,7 @@ import { FormContext } from '../../../../pages/Register';
 
 const StepThreeRegister = () => {
 
-    const {user, setUser, avatar, setAvatar, avatarFile} = useContext(FormContext);
+    const {user, setUser, avatar, setAvatar, setAvatarFile} = useContext(FormContext);
 
     const changeUser = (value, field) => {
         setUser(current => {
@@ -18,6 +18,7 @@ const StepThreeRegister = () => {
             const file = event.target.files[0];
             const fileURL = URL.createObjectURL(file);
             setAvatar(fileURL);
+            setAvatarFile(event.target.files);
         }
     };
 
@@ -33,7 +34,7 @@ const StepThreeRegister = () => {
                     <div className="flex items-center justify-center w-full">
                         <label htmlFor="avatar" className="flex items-center justify-center w-10 h-10 bg-Dark rounded-full cursor-pointer dark:hover:bg-Darker dark:bg-white hover:bg-blueTemplate dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                             <BiImageAdd className="text-white" size="25"></BiImageAdd>
-                            <input id="avatar" ref={avatarFile} type="file" className="hidden" accept='image/*' onChange={handleFileChange} />
+                            <input id="avatar" type="file" className="hidden" accept='image/*' onChange={handleFileChange} />
                         </label>
                     </div>
 
