@@ -112,7 +112,6 @@ public class ApiPostController {
         int count = postService.countPosts(params);
         int pages = (int) Math.ceil(count * 1.0 / pageSize);
         try {
-
             Map<String, Object> response = new HashMap<>();
             response.put("pages", pages);
             response.put("posts", posts);
@@ -159,4 +158,6 @@ public class ApiPostController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    
+    
 }

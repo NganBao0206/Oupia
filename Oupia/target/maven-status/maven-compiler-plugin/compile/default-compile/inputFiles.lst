@@ -23,6 +23,7 @@
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/service/impl/CommentServiceImpl.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/validator/WebAppValidator.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/pojo/Follow.java
+/home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/service/impl/StatServiceImpl.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/repository/PostRepository.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/configs/JwtSecurityConfig.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/controllers/MotelController.java
@@ -36,9 +37,11 @@
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/enums/UserRole.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/validator/UsernameValidator.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/controllers/ApiMapController.java
+/home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/controllers/ApiStatController.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/filters/JwtAuthenticationTokenFilter.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/validator/DobValidator.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/validator/ImagesValidator.java
+/home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/repository/impl/StatRepositoryImpl.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/enums/Status.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/pojo/PostRentDetail.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/service/CommentService.java
@@ -54,6 +57,7 @@
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/pojo/Comment.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/pojo/Rate.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/controllers/ApiMotelController.java
+/home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/service/StatService.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/configs/SpringSecurityConfig.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/controllers/IndexController.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/repository/impl/ImageRepositoryImpl.java
@@ -63,4 +67,5 @@
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/utils/SlugUtils.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/controllers/ApiCommentController.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/service/impl/PostServiceImpl.java
+/home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/repository/StatRepository.java
 /home/genji/Documents/Oupiaa/Oupia/src/main/java/com/pn/repository/impl/MotelRepositoryImpl.java
