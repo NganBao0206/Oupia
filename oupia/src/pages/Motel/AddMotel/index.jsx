@@ -3,8 +3,8 @@ import { Button, Card } from 'flowbite-react';
 import AddMotelForm from '../../../components/Form/AddMotelForm';
 import "./style.scss";
 import AddMotelStepper from '../../../components/Stepper/AddMotelStepper';
-import StepTwoLandlordForm from '../../../components/Form/LandlordForm/StepTwoLandlordForm';
-import StepThreeLandlordForm from '../../../components/Form/LandlordForm/StepThreeLandlordForm';
+import StepTwoLandlordForm from '../../../components/Form/LandlordForm/StepThreeLandlordForm';
+import StepThreeLandlordForm from '../../../components/Form/LandlordForm/StepTwoLandlordForm';
 import MyBreadCrumb from '../../../components/MyBreadCrumb';
 
 

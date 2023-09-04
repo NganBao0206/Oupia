@@ -1,7 +1,7 @@
 import React from 'react';
 import { LuSettings } from 'react-icons/lu';
 import { PiClipboardTextBold } from 'react-icons/pi';
-import { HiOutlineHomeModern } from 'react-icons/hi2';   
+import { HiOutlineHomeModern } from 'react-icons/hi2';
 
 const LandlordStepper = (props) => {
     return (
@@ -28,12 +28,12 @@ const LandlordStepper = (props) => {
                             <path stroke="currentColor" strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5" />
                         </svg>
                     </div>
-                    <span className="px-3 whitespace-nowrap">Thông tin</span>
+                    <span className="px-3 whitespace-nowrap">Nội dung bài viết</span>
                 </li> : <li className="flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block dark:after:border-gray-700">
                     <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
-                        <LuSettings className="w-4 h-4 text-gray-500 lg:w-5 lg:h-5 dark:text-gray-100" />
+                        <PiClipboardTextBold className="w-4 h-4 text-gray-500 lg:w-5 lg:h-5 dark:text-gray-100" />
                     </div>
-                    <span className="px-3 whitespace-nowrap">Thông tin</span>
+                    <span className="px-3 whitespace-nowrap">Nội dung bài viết</span>
                 </li>}
 
             {props.step > 2 ?
@@ -43,12 +43,12 @@ const LandlordStepper = (props) => {
                             <path stroke="currentColor" strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5" />
                         </svg>
                     </div>
-                    <span className="px-3 whitespace-nowrap">Nội dung</span>
+                    <span className="px-3 whitespace-nowrap">Chi tiết bài viết</span>
                 </li> : <li className="flex items-center ">
                     <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
-                        <PiClipboardTextBold className="w-4 h-4 text-gray-500 lg:w-5 lg:h-5 dark:text-gray-100" />
+                        <LuSettings className="w-4 h-4 text-gray-500 lg:w-5 lg:h-5 dark:text-gray-100" />
                     </div>
-                    <span className="px-3 whitespace-nowrap">Nội dung</span>
+                    <span className="px-3 whitespace-nowrap">Chi tiết bài viết</span>
                 </li>}
         </ol>
     );
