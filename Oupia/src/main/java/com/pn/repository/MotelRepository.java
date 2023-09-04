@@ -6,6 +6,7 @@ package com.pn.repository;
 
 import com.pn.pojo.Image;
 import com.pn.pojo.Motel;
+import com.pn.pojo.Post;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,5 +30,6 @@ public interface MotelRepository {
     boolean destroyMotel(String slug);
 
     boolean restoreMotel(String slug);
+
     List<String> findSlugsStartingWith(String slug);
 }

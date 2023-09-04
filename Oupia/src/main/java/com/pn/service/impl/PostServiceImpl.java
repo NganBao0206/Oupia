@@ -63,6 +63,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean addOrUpdatePost(Post post) {
+        preparePost(post);
+        return postRepository.addOrUpdatePost(post);
+    }
+
+    @Override
+    public Post preparePost(Post post) {
         String slug = slugify.slugify(post.getTitle());
         List<String> existingSlugs = postRepository.findSlugsStartingWith(slug);
         slug = slugUtils.generateUniqueSlug(slug, existingSlugs);
@@ -99,9 +105,8 @@ public class PostServiceImpl implements PostService {
             }
         }
         post.setImageSet(imgSet);
-        return postRepository.addOrUpdatePost(post);
+        return post;
     }
-
     @Override
     public Post getPostBySlug(String slug) {
         return postRepository.getPostBySlug(slug);

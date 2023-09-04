@@ -4,6 +4,8 @@
  */
 package com.pn.repository.impl;
 
+import com.pn.pojo.Motel;
+import com.pn.pojo.Post;
 import com.pn.pojo.User;
 import com.pn.repository.UserRepository;
 import java.util.ArrayList;
@@ -198,6 +200,7 @@ public class UserRepositoryImpl implements UserRepository {
             return true;
         } catch (HibernateException ex) {
             ex.printStackTrace();
+            System.out.println("casi nayL" + ex.getMessage());
             return false;
         }
     }

@@ -4,6 +4,8 @@
  */
 package com.pn.service;
 
+import com.pn.pojo.Motel;
+import com.pn.pojo.Post;
 import java.util.List;
 import com.pn.pojo.User;
 import java.util.Map;
@@ -32,5 +34,7 @@ public interface UserService extends UserDetailsService {
     boolean restoreUser(String username);
 
     boolean authUser(String username, String password);
+        
+     User prepareUser(User u);
 
 }

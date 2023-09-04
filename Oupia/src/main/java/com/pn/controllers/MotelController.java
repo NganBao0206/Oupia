@@ -12,6 +12,7 @@ import com.pn.pojo.PostRentDetail;
 import com.pn.pojo.User;
 import com.pn.service.ImageService;
 import com.pn.service.MotelService;
+import com.pn.service.MultipleService;
 import com.pn.service.PostService;
 import com.pn.service.UserService;
 import com.pn.validator.WebAppValidator;
@@ -61,9 +62,12 @@ public class MotelController {
     @Autowired
     private ImageService imageService;
     @Autowired
+    private MultipleService multipleService;
+    @Autowired
     private WebAppValidator postRentValidator;
     @Autowired
     private WebAppValidator motelValidator;
+    
     @Autowired
     Validator validator;
 
@@ -138,7 +142,9 @@ public class MotelController {
             Post post = detail.getPostId();
             post.setUserId(motel.getUserId());
             post.setPostRentDetail(detail);
-            if (this.motelService.addOrUpdateMotel(motel) == true && this.postService.addOrUpdatePost(post)) {
+            motel = motelService.prepareMotel(motel);
+            post = postService.preparePost(post);
+            if (this.multipleService.addMotelWithPost(motel, post)) {
                 redirectAttributes.addFlashAttribute("successMessage", "Thêm/sửa thành công nhà trọ.");
                 return "redirect:/motels";
             }

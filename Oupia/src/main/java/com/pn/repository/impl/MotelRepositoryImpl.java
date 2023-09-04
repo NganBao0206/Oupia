@@ -244,7 +244,7 @@ public class MotelRepositoryImpl implements MotelRepository {
         }
         return false;
     }
-    
+
     @Override
     public List<String> findSlugsStartingWith(String slug) {
         Session s = this.factory.getObject().getCurrentSession();

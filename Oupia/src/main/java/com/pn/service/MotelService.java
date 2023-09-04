@@ -6,6 +6,7 @@ package com.pn.service;
 
 import com.pn.pojo.Image;
 import com.pn.pojo.Motel;
+import com.pn.pojo.Post;
 import com.pn.pojo.User;
 import java.util.List;
 import java.util.Map;
@@ -30,4 +31,6 @@ public interface MotelService {
     boolean destroyMotel(String slug);
 
     boolean restoreMotel(String slug);
+    
+    Motel prepareMotel(Motel motel);
 }
