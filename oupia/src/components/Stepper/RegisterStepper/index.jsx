@@ -6,7 +6,7 @@ import { FormContext } from '../../../pages/Register';
 
 
 const RegisterStepper = (props) => {
-    const { user, setUser } = useContext(FormContext);
+    const { user } = useContext(props.context);
 
     if (user.userRole === "TENANT") {
         return (<>

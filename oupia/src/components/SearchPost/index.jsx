@@ -12,7 +12,7 @@ import APIs, { endpoints } from "../../configs/APIs";
 const SearchPost = () => {
     const [isExtraFilter, setIsExtraFilter] = useState(false);
     const [results, setResults] = useState([]);
-    const { params, setParams } = useContext(ParamsContext);
+    const {params, setParams} = useContext(ParamsContext);
     const [address, setAddress] = useState(params.location);
     const [isSelect, setIsSelect] = useState(false);
     const myQuery = useDebounce(address, 300);

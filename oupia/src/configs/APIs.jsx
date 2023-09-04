@@ -18,6 +18,7 @@ export const endpoints = {
     "mapDetail": `${SERVER_CONTEXT}/api/map/detail/`,
     "addComment":  `${SERVER_CONTEXT}/api/comments/`,
     "register-landlord": `${SERVER_CONTEXT}/api/register-landlord/`,
+    "favour": `${SERVER_CONTEXT}/api/favourites/`,
 }
 
 export const authApi = () => {

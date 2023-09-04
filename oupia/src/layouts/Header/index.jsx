@@ -125,7 +125,7 @@ const Header = () => {
                     </Navbar.Collapse>
                 </Navbar>
             </div>
-            {bgTrans ? <></> : <div className="py-16 mt-3"></div>}
+            {bgTrans ? <></> : <div className="py-9 mt-3"></div>}
         </>
 
     );

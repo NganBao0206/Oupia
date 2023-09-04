@@ -1,18 +1,85 @@
 import { Card, Carousel } from 'flowbite-react';
-import React, { useContext } from 'react';
-import { LuBedSingle, LuHeart } from "react-icons/lu";
+import React, { useContext, useEffect, useState } from 'react';
+import { LuBedSingle } from "react-icons/lu";
 import { BiArea, BiBath } from 'react-icons/bi';
-import { PiShareFat, PiUsersThree } from 'react-icons/pi';
+import { PiHeartBold, PiHeartBreakFill, PiHeartFill, PiShareFat, PiUsersThree } from 'react-icons/pi';
 import { IoLocationOutline } from 'react-icons/io5';
 import { LiaPhoneSolid } from 'react-icons/lia';
 import { HiOutlineHomeModern } from 'react-icons/hi2';
 import formatCurrency from '../../../utils/priceUtils';
 import { PostContext } from '../../../pages/Post/PostDetail';
+import { authApi, endpoints } from '../../../configs/APIs';
+import { UserContext } from '../../../App';
 
 
 const PostContent = () => {
     const { post, images } = useContext(PostContext);
     const price = formatCurrency(post.postRentDetail.price)
+    const [currentUser,] = useContext(UserContext);
+    const [favour, setFavour] = useState(null);
+    const [isHeartHover, setIsHeartHover] = useState(false);
+    const getFavourStatus = async () => {
+        try {
+            const res = await authApi().get(endpoints["favour"], {
+                params: {
+                    userId: currentUser.id,
+                    postId: post.id
+                }
+            });
+
+            if (res.status === 200) {
+                setFavour(res.data);
+            }
+            else {
+                setFavour(null);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    useEffect(() => {
+        getFavourStatus();
+    }, [])
+
+    const addFavour = async () => {
+        try {
+            const favourite = {
+                postId: post,
+            }
+            const res = await authApi().post(endpoints["favour"], favourite);
+
+            if (res.status === 201) {
+                setFavour(res.data);
+            }
+            else {
+                alert("error");
+                setFavour(null);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const removeFavour = async () => {
+        try {
+            const res = await authApi().delete(endpoints["favour"], {
+                params: {
+                    favId: favour.id
+                }
+            });
+
+            if (res.status === 204) {
+                setFavour(null);
+            }
+            else {
+                alert("error");
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     return (
         <Card className="h-full">
             <Carousel slideInterval={5000} className="mb-5" style={{ height: "600px" }}>
@@ -30,7 +97,13 @@ const PostContent = () => {
             <div className="flex">
                 <h3 className="font-bold text-blueTemplate text-lg">{price}đ/tháng</h3>
                 <div className="ml-auto flex gap-3 mr-3">
-                    <LuHeart size="25" className="text-heartColor" />
+                    <div className="w-fit h-fit cursor-pointer" onClick={() => favour? removeFavour() : addFavour()} onMouseEnter={e => setIsHeartHover(true)} onMouseLeave={e => setIsHeartHover(false)}>
+                        {favour && !isHeartHover && <PiHeartFill size="25" className="text-heartColor" />}
+                        {!favour && !isHeartHover && <PiHeartBold size="25" className="text-heartColor" />}
+                        {favour && isHeartHover && <PiHeartBreakFill size="25" className="text-heartColor" />}
+                        {!favour && isHeartHover && <PiHeartFill size="25" className="text-heartColor" />}
+                    </div>
+
                     <PiShareFat size="25" className="text-Dark" />
                 </div>
             </div>

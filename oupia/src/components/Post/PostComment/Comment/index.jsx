@@ -1,4 +1,5 @@
 import { Avatar } from "flowbite-react";
+import { Link } from "react-router-dom";
 
 const Comment = (props) => {
     const { comment } = props
@@ -10,7 +11,9 @@ const Comment = (props) => {
                 </div>
                 <div className="flex-grow">
                     <div class="flex gap-2">
-                        <p className="font-bold text-base">{comment.userId.fullName}</p>
+                        <Link to={`/${comment.userId.username}`}>
+                            <p className="font-bold text-base">{comment.userId.fullName}</p>
+                        </Link>
                         <p className="text-sm text-gray-500">{comment.createdAt}</p>
                     </div>
                     <div className="text-sm">

@@ -2,8 +2,8 @@ import { Label, Select, TextInput } from 'flowbite-react';
 import React, { useContext } from 'react';
 import { FormContext } from '../../../../pages/Register';
 
-const StepTwoRegister = () => {
-    const {user, setUser} = useContext(FormContext);
+const StepTwoRegister = ({context}) => {
+    const {user, setUser} = useContext(context);
 
     const changeUser = (value, field) => {
         setUser(current => {
@@ -47,7 +47,7 @@ const StepTwoRegister = () => {
                 <div className="mb-2 block">
                     <Label className="text-lg mt-2" htmlFor="identity" value="Số CMND/ CCCD" />
                 </div>
-                <TextInput id="identity" name="identity" value={user.identity} required shadow type="text" onChange={e => changeUser(e.target.value, e.target.name)}/>
+                <TextInput id="identity" name="identityNumber" value={user.identityNumber} required shadow type="text" onChange={e => changeUser(e.target.value, e.target.name)}/>
             </div>
             <div className="mt-3">
                 <div className="mb-2 block">

@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
 import { RiSearch2Line } from "react-icons/ri";
 import { HiOutlineHomeModern } from 'react-icons/hi2';
-import { FormContext } from '../../../../pages/Register';
 
-const StepOneRegister = () => {
-    const { user, setUser, setComponents } = useContext(FormContext);
+const StepOneRegister = ({context}) => {
+    const { user, setUser } = useContext(context);
 
     const changeUser = (value, field) => {
         setUser(current => {

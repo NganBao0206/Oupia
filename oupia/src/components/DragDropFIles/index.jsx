@@ -1,31 +1,29 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef } from 'react';
 import { HiOutlinePhotograph } from 'react-icons/hi';
 import { FaDeleteLeft } from 'react-icons/fa6';
 
-const DragDropFiles = ({ onFilesChange }) => {
-    const [files, setFiles] = useState([]);
+const DragDropFiles = ({context}) => {
+    const {postImages, setPostImages} = useContext(context);
     const inputRef = useRef();
 
     const handleDragOver = (event) => {
         event.preventDefault();
+        console.log(postImages);
     }
 
     const handleDrop = (event) => {
         event.preventDefault();
         const newFiles = Array.from(event.dataTransfer.files);
-        setFiles(files => [...files, ...newFiles]);
-        onFilesChange(newFiles);
+        setPostImages(postImages => [...postImages, ...newFiles]);
     }
 
     const handleFileChange = (event) => {
-        const newFiles = Array.from(event.target.files);
-        setFiles(files => [...files, ...newFiles]);
-        onFilesChange(newFiles);
+        const newFiles = Array.prototype.slice.call(event.target.files)
+        setPostImages(current => [...current, ...newFiles]);
     }
 
     const handleDelete = (file) => {
-        setFiles(files => files.filter(f => f !== file));
-        onFilesChange(files.filter(f => f !== file));
+        setPostImages(postImages => postImages.filter(f => f !== file));
     }
 
     return (
@@ -55,11 +53,11 @@ const DragDropFiles = ({ onFilesChange }) => {
                     <p className="text-xs leading-5 text-gray-600">Chỉ nhận ảnh PNG, JPG</p>
                 </div>
             </div>
-            {files.length !== 0  && ( <div className="grid grid-cols-6 gap-5 mt-10">
-                {files.map((file, index) => (
-                    <div className="relative">
+            {postImages.length !== 0  && ( <div className="grid grid-cols-6 gap-5 mt-10">
+                {postImages.map((file, index) => (
+                    <div className="relative w-32 h-32">
                         <FaDeleteLeft size="25" className="text-blueTemplate absolute right-2 top-2 cursor-pointer" onClick={() => handleDelete(file)}/>
-                        <img key={index} className="rounded-xl h-full w-full" src={URL.createObjectURL(file)} alt={file.name} />
+                        <img key={index} className="rounded-xl w-full h-full object-cover" src={URL.createObjectURL(file)} alt={file.name} />
                     </div>
                 ))}
             </div>)}

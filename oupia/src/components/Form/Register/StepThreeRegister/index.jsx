@@ -3,9 +3,9 @@ import React, { useContext } from 'react';
 import { BiImageAdd } from "react-icons/bi";
 import { FormContext } from '../../../../pages/Register';
 
-const StepThreeRegister = () => {
+const StepThreeRegister = ({context}) => {
 
-    const {user, setUser, avatar, setAvatar, setAvatarFile} = useContext(FormContext);
+    const {user, setUser, avatar, setAvatar, setAvatarFile} = useContext(context);
 
     const changeUser = (value, field) => {
         setUser(current => {
@@ -57,7 +57,7 @@ const StepThreeRegister = () => {
                     <div className="mb-2 block">
                         <Label className="text-lg mt-2" htmlFor="confirmPass" value="Xác nhận mật khẩu" />
                     </div>
-                    <TextInput id="confirmPass" name="confirmPass" value={user.confirmPass} required  shadow type="password"  onChange={e => changeUser(e.target.value, e.target.name)}/>
+                    <TextInput id="confirmPass" name="confirmPassword" value={user.confirmPassword} required  shadow type="password"  onChange={e => changeUser(e.target.value, e.target.name)}/>
                 </div>
             </div>
 

@@ -16,8 +16,6 @@ const CommentInput = () => {
         const comment = {
             content: content,
             postId: post,
-            userId: currentUser
-
         }
 
         const addComment = async () => {

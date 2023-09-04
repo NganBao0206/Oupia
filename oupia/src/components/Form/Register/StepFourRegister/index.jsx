@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import imgMail from "../../../../resources/mail.png";
 import { FormContext } from '../../../../pages/Register';
 
-const StepFourRegister = () => {
-    const {user} = useContext(FormContext);
+const StepFourRegister = ({context}) => {
+    const {user} = useContext(context);
 
     return (
         <div className="flex flex-col items-center mx-auto">
