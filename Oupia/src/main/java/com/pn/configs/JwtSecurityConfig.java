@@ -63,14 +63,12 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/motels/",
                 "/api/login/",
                 "/api/comments/",
+                "api/favourites",
                 "/api/posts/")
                 .permitAll();
         
         http.antMatcher("/api/**").httpBasic().authenticationEntryPoint(restServicesEntryPoint()).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/comments/**").access("hasRole('TENANT') or hasRole('LANDLORD')")
-                .antMatchers(HttpMethod.POST, "/api/**").access("hasRole('TENANT') or hasRole('LANDLORD')")
-                .antMatchers(HttpMethod.DELETE, "/api/**").access("hasRole('TENANT') or hasRole('LANDLORD')")
                 .and()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());

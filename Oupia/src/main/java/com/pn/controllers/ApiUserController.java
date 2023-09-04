@@ -1,7 +1,15 @@
 package com.pn.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pn.components.JwtService;
+import com.pn.pojo.Motel;
+import com.pn.pojo.Post;
+import com.pn.pojo.PostRentDetail;
 import com.pn.pojo.User;
+import com.pn.service.MotelService;
+import com.pn.service.MultipleService;
+import com.pn.service.PostService;
 import com.pn.service.UserService;
 import java.util.Map;
 import java.security.Principal;
@@ -39,6 +47,16 @@ public class ApiUserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MotelService motelService;
+
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    private MultipleService multipleService;
+
     @Autowired
     private JwtService jwtService;
 
@@ -126,6 +144,34 @@ public class ApiUserController {
     public ResponseEntity<User> details(Principal user) {
         User u = this.userService.getUserByUsername(user.getName());
         return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/register-landlord/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @CrossOrigin
+    public ResponseEntity<?> register(
+            @RequestParam Map<String, String> info,
+            @RequestPart("avatar") MultipartFile avatarFile,
+            @RequestPart(name = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        User userObj = mapper.readValue(info.get("user"), User.class);
+        Motel motelObj = mapper.readValue(info.get("motel"), Motel.class);
+        Post postObj = mapper.readValue(info.get("post"), Post.class);
+        PostRentDetail postRentDetailObj = mapper.readValue(info.get("postRentDetail"), PostRentDetail.class);
+
+        motelObj.setUserId(userObj);
+        postRentDetailObj.setMotelId(motelObj);
+        postRentDetailObj.setPostId(postObj);
+        postRentDetailObj.setImgImport(files);
+        postObj.setPostRentDetail(postRentDetailObj);
+        postObj.setUserId(userObj);
+
+        userObj.setFile(avatarFile);
+
+        userObj = userService.prepareUser(userObj);
+        motelObj = motelService.prepareMotel(motelObj);
+        postObj = postService.preparePost(postObj);
+        multipleService.addUserWithMotelPost(userObj, motelObj, postObj);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/users/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})

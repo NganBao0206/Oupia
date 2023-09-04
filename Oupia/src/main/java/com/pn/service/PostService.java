@@ -27,4 +27,6 @@ public interface PostService {
     boolean destroyPost(String slug);
 
     boolean restorePost(String slug);
+
+    Post preparePost(Post post);
 }

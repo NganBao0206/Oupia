@@ -3,6 +3,7 @@ com/pn/pojo/Favourite_.class
 com/pn/service/CommentService.class
 com/pn/repository/CommentRepository.class
 com/pn/pojo/Rate.class
+com/pn/repository/impl/FavouriteRepositoryImpl.class
 com/pn/repository/PostRepository.class
 com/pn/filters/CustomAccessDeniedHandler.class
 com/pn/service/StatService.class
@@ -27,6 +28,7 @@ com/pn/pojo/PostFindDetail_.class
 com/pn/repository/impl/CommentRepositoryImpl.class
 com/pn/repository/impl/StatRepositoryImpl.class
 com/pn/pojo/Rate_.class
+com/pn/service/MultipleService.class
 com/pn/controllers/ApiStatController.class
 com/pn/controllers/PostController.class
 com/pn/controllers/ApiUserController.class
@@ -42,6 +44,7 @@ com/pn/enums/Status.class
 com/pn/pojo/User.class
 com/pn/formatters/PostFormatter.class
 com/pn/repository/impl/ImageRepositoryImpl.class
+com/pn/repository/FavouriteRepository.class
 com/pn/pojo/Image.class
 com/pn/service/impl/ImageServiceImpl.class
 com/pn/repository/MotelRepository.class
@@ -50,6 +53,7 @@ com/pn/formatters/MotelFormatter.class
 com/pn/service/ImageService.class
 com/pn/validator/ConfirmPasswordValidator.class
 com/pn/pojo/Comment.class
+com/pn/controllers/ApiFavouriteController.class
 com/pn/controllers/IndexController.class
 com/pn/validator/WebAppValidator.class
 com/pn/pojo/Image_.class
@@ -60,14 +64,17 @@ com/pn/repository/ImageRepository.class
 com/pn/service/PostService.class
 com/pn/controllers/ApiCommentController.class
 com/pn/pojo/Motel.class
+com/pn/service/impl/FavouriteServiceImpl.class
 com/pn/service/impl/CommentServiceImpl.class
 com/pn/repository/StatRepository.class
 com/pn/service/impl/PostServiceImpl.class
 com/pn/controllers/UserController.class
 com/pn/pojo/User_.class
 com/pn/controllers/ApiMotelController.class
+com/pn/service/FavouriteService.class
 com/pn/repository/UserRepository.class
 com/pn/repository/impl/UserRepositoryImpl.class
+com/pn/service/impl/MultipleServiceImpl.class
 com/pn/validator/PasswordValidator.class
 com/pn/enums/UserRole.class
 com/pn/configs/SecurityWebApplicationInitializer.class

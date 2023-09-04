@@ -4,6 +4,9 @@ import com.pn.enums.Gender;
 import com.pn.enums.Status;
 import com.pn.enums.UserRole;
 import com.pn.pojo.User;
+import com.pn.service.MotelService;
+import com.pn.service.MultipleService;
+import com.pn.service.PostService;
 import com.pn.service.UserService;
 import com.pn.validator.WebAppValidator;
 import java.text.SimpleDateFormat;
@@ -41,10 +44,13 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+
     @Autowired
     private Environment env;
     @Autowired
     private WebAppValidator userValidator;
+    
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -155,3 +161,28 @@ public class UserController {
         return "login";
     }
 }
+
+//import com.google.firebase.FirebaseApp;
+//import com.google.firebase.FirebaseOptions;
+//import com.google.firebase.database.*;
+//
+//// Khởi tạo Firebase
+//FirebaseOptions options = new FirebaseOptions.Builder()
+//    .setCredentials(...)
+//    .build();
+//FirebaseApp.initializeApp(options);
+//
+//// Lấy tham chiếu đến node 'messages' trong cơ sở dữ liệu
+//DatabaseReference ref = FirebaseDatabase.getInstance().getReference("messages");
+//
+//// Lắng nghe sự thay đổi dữ liệu và xử lý tin nhắn mới
+//ref.addChildEventListener(new ChildEventListener() {
+//    @Override
+//    public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
+//        Message message = snapshot.getValue(Message.class);
+//        // Xử lý tin nhắn mới
+//    }
+//
+//    // ...
+//});
+

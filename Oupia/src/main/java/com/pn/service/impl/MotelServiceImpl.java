@@ -41,6 +41,8 @@ public class MotelServiceImpl implements MotelService {
     @Autowired
     private MotelRepository motelRepository;
     @Autowired
+    private MotelRepository postRepository;
+    @Autowired
     private ImageRepository imageRepository;
     @Autowired
     private Cloudinary cloudinary;
@@ -51,14 +53,19 @@ public class MotelServiceImpl implements MotelService {
 
     @Override
     public boolean addOrUpdateMotel(Motel motel) {
-        if (motel.getId() == null) {
+        prepareMotel(motel);
+        return motelRepository.addOrUpdateMotel(motel);
+    }
+    
+    @Override
+    public Motel prepareMotel(Motel motel) {
+         if (motel.getId() == null) {
             String slug = slugify.slugify(motel.getName());
             List<String> existingSlugs = motelRepository.findSlugsStartingWith(slug);
             slug = slugUtils.generateUniqueSlug(slug, existingSlugs);
             motel.setSlug(slug);
-            
         }
-        return motelRepository.addOrUpdateMotel(motel);
+         return motel;
     }
 
     @Override
@@ -110,5 +117,4 @@ public class MotelServiceImpl implements MotelService {
     public boolean restoreMotel(String slug) {
         return motelRepository.restoreMotel(slug);
     }
-
 }
