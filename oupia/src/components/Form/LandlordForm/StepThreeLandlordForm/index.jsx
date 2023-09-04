@@ -32,8 +32,6 @@ const StepThreeLandlordForm = ({context}) => {
                                 </div>
                             </div>
                         </div>
-
-
                         <div className="sm:col-span-6 sm:col-start-1">
                             <label htmlFor="area" className="block leading-6 text-gray-900">
                                 Diện tích

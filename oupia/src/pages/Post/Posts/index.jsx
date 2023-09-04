@@ -27,7 +27,6 @@ const Posts = () => {
                 console.log(res.data)
                 setPosts(res.data.posts);
             }
-
         } catch (err) {
             console.error(err);
         }
@@ -38,7 +37,7 @@ const Posts = () => {
         console.log(debouncedParams);
 
         getPost();
-    }, [debouncedParams])
+    }, [debouncedParams, params])
 
     return (
         <div className="container">

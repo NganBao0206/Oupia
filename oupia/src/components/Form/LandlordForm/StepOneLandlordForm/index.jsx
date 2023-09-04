@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ReactMapGL from '@goongmaps/goong-map-react';
 import { MdAdd } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { Button } from 'flowbite-react';
+import { Button, Label, Select } from 'flowbite-react';
+import APIs, { endpoints } from '../../../../configs/APIs';
+import { UserContext } from '../../../../App';
 
 const StepOneLandlordForm = () => {
+    const [currentUser,] = useContext(UserContext);
+    const [motels, setMotels] = useState(null);
     const [viewport, setViewport] = useState({
         width: 400,
         height: 400,
@@ -13,19 +17,44 @@ const StepOneLandlordForm = () => {
         zoom: 8
     });
 
+    useEffect(() => {
+        let getMotels = async () => {
+            try {
+                let res = await APIs.get(endpoints['motels'], {
+                    params: {
+                        username: currentUser.username,
+                        isAccepted: "ACCEPTED",
+                        isDelete: 0,
+                    }
+                });
+                if (res.status === 200) {
+                    console.log(res.data)
+                    setMotels(res.data);
+                }
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        getMotels();
+    })
+
     return (
         <div>
             <div>
                 <h2 className="text-2xl font-bold leading-7 text-blueTemplate">Chọn phòng trọ</h2>
-                <div className="flex gap-5">
-                    <div className="w-1/3">
-                        <label htmlFor="motels" className="block leading-6 text-gray-900 mt-5">Tên nhà trọ</label>
-                        <div className="mt-2">
-                            <select id="motels" name="motels" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                            </select>
+                <div className="grid grid-cols-8 gap-5">
+                    <div className="col-span-6 mt-5">
+                        <div className="mb-2 block">
+                            <Label htmlFor="motels" value="Chọn nhà trọ" className="text-md"/>
                         </div>
+                        <Select id="motels" required                    >
+                            {motels && motels.map((motel, index) => (
+                                <option key={index} value={motel.id}>{motel.name}</option>
+                            ))}
+                        </Select>
                     </div>
-                    <Button className="bg-blueTemplate mt-auto" size="sm">
+                    <Button className="bg-blueTemplate mt-auto col-span-2">
                         <Link to="/motels/add" className="flex items-center gap-2" >
                             <MdAdd className="h-5 w-5" color='white' />
                             <p className="font-bold">
