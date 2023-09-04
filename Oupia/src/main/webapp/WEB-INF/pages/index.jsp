@@ -41,5 +41,6 @@
         <p class="text-center col-12">Thống kê theo năm</p>
     </div>
 </div>
+<script src="<c:url value="/js/stat.js"/>"></script>
 
 

@@ -107,9 +107,7 @@
         }
     }).then(res => {
         if (res.status === 200)
-            return res.json()
-        else
-            location.reload();
+            return res.json();
     }).then(data => {
         document.querySelector("#adminAvatar").src = data["avatar"];
         document.querySelector("#adminAvatar2").src = data["avatar"];
