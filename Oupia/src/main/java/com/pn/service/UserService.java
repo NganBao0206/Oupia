@@ -10,6 +10,7 @@ import java.util.List;
 import com.pn.pojo.User;
 import java.util.Map;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -36,5 +37,7 @@ public interface UserService extends UserDetailsService {
     boolean authUser(String username, String password);
         
      User prepareUser(User u);
+
+    User addUser(Map<String, String> params, MultipartFile avatar);
 
 }

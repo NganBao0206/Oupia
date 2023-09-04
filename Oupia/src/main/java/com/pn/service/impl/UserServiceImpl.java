@@ -20,6 +20,10 @@ import com.pn.repository.UserRepository;
 import com.pn.service.UserService;
 import com.pn.utils.SlugUtils;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -183,5 +187,43 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean authUser(String username, String password) {
         return this.userRepository.authUser(username, password);
+    }
+
+    @Override
+    public User addUser(Map<String, String> params, MultipartFile avatar) {
+          User u = new User();
+        u.setFullName(params.get("fullName"));
+        String dateString = params.get("dob");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date dob;
+        try {
+            dob = df.parse(dateString);
+            u.setDob(dob);
+        } catch (ParseException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        u.setGender(params.get("gender"));
+        u.setEmail(params.get("email"));
+        u.setIdentityNumber(params.get("identity"));
+        u.setUsername(params.get("username"));
+        u.setPassword(this.passwordEncoder.encode(params.get("password")));
+        u.setUserRole(params.get("role"));
+        if (params.get("role").equals("TENANT")) {
+            u.setStatus("ACCEPTED");
+        } else {
+            u.setStatus("PENDING");
+        }
+        if (!avatar.isEmpty()) {
+            try {
+                Map res = this.cloudinary.uploader().upload(avatar.getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                u.setAvatar(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        this.userRepository.addUser(u);
+        return u;
     }
 }

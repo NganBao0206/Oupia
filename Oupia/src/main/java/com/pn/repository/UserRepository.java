@@ -22,6 +22,8 @@ public interface UserRepository {
 
     boolean addOrUpdateUser(User u);
 
+    User addUser(User u);
+
     User getUserByUsername(String username);
 
     boolean existsByUsername(String username, int id);
@@ -35,5 +37,4 @@ public interface UserRepository {
     boolean authUser(String username, String password);
 
 //    int countFollower(String userSlug);
-
 }
