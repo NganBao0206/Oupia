@@ -10,7 +10,7 @@ const Comment = (props) => {
                     <Avatar className="w-fit my-1" alt="User Avatar" img={comment.userId.avatar} size="md" rounded />
                 </div>
                 <div className="flex-grow">
-                    <div class="flex gap-2">
+                    <div className="flex gap-2">
                         <Link to={`/${comment.userId.username}`}>
                             <p className="font-bold text-base">{comment.userId.fullName}</p>
                         </Link>

@@ -1,16 +1,18 @@
 import PostRentItem from "../PostRentItem";
 
-const PostRentList = (props) => {
+const PostList = (props) => {
     const {posts} = props;
     if (!posts) return <>Doi xiu nha</> 
     return (
         <>
         {posts.map((post) => (
-            <PostRentItem post={post}></PostRentItem>
+            <>
+            {post.postRentDetail != null && <PostRentItem post={post}></PostRentItem>}
+            </>
         ))}
         </>
 
     );
 }
 
-export default PostRentList;
+export default PostList;

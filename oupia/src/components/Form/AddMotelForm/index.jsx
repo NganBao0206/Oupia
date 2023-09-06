@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { FormContext } from '../../../pages/Register';
 import { useDebounce } from 'use-debounce';
 import APIs, { endpoints } from '../../../configs/APIs';
 import goongJs from '@goongmaps/goong-js';
@@ -123,19 +122,19 @@ const AddMotelForm = ({context}) => {
                 <h2 className="text-2xl font-bold leading-7 text-blueTemplate">Thông tin nhà trọ</h2>
                 <div className="grid grid-cols-3 gap-5 my-5">
                     <div className="col-span-3">
-                        <label htmlFor="motelName" class="block mb-2 text-gray-900 dark:text-white">Tên phòng trọ</label>
-                        <input value={motel.name} onChange={e => changeMotel(e.target.value, "name")} type="text" id="motelName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5" />
+                        <label htmlFor="motelName" className="block mb-2 text-gray-900 dark:text-white">Tên phòng trọ</label>
+                        <input value={motel.name} onChange={e => changeMotel(e.target.value, "name")} type="text" id="motelName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5" />
                     </div>
                     <div className="col-span-3">
-                        <label htmlFor="motelPhone" class="block mb-2 text-gray-900 dark:text-white">Số điện thoại</label>
-                        <input value={motel.phoneNumber} onChange={e => changeMotel(e.target.value, "phoneNumber")} type="tel" id="motelPhone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5" />
+                        <label htmlFor="motelPhone" className="block mb-2 text-gray-900 dark:text-white">Số điện thoại</label>
+                        <input value={motel.phoneNumber} onChange={e => changeMotel(e.target.value, "phoneNumber")} type="tel" id="motelPhone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5" />
                     </div>
                     <div className="col-span-3 relative">
-                        <label htmlFor="location" class="block mb-2 text-gray-900 dark:text-white">Địa chỉ chi tiết</label>
+                        <label htmlFor="location" className="block mb-2 text-gray-900 dark:text-white">Địa chỉ chi tiết</label>
                         <input value={motel.fullLocation}
                             onChange={e => changeMotel(e.target.value, "fullLocation")}
                             onFocus={() => setIsFocused(true)}
-                            type="text" id="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5" />
+                            type="text" id="location" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5" />
                         <ul className={isFocused ? "absolute bg-Darker z-50 shadow mt-1 rounded-lg w-full py-2 text-sm text-white dark:text-gray-200" : "hidden"}>
                             {results.map((result) => (
                                 <li onClick={(e) => handleSelectPlace(e)} className="cursor-pointer px-4 py-2 hover:bg-blueTemplate hover:text-white" data-place-id={result.place_id}>{result.description}</li>
@@ -144,7 +143,7 @@ const AddMotelForm = ({context}) => {
                     </div>
 
                     <div className="col-span-3">
-                        <label class="block mb-2 text-gray-900 dark:text-white">Địa điểm trên bản đồ</label>
+                        <label className="block mb-2 text-gray-900 dark:text-white">Địa điểm trên bản đồ</label>
                         <div id="map" style={{ width: "100%", height: "350px" }}>
                         </div>
                     </div>

@@ -8,12 +8,12 @@ const PostRentItem = (props) => {
     const { post } = props;
     return (<>
 
-        <div className="w-full md:h-80 h-auto bg-white rounded-xl shadow-lg overflow-hidden my-16 text-Dark">
-            <div className="md:flex h-full">
-                <div className="md:shrink-0">
-                    <img className="h-80 w-full object-cover md:h-full md:w-96" src={post.image} alt="post image" />
+        <div className="w-full lg:h-80 h-auto bg-white rounded-xl shadow-lg overflow-hidden my-16 text-Dark">
+            <div className="grid grid-cols-10 h-full">
+                <div className="col-span-10 lg:col-span-4">
+                    <img className="h-80 w-full object-cover lg:h-full" src={post.image} alt="post image" />
                 </div>
-                <div className="px-8 py-3">
+                <div className="col-span-10 lg:col-span-6 px-8 py-3 mt-4 lg:mt-0">
                     <div className="flex gap-4 mb-3 items-center">
                         <Avatar className="" alt="Avatar" img={post.userId.avatar} rounded />
                         <div>

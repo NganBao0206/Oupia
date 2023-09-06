@@ -1,44 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
-import ReactMapGL from '@goongmaps/goong-map-react';
+import React, { useContext } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { Button, Label, Select } from 'flowbite-react';
-import APIs, { endpoints } from '../../../../configs/APIs';
-import { UserContext } from '../../../../App';
 
-const StepOneLandlordForm = () => {
-    const [currentUser,] = useContext(UserContext);
-    const [motels, setMotels] = useState(null);
-    const [viewport, setViewport] = useState({
-        width: 400,
-        height: 400,
-        latitude: 37.7577,
-        longitude: -122.4376,
-        zoom: 8
-    });
-
-    useEffect(() => {
-        let getMotels = async () => {
-            try {
-                let res = await APIs.get(endpoints['motels'], {
-                    params: {
-                        username: currentUser.username,
-                        isAccepted: "ACCEPTED",
-                        isDelete: 0,
-                    }
-                });
-                if (res.status === 200) {
-                    console.log(res.data)
-                    setMotels(res.data);
-                }
-
-            } catch (err) {
-                console.error(err);
-            }
-        }
-        getMotels();
-    })
-
+const StepOneLandlordForm = ({ context }) => {
+    const { motels, postRentDetail, setPostRentDetail } = useContext(context);
+    const changeMotel = (e) => {
+        setPostRentDetail(current => {
+            return { ...current, motelId: e.target.value }
+        })
+    }
     return (
         <div>
             <div>
@@ -46,13 +17,18 @@ const StepOneLandlordForm = () => {
                 <div className="grid grid-cols-8 gap-5">
                     <div className="col-span-6 mt-5">
                         <div className="mb-2 block">
-                            <Label htmlFor="motels" value="Chọn nhà trọ" className="text-md"/>
+                            <Label htmlFor="motels" value="Chọn nhà trọ" className="text-md hidden" />
                         </div>
-                        <Select id="motels" required                    >
+                        <select id="motels" onChange={(e) => changeMotel(e)} value={postRentDetail.motelId} className="w-full border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blueTemplate focus:border-blueTemplate"                    >
+                            <option selected={!postRentDetail.motelId} disabled >Chọn nhà trọ đăng bài</option>
                             {motels && motels.map((motel, index) => (
-                                <option key={index} value={motel.id}>{motel.name}</option>
+                                <option key={index} value={motel.id}>
+                                    <div className="p-3">
+                                        {motel.name}
+                                    </div>
+                                </option>
                             ))}
-                        </Select>
+                        </select>
                     </div>
                     <Button className="bg-blueTemplate mt-auto col-span-2">
                         <Link to="/motels/add" className="flex items-center gap-2" >
@@ -64,11 +40,6 @@ const StepOneLandlordForm = () => {
                     </Button>
                 </div>
             </div>
-
-            <ReactMapGL
-                {...viewport}
-                onViewportChange={nextViewport => setViewport(nextViewport)}
-            />
         </div>
     );
 };

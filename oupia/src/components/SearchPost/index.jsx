@@ -12,7 +12,7 @@ import APIs, { endpoints } from "../../configs/APIs";
 const SearchPost = () => {
     const [isExtraFilter, setIsExtraFilter] = useState(false);
     const [results, setResults] = useState([]);
-    const {params, setParams} = useContext(ParamsContext);
+    const { params, setParams } = useContext(ParamsContext);
     const [address, setAddress] = useState(params.location);
     const [isSelect, setIsSelect] = useState(false);
     const myQuery = useDebounce(address, 300);
@@ -63,9 +63,11 @@ const SearchPost = () => {
     useEffect(() => {
         if (!myQuery[0]) {
             setResults([]);
-            changeParams("", "location");
-            changeParams("", "latitude");
-            changeParams("", "longitude");
+            if (params.location) {
+                changeParams("", "location");
+                changeParams("", "latitude");
+                changeParams("", "longitude");
+            }
         }
         else if (myQuery[0] && isSelect === false) {
             getDatas(myQuery[0]);
@@ -79,7 +81,7 @@ const SearchPost = () => {
 
     const changeParams = (value, field) => {
         setParams(current => {
-            return { ...current, [field]: value };
+            return { ...current, [field]: value, page: 1 };
         });
     }
 

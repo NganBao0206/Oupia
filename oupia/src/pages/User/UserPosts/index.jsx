@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom/dist';
 import APIs, { endpoints } from '../../../configs/APIs';
-import PostRentList from '../../../components/Post/PostRentList';
+import PostList from '../../../components/Post/PostList';
 
 const UserPosts = (props) => {
     const { slugUser } = useParams();
@@ -35,7 +35,7 @@ const UserPosts = (props) => {
         return <>doi xiu</>
     }
     return (
-        <PostRentList posts={posts}></PostRentList>
+        <PostList posts={posts}></PostList>
 
     );
 };

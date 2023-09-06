@@ -114,7 +114,7 @@ const UserLayout = () => {
                         </div>
                         <div>
                             <hr className="mt-10" />
-                            <div class="flex text-center flex-wrap -mb-px border-b border-gray-200 dark:border-gray-700">
+                            <div className="flex text-center flex-wrap -mb-px border-b border-gray-200 dark:border-gray-700">
                                 <NavLink to={`/${user.username}/posts`} className="flex font-bold items-center justify-center p-4 text-sm first:ml-0 focus:outline-none rounded-t-lg border-b-2 border-transparent text-gray-500">
                                     <LuEdit size="20" className="mr-2" />
                                     <p className="mt-1">Bài viết</p>

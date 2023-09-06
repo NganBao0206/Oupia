@@ -46,7 +46,7 @@ const App = () => {
 
             <Route path="/posts/:slugPost" element={<Post />}></Route>
             <Route path="/:slugUser" element={<UserLayout />}>
-              <Route element={<UserPosts />} />
+              <Route path="" element={<UserPosts />} />
               <Route path="posts" element={<UserPosts />} />
               <Route path="favourites" element={<UserFavourite />} />
               <Route path="photos" element={<UserPhotos />} />

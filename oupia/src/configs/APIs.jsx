@@ -19,6 +19,7 @@ export const endpoints = {
     "addComment":  `${SERVER_CONTEXT}/api/comments/`,
     "register-landlord": `${SERVER_CONTEXT}/api/register-landlord/`,
     "favour": `${SERVER_CONTEXT}/api/favourites/`,
+    "getFavourOfUser": `${SERVER_CONTEXT}/api/favourites/user/`,
 }
 
 export const authApi = () => {
