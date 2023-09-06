@@ -38,7 +38,7 @@ const UserLayout = () => {
         else {
             setUser(currentUser);
         }
-    }, [slugUser])
+    }, [slugUser, currentUser])
     if (user === null) {
         return <>
             đang loading nè

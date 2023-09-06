@@ -1,5 +1,4 @@
 import { Avatar, Button } from "flowbite-react";
-import { LuHeart } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import { PiStarBold, PiDotBold } from "react-icons/pi";
 import { BiHomeAlt } from "react-icons/bi";
@@ -11,7 +10,7 @@ const PostRentItem = (props) => {
         <div className="w-full lg:h-80 h-auto bg-white rounded-xl shadow-lg overflow-hidden my-16 text-Dark">
             <div className="grid grid-cols-10 h-full">
                 <div className="col-span-10 lg:col-span-4">
-                    <img className="h-80 w-full object-cover lg:h-full" src={post.image} alt="post image" />
+                    <image className="h-80 w-full object-cover lg:h-full" src={post.image} alt="post image" />
                 </div>
                 <div className="col-span-10 lg:col-span-6 px-8 py-3 mt-4 lg:mt-0">
                     <div className="flex gap-4 mb-3 items-center">

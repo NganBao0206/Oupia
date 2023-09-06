@@ -14,7 +14,7 @@ import { UserContext } from '../../App';
 const Header = () => {
     // User Profile or SignIn Button
 
-    const [user, ] = useContext(UserContext);
+    const [user,] = useContext(UserContext);
 
     // Background Color & Scroll
 
@@ -110,17 +110,17 @@ const Header = () => {
                         <NavLink to="/" className="nav-item text-lg">
                             Trang chủ
                         </NavLink>
-                        <NavLink to="/motels" className="nav-item text-lg">
-                            Phòng trọ
-                        </NavLink>
                         <NavLink to="/upload" className="nav-item text-lg">
                             Đăng tin
                         </NavLink>
                         <NavLink to="/posts" className="nav-item text-lg">
                             Bài viết
                         </NavLink>
-                        <NavLink to="/contact" className="nav-item text-lg">
-                            Liên hệ
+                        <NavLink to="/forum" className="nav-item text-lg">
+                            Diễn đàn
+                        </NavLink>
+                        <NavLink to="/manager" className="nav-item text-lg">
+                            Quản lý
                         </NavLink>
                     </Navbar.Collapse>
                 </Navbar>

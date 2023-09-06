@@ -6,8 +6,6 @@ import PostRentList from '../../../components/Post/PostList';
 import { ParamsContext, ParamsProvider } from '../../../providers/ParamsProvider';
 import { useDebounce } from 'use-debounce';
 import { useNavigate } from 'react-router-dom';
-import AutocompleteLocation from '../../../components/AutocompleteLocation';
-import goongJs from '@goongmaps/goong-js';
 import { Pagination } from 'flowbite-react';
 
 const Posts = () => {
@@ -15,7 +13,6 @@ const Posts = () => {
     const [totalPages, setTotalPages] = useState(null);
     const { params, setParams } = useContext(ParamsContext);
     const [debouncedParams] = useDebounce(params, 500);
-    const [map, setMap] = useState(null);
 
     const [currentPage, setCurrentPage] = useState(params.page || 1);
     const onPageChange = (page) => {
@@ -46,7 +43,7 @@ const Posts = () => {
     useEffect(() => {
         if (params.page && params.page !== currentPage)
             setCurrentPage(params.page);
-    }, [params.page])
+    }, [params.page, currentPage])
 
     useEffect(() => {
         getPost();
