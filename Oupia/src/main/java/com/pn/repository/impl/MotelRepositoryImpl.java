@@ -256,4 +256,6 @@ public class MotelRepositoryImpl implements MotelRepository {
         return s.createQuery(query).getResultList();
     }
 
+   
+
 }

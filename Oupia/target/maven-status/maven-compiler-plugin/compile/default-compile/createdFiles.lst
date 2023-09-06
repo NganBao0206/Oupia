@@ -6,6 +6,7 @@ com/pn/pojo/Rate.class
 com/pn/repository/impl/FavouriteRepositoryImpl.class
 com/pn/repository/PostRepository.class
 com/pn/filters/CustomAccessDeniedHandler.class
+com/pn/service/StatService.class
 com/pn/configs/JwtSecurityConfig.class
 com/pn/pojo/Comment_.class
 com/pn/pojo/Post_.class
@@ -13,6 +14,7 @@ com/pn/pojo/PostFindDetail.class
 com/pn/service/UserService.class
 com/pn/pojo/Post.class
 com/pn/validator/MaxMinPeopleValidator.class
+com/pn/service/impl/StatServiceImpl.class
 com/pn/validator/ImagesValidator.class
 com/pn/pojo/PostRentDetail_.class
 com/pn/configs/DispatcherServletInitializer.class
@@ -24,9 +26,14 @@ com/pn/formatters/UserFormatter.class
 com/pn/pojo/Message_.class
 com/pn/pojo/PostFindDetail_.class
 com/pn/repository/impl/CommentRepositoryImpl.class
+com/pn/repository/impl/StatRepositoryImpl.class
 com/pn/pojo/Rate_.class
 com/pn/service/MultipleService.class
+<<<<<<< HEAD
 com/pn/controllers/ApiUserController.class
+=======
+com/pn/controllers/ApiStatController.class
+>>>>>>> ddaca3f78c3f2f00bcc4741c0248ad7423c3be5c
 com/pn/controllers/PostController.class
 com/pn/pojo/Follow_.class
 com/pn/components/JwtService.class
@@ -39,8 +46,8 @@ com/pn/controllers/ApiMapController.class
 com/pn/enums/Status.class
 com/pn/pojo/User.class
 com/pn/formatters/PostFormatter.class
-com/pn/repository/FavouriteRepository.class
 com/pn/repository/impl/ImageRepositoryImpl.class
+com/pn/repository/FavouriteRepository.class
 com/pn/pojo/Image.class
 com/pn/service/impl/ImageServiceImpl.class
 com/pn/repository/MotelRepository.class
@@ -62,8 +69,14 @@ com/pn/repository/ImageRepository.class
 com/pn/pojo/Motel.class
 com/pn/service/impl/FavouriteServiceImpl.class
 com/pn/service/impl/CommentServiceImpl.class
+<<<<<<< HEAD
 com/pn/controllers/UserController.class
 com/pn/service/impl/PostServiceImpl.class
+=======
+com/pn/repository/StatRepository.class
+com/pn/service/impl/PostServiceImpl.class
+com/pn/controllers/UserController.class
+>>>>>>> ddaca3f78c3f2f00bcc4741c0248ad7423c3be5c
 com/pn/pojo/User_.class
 com/pn/controllers/ApiMotelController.class
 com/pn/service/FavouriteService.class

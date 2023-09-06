@@ -6,6 +6,7 @@ package com.pn.controllers;
 
 import com.pn.pojo.User;
 import com.pn.service.UserService;
+import java.time.Year;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,23 +25,22 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @Controller
 public class IndexController {
 
-   
-
     @RequestMapping(value = "/")
     public String index(Model model) {
-        model.addAttribute("message", "nene");
+        Year currentYear = Year.now();
+        model.addAttribute("currentYear", currentYear.getValue());
         return "index";
     }
-    
-     @RequestMapping(value = "/map")
+
+    @RequestMapping(value = "/map")
     public String map(Model model) {
         model.addAttribute("message", "nene");
         return "testMap";
     }
-    
+
     @ExceptionHandler(NoHandlerFoundException.class)
     public String handleNotFoundError() {
         return "error";
     }
-  
+
 }
