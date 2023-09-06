@@ -52,8 +52,8 @@ public class ApiFavouriteController {
 
     @GetMapping(path = "/user/")
     @CrossOrigin
-    public ResponseEntity<List<Favourite>> getFavouriteList(@RequestParam("userId") int userId) {
-        List<Favourite> favs = favouriteService.getFavouritesOfUser(userId);
+    public ResponseEntity<List<Post>> getFavouritePostList(@RequestParam("username") String username) {
+        List<Post> favs = favouriteService.getFavouritesOfUser(username);
         if (favs != null) {
             return new ResponseEntity<>(favs, HttpStatus.OK);
 

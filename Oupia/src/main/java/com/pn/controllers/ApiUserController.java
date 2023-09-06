@@ -11,6 +11,7 @@ import com.pn.service.MotelService;
 import com.pn.service.MultipleService;
 import com.pn.service.PostService;
 import com.pn.service.UserService;
+import com.pn.validator.WebAppValidator;
 import java.util.Map;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +62,14 @@ public class ApiUserController {
 
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private WebAppValidator postValidator;
+    @Autowired
+    private WebAppValidator postRentValidator;
+    @Autowired
+    private WebAppValidator motelValidator;
+    @Autowired
+    private WebAppValidator userValidator;
 
     @PostMapping("/login/")
     @CrossOrigin
@@ -166,6 +177,20 @@ public class ApiUserController {
         postObj.setUserId(userObj);
 
         userObj.setFile(avatarFile);
+
+        BindingResult resultUser = new BeanPropertyBindingResult(userObj, "user");
+        BindingResult resultMotel = new BeanPropertyBindingResult(motelObj, "motel");
+        BindingResult resultPost = new BeanPropertyBindingResult(postObj, "post");
+        BindingResult resultDetail = new BeanPropertyBindingResult(postRentDetailObj, "postRentDetail");
+
+        resultUser = (BindingResult) userValidator.getValidateErrors(userObj, resultUser);
+        resultMotel = (BindingResult) motelValidator.getValidateErrors(motelObj, resultMotel);
+        resultPost = (BindingResult) postValidator.getValidateErrors(postObj, resultPost);
+        resultDetail = (BindingResult) postRentValidator.getValidateErrors(postRentDetailObj, resultDetail);
+        
+        if (resultUser.hasErrors() || resultPost.hasErrors() || resultDetail.hasErrors() || resultMotel.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         userObj = userService.prepareUser(userObj);
         motelObj = motelService.prepareMotel(motelObj);

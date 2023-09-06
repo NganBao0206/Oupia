@@ -55,7 +55,20 @@ public class WebAppValidator implements Validator {
         }
     }
     
-   
+    public Errors getValidateErrors(Object target, Errors errors) {
+        Set<ConstraintViolation<Object>> constraintViolations
+                = validator.validate(target);
+        for (ConstraintViolation<Object> obj : constraintViolations) {
+            errors.rejectValue(obj.getPropertyPath().toString(),
+                    obj.getMessageTemplate(), obj.getMessage());
+        }
+        for (Validator obj : springValidators) {
+            obj.validate(target, errors);
+        }
+        
+        return errors;
+    }
+    
     public Set<ConstraintViolation<Object>> validatorErrors(Object target) {
         Set<ConstraintViolation<Object>> constraintViolations
                 = validator.validate(target);

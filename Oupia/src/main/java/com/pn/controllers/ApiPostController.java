@@ -1,38 +1,38 @@
 package com.pn.controllers;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.pn.pojo.Comment;
-import com.pn.pojo.Image;
-import com.pn.pojo.Motel;
 import com.pn.pojo.Post;
-import com.pn.pojo.User;
+import com.pn.pojo.PostRentDetail;
 import com.pn.service.CommentService;
 import com.pn.service.ImageService;
-import com.pn.service.MotelService;
 import com.pn.service.PostService;
+import com.pn.validator.WebAppValidator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -54,6 +54,10 @@ public class ApiPostController {
     private ImageService imageService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private WebAppValidator postValidator;
+    @Autowired
+    private WebAppValidator postRentValidator;
 
     @PatchMapping("/bin/{slug}/")
     @CrossOrigin
@@ -90,6 +94,51 @@ public class ApiPostController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+//    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @CrossOrigin
+//    public ResponseEntity<?> register(
+//            @RequestParam Map<String, String> info,
+//            @RequestPart(name = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
+//        ObjectMapper mapper = new ObjectMapper();
+//        Post postObj = mapper.readValue(info.get("post"), Post.class);
+//        PostRentDetail postRentDetailObj = mapper.readValue(info.get("postRentDetail"), PostRentDetail.class);
+//
+//        postRentDetailObj.setPostId(postObj);
+//        postRentDetailObj.setImgImport(files);
+//        postObj.setPostRentDetail(postRentDetailObj);
+//        
+//        postObj = postService.preparePost(postObj);
+//        postService.addOrUpdatePost(postObj);
+//        return new ResponseEntity<>(HttpStatus.CREATED);
+//    }
+    
+    
+    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @CrossOrigin
+    public ResponseEntity<?> register(
+            @RequestParam Map<String, String> info,
+            @RequestPart(name = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Post postObj = mapper.readValue(info.get("post"), Post.class);
+        PostRentDetail postRentDetailObj = mapper.readValue(info.get("postRentDetail"), PostRentDetail.class);
+
+        postRentDetailObj.setPostId(postObj);
+        postRentDetailObj.setImgImport(files);
+        postObj.setPostRentDetail(postRentDetailObj);
+        
+        BindingResult resultPost = new BeanPropertyBindingResult(postObj, "post");
+        BindingResult resultDetail = new BeanPropertyBindingResult(postRentDetailObj, "postRentDetail");
+
+        
+        resultPost = (BindingResult) postValidator.getValidateErrors(postObj, resultPost);
+        resultDetail = (BindingResult) postRentValidator.getValidateErrors(postRentDetailObj, resultDetail);
+        if (resultPost.hasErrors() || resultDetail.hasErrors())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        postObj = postService.preparePost(postObj);
+        postService.addOrUpdatePost(postObj);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/bin/{slug}/")
     @CrossOrigin
     public ResponseEntity<Void> destroyPost(@PathVariable("slug") String slug) {
@@ -107,6 +156,9 @@ public class ApiPostController {
     public ResponseEntity<String> getPosts(@RequestParam Map<String, String> params) {
         params.put("isDeleted", "0");
         params.put("isAccepted", "accepted");
+        if (params.get("page") == null) {
+            params.put("page", "1");
+        }
         List<Post> posts = postService.getPosts(params);
         int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
         int count = postService.countPosts(params);

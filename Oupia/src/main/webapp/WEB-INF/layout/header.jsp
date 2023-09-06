@@ -100,7 +100,7 @@
 </nav>
 <script>
     <sec:authorize access="isAuthenticated()">
-    fetch('/api/users/authenticated-user/', {
+    fetch('/Oupia/api/users/authenticated-user/', {
         method: "get",
         headers: {
             "Content-Type": "application/json"
@@ -108,8 +108,6 @@
     }).then(res => {
         if (res.status === 200)
             return res.json()
-        else
-            location.reload();
     }).then(data => {
         document.querySelector("#adminAvatar").src = data["avatar"];
         document.querySelector("#adminAvatar2").src = data["avatar"];

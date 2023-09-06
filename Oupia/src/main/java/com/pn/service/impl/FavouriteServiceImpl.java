@@ -5,6 +5,7 @@
 package com.pn.service.impl;
 
 import com.pn.pojo.Favourite;
+import com.pn.pojo.Post;
 import com.pn.repository.FavouriteRepository;
 import com.pn.service.FavouriteService;
 import java.util.List;
@@ -25,8 +26,8 @@ public class FavouriteServiceImpl implements FavouriteService{
     }
 
     @Override
-    public List<Favourite> getFavouritesOfUser(int userId) {
-        return favouriteRepository.getFavouritesOfUser(userId);
+    public List<Post> getFavouritesOfUser(String username) {
+        return favouriteRepository.getFavouritesOfUser(username);
     }
 
     @Override
