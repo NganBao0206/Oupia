@@ -7,17 +7,16 @@ import UserItem from '../../components/User/UserItem';
 const Forum = () => {
 
     return (<>
-        <div className="container">
+        <div className="lg:px-32">
             <MyBreadCrumb BreadCrumbName="Diễn đàn" />
             <div className="grid grid-cols-7 my-5 gap-5">
-                <div className="col-span-5">
-                    <div className=" border border-gray-200 rounded-xl shadow-lg p-5 flex gap-10 items-center">
-                        <UserStatus />
-                    </div>
+                <div className="col-span-5 flex flex-col gap-5">
+                    <UserStatus />
+                    <PostFindItem />
                 </div>
                 <div className="col-span-2">
-                    <div className="p-10 items-center border border-gray-200 rounded-xl shadow-lg flex flex-col">
-                        <h2 className="text-Dark font-bold text-xl w-full text-center">Người bạn theo dõi</h2>
+                    <div className="py-8 items-center border border-gray-200 rounded-xl shadow-lg flex flex-col">
+                        <h2 className=" px-10 text-Dark font-bold text-xl w-full text-center">Người bạn theo dõi</h2>
                         <div className="inline-flex items-center justify-center w-full relative">
                             <hr className="w-48 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700" />
                             <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 dark:bg-gray-900">
@@ -26,11 +25,16 @@ const Forum = () => {
                                 </svg>
                             </div>
                         </div>
-                        <UserItem />
+                        <div className="flex flex-col gap-5">
+                            <UserItem />
+                            <UserItem />
+                            <UserItem />
+                            <UserItem />
+                            <UserItem />
+                        </div>
                     </div>
                 </div>
             </div>
-            <PostFindItem />
         </div>
     </>);
 };

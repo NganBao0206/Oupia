@@ -12,7 +12,7 @@ const MyBreadCrumb = (props) => {
       {pathnames.length > 0 && (
         <Breadcrumb.Item>
           <div className="text-Darker font-bold text-lg dark:text-white flex gap-2 items-center">
-            <LiaHomeSolid size="23" />
+            <LiaHomeSolid size="23" className="mb-1"/>
             <Link to="/">
               Trang chủ
             </Link>

@@ -14,7 +14,7 @@ import { UserContext } from '../../App';
 const Header = () => {
     // User Profile or SignIn Button
 
-    const [user,] = useContext(UserContext);
+    const [user, dispatch] = useContext(UserContext);
 
     // Background Color & Scroll
 
@@ -37,6 +37,12 @@ const Header = () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
+    const logOut = () => {
+        dispatch({
+            "type": "logout"
+        })
+    }
 
     return (
         <>
@@ -67,7 +73,7 @@ const Header = () => {
                         </Link>
                     </div>) : (<div className="flex md:order-2 items-center">
                         <BsBookmark size="20" className={`mr-4 ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"}`} />
-                        <BsChat size="20" className={`mr-3 ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"}`} />
+                        <BsChat size="20" className={`mr-3  ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"}`} />
                         <PiBell size="24" className={`mr-4 ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"}`} />
                         <Dropdown
                             arrowIcon={null}
@@ -96,12 +102,12 @@ const Header = () => {
                                     <p className="text-sm">Cài đặt</p>
                                 </div>
                             </Link>
-                            <Link to="" className="hover:text-white">
+                            <div onClick={logOut} className="hover:text-white hover:cursor-pointer">
                                 <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
                                     <FiLogOut size="20" className="mr-2" />
                                     <p className="text-sm">Đăng xuất</p>
                                 </div>
-                            </Link>
+                            </div>
                         </Dropdown>
                     </div>)}
 
