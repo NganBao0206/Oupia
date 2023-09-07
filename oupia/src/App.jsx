@@ -54,8 +54,8 @@ const App = () => {
             <Route path="/manager/post" element={<PostManager />}></Route>
             <Route path="/manager/motel" element={<MotelManager />}></Route>
             <Route path="/messages" element={<MessageLayout />}>
-              <Route index path="" element={<MessageLayout />} />
-              <Route path=":slugUser" element={<ChatRoom/>} />
+              <Route index path="" element={<></>} />
+              <Route path=":slugUser" element={<ChatRoom />} />
               <Route path="*" element={<NotFound />} />
             </Route>
             <Route path="/:slugUser" element={<UserLayout />}>

@@ -3,12 +3,11 @@ import { RiSearch2Line } from 'react-icons/ri';
 import './style.scss';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import UserChatItem from '../../components/User/UserChatitem';
-import { Button } from 'flowbite-react';
 import avatar from '../../resources/avatar.jpg';
 import { PiUser } from 'react-icons/pi';
 
 const MessageLayout = () => {
-    const location = (useLocation().pathname === "/messages/");
+    const location = (useLocation().pathname === "/messages");
 
     return (<>
         <div className="mess-height grid grid-cols-9">
