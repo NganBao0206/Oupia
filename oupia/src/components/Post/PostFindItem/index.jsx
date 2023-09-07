@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../../App';
-import { BsBookmark } from 'react-icons/bs';
-import image from '../../../resources/avatar.jpg';
 import './style.scss';
 import { Button } from 'flowbite-react';
 import { LuHeart } from 'react-icons/lu';
 import { PiShareFat } from 'react-icons/pi';
 import { BiComment } from 'react-icons/bi';
+import { FiMoreHorizontal } from 'react-icons/fi';
 
 const PostFindItem = () => {
     const [currentUser,] = useContext(UserContext);
@@ -25,13 +24,12 @@ const PostFindItem = () => {
                         />
                     </div>
                 </Link>
-                <div className="flex flex-col  gap-1">
+                <div className="flex flex-col gap-1">
                     <h1 className="font-bold text-lg">{currentUser.fullName}</h1>
                     <h3 className="text-gray-500 text-sm">2 giờ trước · Gò vấp</h3>
                 </div>
-                <div className="flex gap-2 ml-auto items-center text-Dark hover:text-yellow-400 hover:cursor-pointer">
-                    <h3 className="font-bold">Lưu bài viết</h3>
-                    <BsBookmark size="30" />
+                <div className="flex gap-2 ml-auto pb-3 pr-3 text-Dark hover:cursor-pointer">
+                    <FiMoreHorizontal size="35" />
                 </div>
             </div>
             {/* content */}
@@ -40,7 +38,8 @@ const PostFindItem = () => {
                 Ai có nhu cầu thì ib mình để tìm hiểu kỹ thêm nhé.
             </p>
             <div className="post-image -ml-5">
-                <img src={image} alt="postImage" className="w-full h-[600px] object-cover" />
+                <img src="https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg"
+                    alt="postImage" className="w-full h-[600px] object-cover" />
             </div>
             <div className="flex flex-col">
                 <hr />
@@ -59,7 +58,7 @@ const PostFindItem = () => {
                     </Button>
                     <Button size="sm" className="hover:bg-gray-200 focus:ring-transparent">
                         <div className="flex gap-3 items-center rounded py-2 px-4 text-Dark">
-                        <PiShareFat size="25"/>
+                            <PiShareFat size="25" />
                             <h3 className="text-lg">Chia sẻ</h3>
                         </div>
                     </Button>
