@@ -23,9 +23,11 @@ import AddMotel from './pages/Motel/AddMotel';
 import Forum from './pages/Forum';
 import MotelManager from './pages/Manager/MotelManager';
 import PostManager from './pages/Manager/PostManager';
-import Settings from './pages/Settings';
 import ChatRoom from './pages/ChatRoom';
 import MessageLayout from './layouts/MessageLayout';
+import SettingLayout from './layouts/SettingLayout';
+import ChangeInfo from './pages/Settings/ChangeInfo';
+import ChangePassword from './pages/Settings/ChangePassword';
 
 
 export const UserContext = createContext();
@@ -63,7 +65,11 @@ const App = () => {
               <Route path="favourites" element={<UserFavourite />} />
               <Route path="photos" element={<UserPhotos />} />
             </Route>
-            <Route path="/settings" element={<Settings />}></Route>
+            <Route path="/settings" element={<SettingLayout />}>
+              <Route index path="" element={<></>} />
+              <Route path="change-info" element={<ChangeInfo />} />
+              <Route path="change-password" element={<ChangePassword />} />
+            </Route>
             <Route path="/upload" element={<Upload />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

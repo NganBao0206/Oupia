@@ -1,12 +1,12 @@
 import React from 'react';
-import MessageContent from '../MessageContent';
 
-const RightMessage = () => {
+const RightMessage = (props) => {
+    const { content } = props;
     return (
-        <div className="w-fit flex flex-col gap-1 ml-auto">
-            <MessageContent/>
-            <MessageContent/>
-
+        <div className="w-fit ml-auto">
+            <div className="p-2 rounded-xl border border-gray-300">
+                {content}
+            </div>
         </div>
     );
 };
