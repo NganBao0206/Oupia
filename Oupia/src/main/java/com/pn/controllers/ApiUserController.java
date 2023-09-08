@@ -77,21 +77,27 @@ public class ApiUserController {
 
     @PostMapping("/login/")
     @CrossOrigin
-    public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
+    public ResponseEntity<String> login(@RequestBody User user) {
         if (this.userService.authUser(user.getUsername(), user.getPassword()) == true) {
-            try {
-                String token = this.jwtService.generateTokenLogin(user.getUsername());
-                String fbToken = this.firebaseService.createCustomToken(user.getUsername());
-                Map<String, String> response = new HashMap<>();
-                response.put("token", token);
-                response.put("fbToken", fbToken);
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } catch (FirebaseAuthException ex) {
-                Logger.getLogger(ApiUserController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            String token = this.jwtService.generateTokenLogin(user.getUsername());
+            return new ResponseEntity<>(token, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping(path = "/auth-token/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
+    public ResponseEntity<String> getTokenFirebase(Principal user) {
+        String fbToken;
+        try {
+            fbToken = this.firebaseService.createCustomToken(user.getName());
+            return new ResponseEntity<>(fbToken, HttpStatus.OK);
+
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(ApiUserController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PatchMapping("/users/bin/{username}/")
