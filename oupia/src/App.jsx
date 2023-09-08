@@ -56,14 +56,12 @@ const App = () => {
             <Route path="/messages" element={<MessageLayout />}>
               <Route index path="" element={<></>} />
               <Route path=":slugUser" element={<ChatRoom />} />
-              <Route path="*" element={<NotFound />} />
             </Route>
             <Route path="/:slugUser" element={<UserLayout />}>
               <Route index path="" element={<UserPosts />} />
               <Route path="posts" element={<UserPosts />} />
               <Route path="favourites" element={<UserFavourite />} />
               <Route path="photos" element={<UserPhotos />} />
-              <Route path="*" element={<NotFound />} />
             </Route>
             <Route path="/settings" element={<Settings />}></Route>
             <Route path="/upload" element={<Upload />} />

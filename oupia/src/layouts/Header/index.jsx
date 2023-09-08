@@ -29,7 +29,7 @@ const Header = () => {
             if (window.scrollY > 0) {
                 setBgColor(true);
             } else {
-                setBgColor(false);  
+                setBgColor(false);
             }
         };
 
@@ -116,36 +116,42 @@ const Header = () => {
                     <NavLink to="/" className="nav-item text-lg">
                         Trang chủ
                     </NavLink>
-                    <NavLink to="/upload" className="nav-item text-lg">
-                        Đăng tin
-                    </NavLink>
+
                     <NavLink to="/posts" className="nav-item text-lg">
                         Bài viết
                     </NavLink>
+
                     <NavLink to="/forum" className="nav-item text-lg">
                         Diễn đàn
                     </NavLink>
-                    <Dropdown
-                        arrowIcon={<FaAngleDown />}
-                        inline
-                        label={<h1 className="text-lg">Quản lý</h1>}
-                        placement='bottom'>
-                        <div>
-                            <Link to="/manager/motel" className="hover:text-white">
-                                <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
-                                    <HiOutlineHomeModern size="20" className="mr-2" />
-                                    <p className="text-sm">Nhà trọ</p>
-                                </div>
-                            </Link>
-                            <Link to="/manager/post" className="hover:text-white ">
-                                <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
-                                    <PiClipboardText size="20" className="mr-2" />
-                                    <p className="text-sm">Bài viết</p>
-                                </div>
-                            </Link>
-                        </div>
+                    {user && (<>
+                        <NavLink to="/upload" className="nav-item text-lg">
+                            Đăng tin
+                        </NavLink>
 
-                    </Dropdown>
+                        <Dropdown
+                            arrowIcon={<FaAngleDown />}
+                            inline
+                            label={<h1 className="text-lg">Quản lý</h1>}
+                            placement='bottom'>
+                            <div>
+                                <Link to="/manager/motel" className="hover:text-white">
+                                    <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
+                                        <HiOutlineHomeModern size="20" className="mr-2" />
+                                        <p className="text-sm">Nhà trọ</p>
+                                    </div>
+                                </Link>
+                                <Link to="/manager/post" className="hover:text-white ">
+                                    <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
+                                        <PiClipboardText size="20" className="mr-2" />
+                                        <p className="text-sm">Bài viết</p>
+                                    </div>
+                                </Link>
+                            </div>
+
+                        </Dropdown>
+                    </>)}
+
                 </Navbar.Collapse>
             </Navbar>
         </div>

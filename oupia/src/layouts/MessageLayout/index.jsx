@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { RiSearch2Line } from 'react-icons/ri';
 import './style.scss';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
 import UserChatItem from '../../components/User/UserChatitem';
 import avatar from '../../resources/avatar.jpg';
+import { UserContext } from '../../App';
 import { PiUser } from 'react-icons/pi';
 
 const MessageLayout = () => {
+    const [user,] = useContext(UserContext);
     const location = (useLocation().pathname === "/messages");
+
+    if (!user) {
+        return (<Navigate to="/login?next=/messages" />);
+    }
 
     return (<>
         <div className="mess-height grid grid-cols-9">
@@ -37,9 +43,11 @@ const MessageLayout = () => {
                 {location ? (<div className="flex h-full justify-center items-center">
                     <h1 className="text-xl font-bold pb-20">Hãy chọn một đoạn chat để bắt đầu trò chuyện</h1>
                 </div>)
-                    : (<div className="flex flex-col h-full">
-                        <Outlet />
-                    </div>)
+                    : (<>
+                        <div className="flex flex-col h-full">
+                            <Outlet />
+                        </div>
+                    </>)
                 }
             </div>
             {location ? ""
@@ -58,7 +66,7 @@ const MessageLayout = () => {
                         </Link>
 
                         <div id="actions" className="items-center flex flex-col gap-1">
-                            <Link><button className="bg-gray-200 p-3 rounded-full"><PiUser size="25"/></button></Link>
+                            <Link><button className="bg-gray-200 p-3 rounded-full"><PiUser size="25" /></button></Link>
                             <h3 className="text-sm">Trang cá nhân</h3>
                         </div>
                     </div>

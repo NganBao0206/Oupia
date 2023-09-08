@@ -1,0 +1,30 @@
+import PostRentSkeleton from "../../MySkeleton/PostRentSkeleton";
+import PostRentItem from "../PostRentItem";
+
+const PostRentList = (props) => {
+    const { posts } = props;
+    const numSkeletons = Math.floor(Math.random() * (2)) + 3;
+    const skeletons = Array.from({ length: numSkeletons });
+
+
+    if (!posts) return (
+        <>
+            {skeletons.map((_, index) => (
+                <PostRentSkeleton key={index} />
+            ))}
+        </>
+    )
+
+    return (
+        <>
+            {posts.map((post) => (
+                <div>
+                    {post.postRentDetail != null && <PostRentItem post={post}></PostRentItem>}
+                </div>
+            ))}
+        </>
+
+    );
+}
+
+export default PostRentList;

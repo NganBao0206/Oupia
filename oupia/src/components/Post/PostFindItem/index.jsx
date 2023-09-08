@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../../App';
 import './style.scss';
 import { Button } from 'flowbite-react';
 import { LuHeart } from 'react-icons/lu';
@@ -9,23 +8,22 @@ import { BiComment } from 'react-icons/bi';
 import { FiMoreHorizontal } from 'react-icons/fi';
 
 const PostFindItem = () => {
-    const [currentUser,] = useContext(UserContext);
 
     return (<>
-        <div className=" border border-gray-200 rounded-xl shadow-lg p-5 flex gap-5 flex flex-col gap-1 ">
+        <div className=" border border-gray-200 rounded-xl shadow p-5 flex gap-5 flex flex-col gap-1 ">
             {/* title */}
             <div className="flex gap-5 items-center">
-                <Link to={`/${currentUser.username}`}>
+                <Link to="">
                     <div className=" z-999 w-16 h-16 ring-4 mx-auto ring-gray-200 border-4 border-transparent rounded-full">
                         <img
-                            src={currentUser.avatar}
+                            src="{/*currentUser.avatar*/}"
                             alt="Avatar"
                             className="w-full h-full rounded-full"
                         />
                     </div>
                 </Link>
                 <div className="flex flex-col gap-1">
-                    <h1 className="font-bold text-lg">{currentUser.fullName}</h1>
+                    {/* <h1 className="font-bold text-lg">"{currentUser.fullName}"</h1> */}
                     <h3 className="text-gray-500 text-sm">2 giờ trước · Gò vấp</h3>
                 </div>
                 <div className="flex gap-2 ml-auto pb-3 pr-3 text-Dark hover:cursor-pointer">

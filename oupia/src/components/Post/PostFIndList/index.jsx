@@ -1,7 +1,8 @@
-import PostRentSkeleton from "../../MySkeleton/PostRentSkeleton";
-import PostRentItem from "../PostRentItem";
+import React from 'react';
+import PostFindSkeleton from '../../MySkeleton/PostFindSkeleton';
+import PostFindItem from '../PostFindItem';
 
-const PostList = (props) => {
+const PostFindList = (props) => {
     const { posts } = props;
     const numSkeletons = Math.floor(Math.random() * (2)) + 3;
     const skeletons = Array.from({ length: numSkeletons });
@@ -10,7 +11,7 @@ const PostList = (props) => {
     if (!posts) return (
         <>
             {skeletons.map((_, index) => (
-                <PostRentSkeleton key={index} />
+                <PostFindSkeleton key={index} />
             ))}
         </>
     )
@@ -19,7 +20,7 @@ const PostList = (props) => {
         <>
             {posts.map((post) => (
                 <div>
-                    {post.postRentDetail != null && <PostRentItem post={post}></PostRentItem>}
+                    {post.postRentDetail != null && <PostFindItem post={post} />}
                 </div>
             ))}
         </>
@@ -27,4 +28,5 @@ const PostList = (props) => {
     );
 }
 
-export default PostList;
+
+export default PostFindList;

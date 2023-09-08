@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import imgLogo from "../../resources/logoOupia.svg";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import APIs, { authApi, endpoints } from '../../configs/APIs';
 import cookie from "react-cookies";
 import { UserContext } from '../../App';
@@ -16,8 +16,7 @@ const Login = () => {
     const [password, setPassword] = useState();
 
     const [loading, setLoading] = useState(false);
-
-
+    const [q] = useSearchParams();
     const login = (evt) => {
         evt.preventDefault();
         setAlert(false);
@@ -46,8 +45,10 @@ const Login = () => {
         process();
     }
 
-    if (user !== null)
-        return <Navigate to="/" />
+    if (user !== null) {
+        let next = q.get("next") || "/";
+        return <Navigate to={next} />
+    }
 
     return (
         <div className="bg-login bg-cover items-center">
