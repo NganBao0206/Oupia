@@ -1,21 +1,27 @@
-// // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import 
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
+// Import the functions you need from the SDKs you need
+import {initializeApp} from 'firebase/app';
+import { getAuth } from "firebase/auth";
 
-// // Your web app's Firebase configuration
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCIW7pM3yhbOywrot9_JELsfU5ZrlAziGQ",
-//   authDomain: "oupia-aed75.firebaseapp.com",
-//   projectId: "oupia-aed75",
-//   storageBucket: "oupia-aed75.appspot.com",
-//   messagingSenderId: "358294480804",
-//   appId: "1:358294480804:web:da0ac9017b03ba0c18c331"
-// };
 
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCIW7pM3yhbOywrot9_JELsfU5ZrlAziGQ",
+  authDomain: "oupia-aed75.firebaseapp.com",
+  projectId: "oupia-aed75",
+  storageBucket: "oupia-aed75.appspot.com",
+  messagingSenderId: "358294480804",
+  appId: "1:358294480804:web:da0ac9017b03ba0c18c331"
+};
+
+// Initialize Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+export default firebaseApp;
+export {auth};
+
 
 
 // const createFirebaseAuth = async (res) => {
