@@ -22,6 +22,7 @@ const Posts = () => {
 
     const navigate = useNavigate();
     const getPost = async () => {
+        setPosts(null);
         navigate({ search: new URLSearchParams(debouncedParams).toString() });
         try {
             let res = await APIs.get(endpoints['posts'], {
