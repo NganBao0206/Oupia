@@ -117,4 +117,9 @@ public class MotelServiceImpl implements MotelService {
     public boolean restoreMotel(String slug) {
         return motelRepository.restoreMotel(slug);
     }
+
+    @Override
+    public boolean updateStatus(int motelId, String status) {
+        return motelRepository.updateStatus(motelId, status);
+    }
 }

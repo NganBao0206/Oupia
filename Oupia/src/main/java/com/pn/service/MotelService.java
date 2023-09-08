@@ -31,6 +31,8 @@ public interface MotelService {
     boolean destroyMotel(String slug);
 
     boolean restoreMotel(String slug);
-    
+
+    boolean updateStatus(int motelId, String status);
+
     Motel prepareMotel(Motel motel);
 }

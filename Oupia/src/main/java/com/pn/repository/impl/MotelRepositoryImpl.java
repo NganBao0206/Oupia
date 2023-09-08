@@ -66,6 +66,12 @@ public class MotelRepositoryImpl implements MotelRepository {
                 Predicate namePredicate = b.like(root.get("name"), "%" + kw + "%");
                 predicates.add(namePredicate);
             }
+            
+            String userStatus = params.get("userStatus");
+            if (userStatus != null && !userStatus.isEmpty()) {
+                Predicate namePredicate = b.equal(root.get("userId").get("status"), userStatus);
+                predicates.add(namePredicate);
+            }
 
             String username = params.get("username");
             if (username != null && !username.isEmpty()) {
@@ -126,6 +132,12 @@ public class MotelRepositoryImpl implements MotelRepository {
             String kw = params.get("kw");
             if (kw != null && !kw.isEmpty()) {
                 Predicate namePredicate = b.like(root.get("name"), "%" + kw + "%");
+                predicates.add(namePredicate);
+            }
+            
+            String userStatus = params.get("userStatus");
+            if (userStatus != null && !userStatus.isEmpty()) {
+                Predicate namePredicate = b.equal(root.get("userId").get("status"), userStatus);
                 predicates.add(namePredicate);
             }
 
@@ -254,6 +266,19 @@ public class MotelRepositoryImpl implements MotelRepository {
         query.select(root.get("slug"))
                 .where(cb.like(root.get("slug"), slug + "%"));
         return s.createQuery(query).getResultList();
+    }
+
+    @Override
+    public boolean updateStatus(int motelId, String status) {
+        Session s = this.factory.getObject().getCurrentSession();
+        Motel motel = s.get(Motel.class, motelId);
+        motel.setStatus(status);
+        try {
+           s.update(motel);
+           return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
    

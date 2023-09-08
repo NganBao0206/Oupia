@@ -9,6 +9,7 @@ import com.pn.pojo.Post;
 import com.pn.pojo.User;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -35,6 +36,9 @@ public interface UserRepository {
     boolean restoreUser(String username);
 
     boolean authUser(String username, String password);
+    boolean updateStatus(int id, String status);
+    
+//    Set<Post> getPostsOfUser (User user);
 
 //    int countFollower(String userSlug);
 }

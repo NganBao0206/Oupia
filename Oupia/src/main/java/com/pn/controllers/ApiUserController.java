@@ -129,27 +129,6 @@ public class ApiUserController {
         }
     }
 
-    @GetMapping("/users/authenticated-user/")
-    @CrossOrigin
-    public ResponseEntity<User> getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
-            String currentPrincipalName = authentication.getName();
-            User u = userService.getUserByUsername(currentPrincipalName);
-            try {
-                ResponseEntity<User> result = new ResponseEntity<>(u, HttpStatus.OK);
-                return result;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
-
     @GetMapping(path = "/current-user/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public ResponseEntity<User> details(Principal user) {

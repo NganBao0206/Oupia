@@ -11,12 +11,14 @@ import com.pn.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -292,27 +294,39 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return false;
     }
-    
+
     @Override
     public boolean authUser(String username, String password) {
-        User  u = this.getUserByUsername(username);
-        
+        User u = this.getUserByUsername(username);
+
         return this.passwordEncoder.matches(password, u.getPassword());
     }
-
-//    @Override
-//    public User getUserByUsername(String username) {
-//        Session session = this.factory.getObject().getCurrentSession();
-//        Query query = session.createQuery("FROM User u WHERE u.username = :username");
-//        query.setParameter("username", username);
-//        return (User) query.getSingleResult();
-//    }
 
     @Override
     public User addUser(User u) {
         Session s = this.factory.getObject().getCurrentSession();
         s.save(u);
         return u;
+    }
+
+//    @Override
+//    public Set<Post> getPostsOfUser(User user) {
+//        Session s = this.factory.getObject().getCurrentSession();
+//        Hibernate.initialize(user);
+//        return user.getPostSet();
+//    }
+    @Override
+    public boolean updateStatus(int id, String status) {
+        Session s = this.factory.getObject().getCurrentSession();
+        User u = s.get(User.class, id);
+        u.setStatus(status);
+        try {
+            s.update(u);
+            return true;
+
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
 }

@@ -89,9 +89,7 @@ public class PostController {
         params.put("isDeleted", "0");
         List<String> userRoles = new ArrayList<>();
         userRoles.add("TENANT");
-        List<String> status = new ArrayList<>();
-        status.add("ACCEPTED");
-        List<User> users = userService.getUsers(params, userRoles, status);
+        List<User> users = userService.getUsers(params, userRoles, null);
         return users;
     }
 

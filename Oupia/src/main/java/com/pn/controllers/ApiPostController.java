@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pn.pojo.Comment;
 import com.pn.pojo.Post;
+import com.pn.pojo.PostFindDetail;
 import com.pn.pojo.PostRentDetail;
 import com.pn.service.CommentService;
 import com.pn.service.ImageService;
@@ -58,6 +59,8 @@ public class ApiPostController {
     private WebAppValidator postValidator;
     @Autowired
     private WebAppValidator postRentValidator;
+    @Autowired
+    private WebAppValidator postFindValidator;
 
     @PatchMapping("/bin/{slug}/")
     @CrossOrigin
@@ -93,33 +96,16 @@ public class ApiPostController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-//    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    @CrossOrigin
-//    public ResponseEntity<?> register(
-//            @RequestParam Map<String, String> info,
-//            @RequestPart(name = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
-//        ObjectMapper mapper = new ObjectMapper();
-//        Post postObj = mapper.readValue(info.get("post"), Post.class);
-//        PostRentDetail postRentDetailObj = mapper.readValue(info.get("postRentDetail"), PostRentDetail.class);
-//
-//        postRentDetailObj.setPostId(postObj);
-//        postRentDetailObj.setImgImport(files);
-//        postObj.setPostRentDetail(postRentDetailObj);
-//        
-//        postObj = postService.preparePost(postObj);
-//        postService.addOrUpdatePost(postObj);
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
     
     
-    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/rent/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @CrossOrigin
-    public ResponseEntity<?> register(
+    public ResponseEntity<?> addPost(
             @RequestParam Map<String, String> info,
             @RequestPart(name = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Post postObj = mapper.readValue(info.get("post"), Post.class);
+        
         PostRentDetail postRentDetailObj = mapper.readValue(info.get("postRentDetail"), PostRentDetail.class);
 
         postRentDetailObj.setPostId(postObj);
@@ -129,9 +115,35 @@ public class ApiPostController {
         BindingResult resultPost = new BeanPropertyBindingResult(postObj, "post");
         BindingResult resultDetail = new BeanPropertyBindingResult(postRentDetailObj, "postRentDetail");
 
-        
         resultPost = (BindingResult) postValidator.getValidateErrors(postObj, resultPost);
         resultDetail = (BindingResult) postRentValidator.getValidateErrors(postRentDetailObj, resultDetail);
+        if (resultPost.hasErrors() || resultDetail.hasErrors())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        postObj = postService.preparePost(postObj);
+        postService.addOrUpdatePost(postObj);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    
+    @PostMapping(value = "/find/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @CrossOrigin
+    public ResponseEntity<?> addPostFind(
+            @RequestParam Map<String, String> info,
+            @RequestPart(name = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Post postObj = mapper.readValue(info.get("post"), Post.class);
+        
+        PostFindDetail postFindDetailObj = mapper.readValue(info.get("postFindDetail"), PostFindDetail.class);
+
+        postFindDetailObj.setPostId(postObj);
+        postFindDetailObj.setImgImport(files);
+        postObj.setPostFindDetail(postFindDetailObj);
+        
+        BindingResult resultPost = new BeanPropertyBindingResult(postObj, "post");
+        BindingResult resultDetail = new BeanPropertyBindingResult(postFindDetailObj, "postFindDetail");
+
+        
+        resultPost = (BindingResult) postValidator.getValidateErrors(postObj, resultPost);
+        resultDetail = (BindingResult) postFindValidator.getValidateErrors(postFindDetailObj, resultDetail);
         if (resultPost.hasErrors() || resultDetail.hasErrors())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         postObj = postService.preparePost(postObj);

@@ -73,7 +73,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
         predicates.add(b.in(join.get("id")).value(subquery));
 
         predicates.add(b.equal(root.get("userId").get("username"), username));
-
+        q.where(predicates.toArray(Predicate[]::new));
         Query query = s.createQuery(q);
 //        String page = params.get("page");
 

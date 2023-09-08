@@ -87,6 +87,52 @@ public class MotelController {
         List<User> users = userService.getUsers(params, userRoles, status);
         return users;
     }
+    
+    @RequestMapping(value = "/motels-approval")
+    public String users(Model model, @RequestParam Map<String, String> params) {
+
+        params.put("isDeleted", "0");
+        if (params.get("page") == null) {
+            params.put("page", "1");
+        }
+        
+        params.put("userStatus", "ACCEPTED");
+        
+        List<String> status = new ArrayList<>();
+        status.add("PENDING");
+
+        int count = this.motelService.countMotels(params, status);
+        int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
+        
+        
+        List<Motel> motels = motelService.getMotels(params, status);
+
+        model.addAttribute("motels", motels);
+        model.addAttribute("pages", Math.ceil(count * 1.0 / pageSize));
+        model.addAttribute("params", params);
+
+        return "motelsApproval";
+    }
+    
+    @RequestMapping(value = "/motels-approval/{slug}")
+    public String approval(Model model, @PathVariable(value = "slug") String slug) {
+        Motel motel = motelService.getMotelBySlug(slug);
+        if (!motel.getStatus().equals(Status.PENDING.toString()))
+             return "redirect:/motels";
+        if (motel.getUserId().getStatus().equals(Status.PENDING.toString()))
+             return "redirect:/users-approval/" + motel.getUserId().getUsername();
+        Map<String, String> params = new HashMap<>();
+        params.put("type", "landlordPost");
+        params.put("isDeleted", "0");
+        params.put("motelSlug", slug);
+
+        List<Post> post = postService.getPosts(params);
+        model.addAttribute("post", post.get(0));
+        model.addAttribute("motel", motel);
+        model.addAttribute("user", motel.getUserId());
+
+        return "approval";
+    }
 
     @ModelAttribute("status")
     public Status[] getStatus() {

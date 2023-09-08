@@ -20,6 +20,16 @@
         <put-attribute name="content" 
                        value="/WEB-INF/pages/users.jsp" />
     </definition>
+    <definition name="usersApproval" extends="baseLayout">
+        <put-attribute name="title" value="Xét duyệt users" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/usersApproval.jsp" />
+    </definition>
+    <definition name="approval" extends="baseLayout">
+        <put-attribute name="title" value="Xét duyệt" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/approval.jsp" />
+    </definition>
     <definition name="userDetail" extends="baseLayout">
         <put-attribute name="title" value="Thông tin user" />
         <put-attribute name="content" 
@@ -30,7 +40,11 @@
         <put-attribute name="content" 
                        value="/WEB-INF/pages/motels.jsp" />
     </definition>
-   
+   <definition name="motelsApproval" extends="baseLayout">
+        <put-attribute name="title" value="Xét duyệt nhà trọ" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/motelsApproval.jsp" />
+    </definition>
     <definition name="addMotel" extends="baseLayout">
         <put-attribute name="title" value="Thêm nhà trọ mới" />
         <put-attribute name="content" 

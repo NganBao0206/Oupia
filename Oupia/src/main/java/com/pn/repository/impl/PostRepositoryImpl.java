@@ -54,7 +54,7 @@ public class PostRepositoryImpl implements PostRepository {
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<Object[]> q = b.createQuery(Object[].class);
         Root<Post> root = q.from(Post.class);
-        Join<Post, Image> join = root.join("imageSet", JoinType.INNER);
+        Join<Post, Image> join = root.join("imageSet", JoinType.LEFT);
         Subquery<Long> subquery = q.subquery(Long.class);
         Root<Image> subRoot = subquery.from(Image.class);
         subquery.select(b.min(subRoot.get("id")));
@@ -67,7 +67,7 @@ public class PostRepositoryImpl implements PostRepository {
         List<Predicate> predicates = new ArrayList<>();
         q.multiselect(root, join.get("image"));
 
-        predicates.add(b.in(join.get("id")).value(subquery));
+        predicates.add(b.or(b.in(join.get("id")).value(subquery), b.isEmpty(root.get("imageSet"))));
         if (params != null) {
 
             String deleted = params.get("isDeleted");
@@ -99,6 +99,12 @@ public class PostRepositoryImpl implements PostRepository {
                     predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
                 }
             }
+            
+            String motelSlug = params.get("motelSlug");
+            if (motelSlug != null && !motelSlug.isEmpty()) {
+                Predicate motelPredicate = b.equal(root.get("postRentDetail").get("motelId").get("slug"), motelSlug);
+                predicates.add(motelPredicate);
+            }
 
             String username = params.get("username");
             if (username != null && !username.isEmpty()) {
@@ -123,8 +129,9 @@ public class PostRepositoryImpl implements PostRepository {
                 ex.printStackTrace();
             }
 
-            q.where(predicates.toArray(Predicate[]::new));
+            
         }
+        q.where(predicates.toArray(Predicate[]::new));
         if (lng != null && lat != null && distance != null) {
             q.groupBy(root.get("id"), join.get("id"), root.get("postRentDetail").get("motelId").get("id"));
             q.orderBy(b.asc(distance), b.desc(root.get("id")));
@@ -197,6 +204,12 @@ public class PostRepositoryImpl implements PostRepository {
                 if (isAccepted.equals("accepted")) {
                     predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
                 }
+            }
+            
+            String motelSlug = params.get("motelSlug");
+            if (motelSlug != null && !motelSlug.isEmpty()) {
+                Predicate motelPredicate = b.equal(root.get("postRentDetail").get("motelId").get("slug"), motelSlug);
+                predicates.add(motelPredicate);
             }
 
             String username = params.get("username");

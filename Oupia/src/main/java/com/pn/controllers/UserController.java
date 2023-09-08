@@ -3,6 +3,8 @@ package com.pn.controllers;
 import com.pn.enums.Gender;
 import com.pn.enums.Status;
 import com.pn.enums.UserRole;
+import com.pn.pojo.Motel;
+import com.pn.pojo.Post;
 import com.pn.pojo.User;
 import com.pn.service.MotelService;
 import com.pn.service.MultipleService;
@@ -10,9 +12,12 @@ import com.pn.service.PostService;
 import com.pn.service.UserService;
 import com.pn.validator.WebAppValidator;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,7 +49,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private PostService postService;
 
     @Autowired
     private Environment env;
@@ -73,6 +79,22 @@ public class UserController {
     public Status[] getStatus() {
         return Status.values();
     }
+    
+    @RequestMapping(value = "/users-approval/{username}")
+    public String approval(Model model, @PathVariable(value = "username") String username) {
+        User u = userService.getUserByUsername(username);
+        if (!u.getStatus().equals(Status.PENDING.toString()))
+             return "redirect:/users";
+        Map<String, String> params = new HashMap<>();
+        params.put("username", username);
+        params.put("isDeleted", "0");
+        List<Post> post = postService.getPosts(params);
+        model.addAttribute("post", post.get(0));
+        model.addAttribute("motel", post.get(0).getPostRentDetail().getMotelId());
+        model.addAttribute("user", u);
+
+        return "approval";
+    }
 
     @RequestMapping(value = "/users")
     public String users(Model model, @RequestParam Map<String, String> params,
@@ -96,6 +118,33 @@ public class UserController {
         model.addAttribute("params", params);
 
         return "users";
+    }
+    
+    @RequestMapping(value = "/users-approval")
+    public String users(Model model, @RequestParam Map<String, String> params) {
+
+        params.put("isDeleted", "0");
+        if (params.get("page") == null) {
+            params.put("page", "1");
+        }
+        
+        List<String> userRole = new ArrayList<>();
+        userRole.add("LANDLORD");
+        
+        List<String> status = new ArrayList<>();
+        status.add("PENDING");
+
+        int count = this.userService.countUsers(params, userRole, status);
+        int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
+        
+        
+        List<User> u = userService.getUsers(params, userRole, status);
+
+        model.addAttribute("users", u);
+        model.addAttribute("pages", Math.ceil(count * 1.0 / pageSize));
+        model.addAttribute("params", params);
+
+        return "usersApproval";
     }
 
     @RequestMapping(value = "/users/bin")

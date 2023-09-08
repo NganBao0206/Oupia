@@ -9,9 +9,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <c:url value="/" var="homeUrl"/>
-<c:url value="/users/" var="usersUrl"/>
-<c:url value="/motels/" var="motelsUrl"/>
-<c:url value="/posts/" var="postsUrl"/>
+<c:url value="/users" var="usersUrl"/>
+<c:url value="/users-approval" var="usersApprovalUrl"/>
+<c:url value="/motels-approval" var="motelsApprovalUrl"/>
+
+<c:url value="/motels" var="motelsUrl"/>
+<c:url value="/posts" var="postsUrl"/>
 
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -29,11 +32,31 @@
                     <li class="nav-item">
                         <a id="dashboardNav" class="nav-link text-nowrap" aria-current="page" href="${homeUrl}">Dashboard</a>
                     </li>
-                    <li class="nav-item">
-                        <a id="usersNav" class="nav-link text-nowrap" href="${usersUrl}">Người dùng</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Người dùng
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a id="usersNav" class="nav-link text-nowrap text-dark" href="${usersUrl}">Quản lý người dùng</a>
+                            </li>
+                            <li>
+                                <a id="usersNav" class="nav-link text-nowrap text-dark" href="${usersApprovalUrl}">Xét duyệt người dùng</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a id="motelsNav" class="nav-link text-nowrap" href="${motelsUrl}">Nhà trọ</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                           Nhà trọ
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a id="usersNav" class="nav-link text-nowrap text-dark" href="${motelsUrl}">Quản lý nhà trọ</a>
+                            </li>
+                            <li>
+                                <a id="usersNav" class="nav-link text-nowrap text-dark" href="${motelsApprovalUrl}">Xét duyệt nhà trọ</a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a id="postsNav" class="nav-link text-nowrap" href="${postsUrl}">Bài đăng</a>
@@ -100,7 +123,7 @@
 </nav>
 <script>
     <sec:authorize access="isAuthenticated()">
-    fetch('/Oupia/api/users/authenticated-user/', {
+    fetch('/Oupia/admin/users/authenticated-user/', {
         method: "get",
         headers: {
             "Content-Type": "application/json"

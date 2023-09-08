@@ -226,4 +226,14 @@ public class UserServiceImpl implements UserService {
         this.userRepository.addUser(u);
         return u;
     }
+
+//    @Override
+//    public Set<Post> getPostsOfUser(User user) {
+//        return this.userRepository.getPostsOfUser(user);
+//    }
+
+    @Override
+    public boolean updateStatus(int id, String status) {
+        return this.userRepository.updateStatus(id, status);
+    }
 }
