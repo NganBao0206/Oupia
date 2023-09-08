@@ -25,7 +25,6 @@ const UserLayout = () => {
 
                     let res = await APIs.get(url);    
                     if (res.status === 200) {
-                        console.log(res.data);
                         setUser(res.data);
                     }
             

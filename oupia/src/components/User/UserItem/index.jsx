@@ -1,23 +1,19 @@
 import React from 'react';
 import avatar from '../../../resources/avatar.jpg';
-import { Button } from 'flowbite-react';
-import { Link } from 'react-router-dom';
-import { BsChat } from 'react-icons/bs';
 
 const UserItem = () => {
     return (
-        <div className="flex gap-1">
-            <div className="w-12 h-12">
-                <img
-                    src={avatar}
-                    alt="Avatar"
-                    className="rounded-full"
-                />
+        <div className="grid grid-cols-5 gap-7 w-full px-8 items-center">
+            <div className='col-span-1'>
+                <div className="w-16 h-16 ">
+                    <img
+                        src={avatar}
+                        alt="Avatar"
+                        className="rounded-full"
+                    />
+                </div>
             </div>
-            <h2 className="text-Dark font-bold">Nguyễn Kim Bảo Ngân</h2>
-            <Button color="dark" className="ring-2 ring-Dark ml-auto">
-                <p className="font-bold mt-1"><Link to="/upload">Xem</Link></p>
-            </Button>
+            <h2 className="text-Dark font-bold truncate col-span-4 w-full">Nguyễn Kim Bảo Ngân </h2>
         </div>
     );
 };

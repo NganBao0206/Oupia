@@ -18,9 +18,9 @@ const PostList = (props) => {
     return (
         <>
             {posts.map((post) => (
-                <>
+                <div>
                     {post.postRentDetail != null && <PostRentItem post={post}></PostRentItem>}
-                </>
+                </div>
             ))}
         </>
 

@@ -27,15 +27,11 @@ const UserCard = () => {
                 <div className="flex flex-col items-center">
                     <div className="font-bold text-lg">45</div>
                     <div className="">Theo dõi</div>
-                </div>
+                </div>  
             </div>
-            <div id="actions" className="flex justify-center items-center">
-                <Link><Button color="dark" className="font-bold mr-4">Theo dõi</Button></Link>
-                <Button className=" from-purple-500 to-pink-500" outline>
-                    <p>
-                        Nhắn tin
-                    </p>
-                </Button>
+            <div id="actions" className="grid grid-cols-2 gap-4 font-bold items-center">
+                <Link><Button color="dark">Theo dõi</Button></Link>
+                <Button className=" bg-blueTemplate hover:bg-blue-500" outline>Nhắn tin</Button>
             </div>
         </Card >
     );

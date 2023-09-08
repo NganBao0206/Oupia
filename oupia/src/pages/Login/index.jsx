@@ -11,6 +11,7 @@ import "./style.scss";
 
 const Login = () => {
     const [user, dispatch] = useContext(UserContext);
+    const [alert, setAlert] = useState(false);
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
 
@@ -19,6 +20,7 @@ const Login = () => {
 
     const login = (evt) => {
         evt.preventDefault();
+        setAlert(false);
         setLoading(true);
         const process = async () => {
             try {
@@ -38,6 +40,7 @@ const Login = () => {
             } catch (err) {
                 console.error(err);
                 setLoading(false);
+                setAlert(true);
             }
         }
         process();
@@ -83,6 +86,7 @@ const Login = () => {
                             </Button>
                         }
                     </div>
+                    {alert === true ? <h3 className="text-red-600 w-full text-center text-sm">Tài khoản hoặc mật khẩu không đúng</h3> : <></>}
                 </form>
                 <div className="inline-flex items-center justify-center w-full">
                     <hr className="w-64 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />

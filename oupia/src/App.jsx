@@ -18,10 +18,15 @@ import UserFavourite from './pages/User/UserFavorites';
 import UserPhotos from './pages/User/UserPhotos';
 import Post from './pages/Post/PostDetail';
 import Posts from './pages/Post/Posts';
-import { v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 import AddMotel from './pages/Motel/AddMotel';
 import Forum from './pages/Forum';
-import Manager from './pages/Manager';
+import MotelManager from './pages/Manager/MotelManager';
+import PostManager from './pages/Manager/PostManager';
+import Settings from './pages/Settings';
+import ChatRoom from './pages/ChatRoom';
+import MessageLayout from './layouts/MessageLayout';
+
 
 export const UserContext = createContext();
 
@@ -37,28 +42,33 @@ const App = () => {
       <UserContext.Provider value={[user, dispatch]}>
         <BrowserRouter>
           <Header />
-
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/motels" element={<Motels />} />
             <Route path="/motels/add" element={<AddMotel />} />
             <Route path="login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/posts/" element={<Posts />}></Route>
+            <Route path="/posts" element={<Posts />}></Route>
             <Route path="/posts/:slugPost" element={<Post />}></Route>
-            <Route path="/forum/" element={<Forum />}></Route>
-            <Route path="/manager/" element={<Manager />}></Route>
+            <Route path="/forum" element={<Forum />}></Route>
+            <Route path="/manager/post" element={<PostManager />}></Route>
+            <Route path="/manager/motel" element={<MotelManager />}></Route>
+            <Route path="/messages" element={<MessageLayout />}>
+              <Route index path="" element={<></>} />
+              <Route path=":slugUser" element={<ChatRoom />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
             <Route path="/:slugUser" element={<UserLayout />}>
-              <Route path="" element={<UserPosts />} />
+              <Route index path="" element={<UserPosts />} />
               <Route path="posts" element={<UserPosts />} />
               <Route path="favourites" element={<UserFavourite />} />
               <Route path="photos" element={<UserPhotos />} />
               <Route path="*" element={<NotFound />} />
             </Route>
+            <Route path="/settings" element={<Settings />}></Route>
             <Route path="/upload" element={<Upload />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-
           <Footer />
         </BrowserRouter>
       </UserContext.Provider>
