@@ -13,16 +13,18 @@ import APIs, { authApi, endpoints } from '../../configs/APIs';
 
 export const FormContext = createContext();
 
+
 const Register = () => {
     const [component, setComponent] = useState();
     const [components, setComponents] = useState([<StepOne context={FormContext} />]);
 
     const [step, setStep] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const [isEnable, setIsEnable] = useState(false);
+    const [, setLoading] = useState(false);
+    const [, setIsEnable] = useState(false);
     const nav = useNavigate();
 
     const [user, setUser] = useState({});
+    const [validate, setValidate] = useState({});
     const [motel, setMotel] = useState({});
     const [post, setPost] = useState({});
     const [postRentDetail, setPostRentDetail] = useState({});
@@ -86,7 +88,7 @@ const Register = () => {
         const process = async () => {
             let form = new FormData();
 
-            if (user.userRole == "LANDLORD") {
+            if (user.userRole === "LANDLORD") {
                 form.append('user', JSON.stringify(user));
                 form.append('motel', JSON.stringify(motel));
                 form.append('post', JSON.stringify(post));
@@ -130,7 +132,7 @@ const Register = () => {
     }
 
     return (<>
-        <FormContext.Provider value={{ user, setUser, avatar, setAvatar, setAvatarFile, postImages, setPostImages, motel, setMotel, postRentDetail, setPostRentDetail, post, setPost }}>
+        <FormContext.Provider value={{ user, setUser, avatar, setAvatar, setAvatarFile, postImages, setPostImages, motel, setMotel, postRentDetail, setPostRentDetail, post, setPost , validate, setValidate}}>
             <div className="min-h-screen">
                 <div className="grid grid-cols-3 rounded-xl border shadow-lg m-20">
                     <div className=" col-span-1 bg-Dark flex items-start h-full rounded-l-xl py-24">

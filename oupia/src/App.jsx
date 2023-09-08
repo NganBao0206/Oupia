@@ -20,6 +20,8 @@ import Post from './pages/Post/PostDetail';
 import Posts from './pages/Post/Posts';
 import { v4 as uuid} from 'uuid';
 import AddMotel from './pages/Motel/AddMotel';
+import Forum from './pages/Forum';
+import Manager from './pages/Manager';
 
 export const UserContext = createContext();
 
@@ -43,8 +45,9 @@ const App = () => {
             <Route path="login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/posts/" element={<Posts />}></Route>
-
             <Route path="/posts/:slugPost" element={<Post />}></Route>
+            <Route path="/forum/" element={<Forum />}></Route>
+            <Route path="/manager/" element={<Manager />}></Route>
             <Route path="/:slugUser" element={<UserLayout />}>
               <Route path="" element={<UserPosts />} />
               <Route path="posts" element={<UserPosts />} />

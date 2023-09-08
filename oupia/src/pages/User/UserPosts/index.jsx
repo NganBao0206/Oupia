@@ -5,7 +5,7 @@ import PostList from '../../../components/Post/PostList';
 
 const UserPosts = (props) => {
     const { slugUser } = useParams();
-    const [type, setType] = useState(null);
+    const [,setType] = useState(null);
     const [posts, setPosts] = useState(null);
     useEffect(() => {
         if (props.userRole === "TENANT")
@@ -36,7 +36,6 @@ const UserPosts = (props) => {
     }
     return (
         <PostList posts={posts}></PostList>
-
     );
 };
 

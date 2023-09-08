@@ -1,4 +1,3 @@
-import { Breadcrumb } from 'flowbite-react';
 import React, { createContext, useEffect, useState } from 'react';
 import UserCard from '../../../components/User/UserCard';
 import RecommendList from '../../../components/RecommendList';
@@ -6,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import APIs, { endpoints } from '../../../configs/APIs';
 import PostComment from '../../../components/Post/PostComment';
 import PostContent from '../../../components/Post/PostContent';
+import MyBreadCrumb from '../../../components/MyBreadCrumb';
 
 export const PostContext = createContext();
 
@@ -82,7 +82,7 @@ const PostDetail = () => {
     return (
         <PostContext.Provider value={{post, images, comments, setComments, getComments}}>
             <div className="lg:px-32">
-                <Breadcrumb BreadCrumbName="Nhà trọ giá rẻ" />
+                <MyBreadCrumb BreadCrumbName="Nhà trọ giá rẻ" />
                 <div className="grid grid-cols-7 gap-5">
                     <div className="col-span-5">
                         <PostContent/>

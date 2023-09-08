@@ -82,7 +82,7 @@ const LandlordForm = () => {
         });
 
         // setLoading(true)
-        let res = await authApi().post(endpoints['posts'], form, {
+        let res = await authApi().post(endpoints['addPostRent'], form, {
             headers: {
                 "Custom-Header": "value",
             }
