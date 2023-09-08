@@ -2,6 +2,8 @@ package com.pn.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.pn.components.FirebaseService;
 import com.pn.components.JwtService;
 import com.pn.pojo.Motel;
 import com.pn.pojo.Post;
@@ -14,13 +16,13 @@ import com.pn.service.UserService;
 import com.pn.validator.WebAppValidator;
 import java.util.Map;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -63,6 +65,8 @@ public class ApiUserController {
     @Autowired
     private JwtService jwtService;
     @Autowired
+    private FirebaseService firebaseService;
+    @Autowired
     private WebAppValidator postValidator;
     @Autowired
     private WebAppValidator postRentValidator;
@@ -73,14 +77,21 @@ public class ApiUserController {
 
     @PostMapping("/login/")
     @CrossOrigin
-    public ResponseEntity<String> login(@RequestBody User user) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
         if (this.userService.authUser(user.getUsername(), user.getPassword()) == true) {
-            String token = this.jwtService.generateTokenLogin(user.getUsername());
-
-            return new ResponseEntity<>(token, HttpStatus.OK);
+            try {
+                String token = this.jwtService.generateTokenLogin(user.getUsername());
+                String fbToken = this.firebaseService.createCustomToken(user.getUsername());
+                Map<String, String> response = new HashMap<>();
+                response.put("token", token);
+                response.put("fbToken", fbToken);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } catch (FirebaseAuthException ex) {
+                Logger.getLogger(ApiUserController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
-        return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PatchMapping("/users/bin/{username}/")
@@ -143,10 +154,14 @@ public class ApiUserController {
             @RequestPart("avatar") MultipartFile avatarFile,
             @RequestPart(name = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        User userObj = mapper.readValue(info.get("user"), User.class);
-        Motel motelObj = mapper.readValue(info.get("motel"), Motel.class);
-        Post postObj = mapper.readValue(info.get("post"), Post.class);
-        PostRentDetail postRentDetailObj = mapper.readValue(info.get("postRentDetail"), PostRentDetail.class);
+        User userObj = mapper.readValue(info.get("user"), User.class
+        );
+        Motel motelObj = mapper.readValue(info.get("motel"), Motel.class
+        );
+        Post postObj = mapper.readValue(info.get("post"), Post.class
+        );
+        PostRentDetail postRentDetailObj = mapper.readValue(info.get("postRentDetail"), PostRentDetail.class
+        );
 
         motelObj.setUserId(userObj);
         postRentDetailObj.setMotelId(motelObj);
@@ -166,7 +181,7 @@ public class ApiUserController {
         resultMotel = (BindingResult) motelValidator.getValidateErrors(motelObj, resultMotel);
         resultPost = (BindingResult) postValidator.getValidateErrors(postObj, resultPost);
         resultDetail = (BindingResult) postRentValidator.getValidateErrors(postRentDetailObj, resultDetail);
-        
+
         if (resultUser.hasErrors() || resultPost.hasErrors() || resultDetail.hasErrors() || resultMotel.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
