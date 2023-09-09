@@ -6,11 +6,14 @@ import formatCurrency from '../../../utils/priceUtils';
 import { Button } from 'flowbite-react';
 import { FiEdit3 } from 'react-icons/fi';
 import { LuTrash } from 'react-icons/lu';
+import { Navigate } from 'react-router-dom';
+import NotFound from '../../NotFound';
 
 const PostManager = () => {
     const [currentUser,] = useContext(UserContext);
     const [posts, setPosts] = useState(null);
     const [selectedPost, setSelectedPost] = useState(null);
+
 
     useEffect(() => {
         const getPost = async () => {
@@ -35,6 +38,13 @@ const PostManager = () => {
 
     const handlePostClick = (post) => {
         setSelectedPost(post);
+    }
+
+    if (!currentUser) {
+        return (<Navigate to="/login" />)
+    }
+    if (currentUser && currentUser.userRole === "TENANT") {
+        return (<NotFound/>)
     }
 
     return (<>

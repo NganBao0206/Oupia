@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MyBreadCrumb from '../../components/MyBreadCrumb';
-import PostFindItem from '../../components/Post/PostFindItem';
 import UserStatus from '../../components/User/UserStatus';
 import UserItem from '../../components/User/UserItem';
+// import { useNavigate } from 'react-router-dom';
+import APIs, { endpoints } from '../../configs/APIs';
+import PostFindList from '../../components/Post/PostFindList';
 
 const Forum = () => {
+    const [posts, setPosts] = useState(null);
+    // const navigate = useNavigate();
+
+    useEffect(() => {
+        getPost();
+    }, []);
+
+    const getPost = async () => {
+        setPosts(null);
+        // navigate({ search: new URLSearchParams(debouncedParams).toString() });
+        try {
+            let res = await APIs.get(endpoints['posts'], {
+                params: {
+                    type: "tenantPost",
+                    isDeleted: "0",
+                }
+            });
+            if (res.status === 200) {
+                setPosts(res.data.posts);
+                // setTotalPages(res.data.pages);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
 
     return (<>
         <div className="lg:px-32">
@@ -12,7 +40,7 @@ const Forum = () => {
             <div className="grid grid-cols-7 my-5 gap-5">
                 <div className="col-span-5 flex flex-col gap-5">
                     <UserStatus />
-                    <PostFindItem />
+                    <PostFindList posts={posts} />
                 </div>
                 <div className="col-span-2">
                     <div className="py-8 items-center border border-gray-200 rounded-xl shadow-lg flex flex-col">

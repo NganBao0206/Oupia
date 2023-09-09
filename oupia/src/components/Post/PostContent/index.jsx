@@ -3,13 +3,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { LuBedSingle } from "react-icons/lu";
 import { BiArea, BiBath } from 'react-icons/bi';
 import { PiHeartBold, PiHeartBreakFill, PiHeartFill, PiShareFat, PiUsersThree } from 'react-icons/pi';
-import { IoLocationOutline } from 'react-icons/io5';
 import { LiaPhoneSolid } from 'react-icons/lia';
 import { HiOutlineHomeModern } from 'react-icons/hi2';
 import formatCurrency from '../../../utils/priceUtils';
 import { PostContext } from '../../../pages/Post/PostDetail';
 import { authApi, endpoints } from '../../../configs/APIs';
 import { UserContext } from '../../../App';
+import { HiOutlineLocationMarker } from 'react-icons/hi';
 
 
 const PostContent = () => {
@@ -125,7 +125,7 @@ const PostContent = () => {
                     </div>
                 </div>
                 <div className="flex text-gray-700 items-center gap-1">
-                    <IoLocationOutline size="25" />
+                    <HiOutlineLocationMarker size="25" />
                     <div className="flex gap-3">
                         <h3>Địa Chỉ:</h3>
                         <h3>{post.postRentDetail.motelId.fullLocation}</h3>

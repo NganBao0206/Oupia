@@ -24,7 +24,7 @@ const UserStatus = () => {
                 <img
                     src={currentUser.avatar}
                     alt="Avatar"
-                    className="w-full h-full rounded-full"
+                    className="w-full h-full rounded-full ring-4 ring-gray-200 border-4 border-transparent rounded-full"
                 />
             </div>
             <h2 className="text-Dark font-bold text-lg">Bạn chưa đăng bài viết mới trong hôm nay</h2>
