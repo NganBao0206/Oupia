@@ -1,6 +1,6 @@
 import { Button } from 'flowbite-react';
-import React, { createContext, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import StepOne from '../../components/Form/Register/StepOneRegister';
 import StepTwo from '../../components/Form/Register/StepTwoRegister';
 import StepThree from '../../components/Form/Register/StepThreeRegister';
@@ -9,12 +9,14 @@ import StepFive from '../../components/Form/LandlordForm/StepThreeLandlordForm';
 import StepSix from '../../components/Form/LandlordForm/StepTwoLandlordForm';
 import LastStep from '../../components/Form/Register/StepFourRegister';
 import RegisterStepper from "../../components/Stepper/RegisterStepper";
-import APIs, { authApi, endpoints } from '../../configs/APIs';
+import APIs, { endpoints } from '../../configs/APIs';
+import { UserContext } from '../../App';
 
 export const FormContext = createContext();
 
 
 const Register = () => {
+    const [currentUser,] = useContext(UserContext);
     const [component, setComponent] = useState();
     const [components, setComponents] = useState([<StepOne context={FormContext} />]);
 
@@ -33,6 +35,8 @@ const Register = () => {
     const [avatarFile, setAvatarFile] = useState(null);
     const [postImages, setPostImages] = useState([]);
 
+
+  
 
     const handleNextStep = () => {
 
@@ -131,8 +135,12 @@ const Register = () => {
         process();
     }
 
+    if (currentUser) {
+        return (<Navigate to="/" />)
+    }
+
     return (<>
-        <FormContext.Provider value={{ user, setUser, avatar, setAvatar, setAvatarFile, postImages, setPostImages, motel, setMotel, postRentDetail, setPostRentDetail, post, setPost , validate, setValidate}}>
+        <FormContext.Provider value={{ user, setUser, avatar, setAvatar, setAvatarFile, postImages, setPostImages, motel, setMotel, postRentDetail, setPostRentDetail, post, setPost, validate, setValidate }}>
             <div className="min-h-screen">
                 <div className="grid grid-cols-3 rounded-xl border shadow-lg m-20">
                     <div className=" col-span-1 bg-Dark flex items-start h-full rounded-l-xl py-24">
