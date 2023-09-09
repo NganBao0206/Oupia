@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom/dist';
 import APIs, { endpoints } from '../../../configs/APIs';
-import PostList from '../../../components/Post/PostList';
+import PostList from '../../../components/Post/PostRentList';
 
 const UserPosts = (props) => {
     const { slugUser } = useParams();

@@ -22,6 +22,7 @@ export const endpoints = {
     "register-landlord": `${SERVER_CONTEXT}/api/register-landlord/`,
     "favour": `${SERVER_CONTEXT}/api/favourites/`,
     "getFavourOfUser": `${SERVER_CONTEXT}/api/favourites/user/`,
+    "getAuthToken": `${SERVER_CONTEXT}/api/auth-token/`,
 }
 
 export const authApi = () => {

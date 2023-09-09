@@ -82,7 +82,7 @@ const PostDetail = () => {
     return (
         <PostContext.Provider value={{post, images, comments, setComments, getComments}}>
             <div className="lg:px-32">
-                <MyBreadCrumb BreadCrumbName="Nhà trọ giá rẻ" />
+                <MyBreadCrumb BreadCrumbName={post.title} />
                 <div className="grid grid-cols-7 gap-5">
                     <div className="col-span-5">
                         <PostContent/>

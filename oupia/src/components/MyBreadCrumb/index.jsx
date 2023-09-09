@@ -22,6 +22,7 @@ const MyBreadCrumb = (props) => {
       {pathnames.map((name, index) => {
         const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
         const isLast = index === pathnames.length - 1;
+        
         return (
           <Breadcrumb.Item key={index}>
             {isLast ? (
@@ -30,7 +31,7 @@ const MyBreadCrumb = (props) => {
               </p>
             ) : (
               <Link to={routeTo} className="text-Darker font-bold text-lg dark:text-white">
-                {name}
+                {name === "settings" ? "Cài đặt": (name === "posts" ? "Bài viết": name )}
               </Link>
             )}
           </Breadcrumb.Item>

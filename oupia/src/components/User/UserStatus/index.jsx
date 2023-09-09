@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const UserStatus = () => {
     const [currentUser,] = useContext(UserContext);
 
-    if (currentUser === null) {
+    if (!currentUser) {
         return <>
             <div className=" border border-gray-200 rounded-xl shadow p-5 flex gap-5 items-center">
 

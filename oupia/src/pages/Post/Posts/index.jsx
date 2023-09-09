@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import MyBreadcrumb from '../../../components/MyBreadCrumb';
 import APIs, { endpoints } from '../../../configs/APIs';
 import SearchPost from '../../../components/SearchPost';
-import PostRentList from '../../../components/Post/PostList';
+import PostRentList from '../../../components/Post/PostRentList';
 import { ParamsContext, ParamsProvider } from '../../../providers/ParamsProvider';
 import { useDebounce } from 'use-debounce';
 import { useNavigate } from 'react-router-dom';

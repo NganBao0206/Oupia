@@ -1,7 +1,7 @@
 import React from 'react';
 import { IoImageOutline } from 'react-icons/io5';
 
-const PostRentSkeleton = (props) => {
+const PostRentSkeleton = () => {
 
     const sizes = [
         { w: 48, maxW: [480, 440, 460, 360] },
