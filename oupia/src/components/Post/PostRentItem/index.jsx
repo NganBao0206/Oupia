@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 import { PiStarBold, PiDotBold } from "react-icons/pi";
 import { BiHomeAlt } from "react-icons/bi";
 import { HiOutlineLocationMarker, HiOutlineArrowRight } from "react-icons/hi"
+import Moment from 'react-moment';
+import moment from 'moment';
+import 'moment/locale/vi';
+
+moment.locale('vi');
+
+
 const PostRentItem = (props) => {
     const { post } = props;
     return (<>
@@ -16,7 +23,7 @@ const PostRentItem = (props) => {
                         <Avatar className="" alt="Avatar" img={post.userId.avatar} rounded />
                         <div>
                             <p className="font-bold text-sm">{post.userId.fullName}</p>
-                            <p className="text-sm text-gray-500">Vai giay truoc</p>
+                            <p className="text-sm text-gray-500"><Moment locale="vi" fromNow>{post.createdAt}</Moment></p>
                         </div>
                     </div>
                     <div className="uppercase mt-5 tracking-wide text-bold font-semibold mb-2 text-Dark line-clamp-1">{post.title}</div>
