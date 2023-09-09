@@ -153,11 +153,11 @@ public class User implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "followUserId")
     @JsonIgnore
-    private Set<Follow> followUserSet;
+    private Set<Follow> followingSet;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "beFollowedUserId")
     @JsonIgnore
-    private Set<Follow> beFollowUserSet;
+    private Set<Follow> followerSet;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sendUserId")
     @JsonIgnore
@@ -380,23 +380,23 @@ public class User implements Serializable {
     @XmlTransient
     @JsonIgnore
 
-    public Set<Follow> getFollowUserSet() {
-        return followUserSet;
+    public Set<Follow> getFollowingSet() {
+        return followingSet;
     }
 
-    public void setFollowUserSet(Set<Follow> followUserSet) {
-        this.followUserSet = followUserSet;
+    public void setFollowingSet(Set<Follow> followingSet) {
+        this.followingSet = followingSet;
     }
 
     @XmlTransient
     @JsonIgnore
 
-    public Set<Follow> getBeFollowUserSet() {
-        return beFollowUserSet;
+    public Set<Follow> getFollowerSet() {
+        return followerSet;
     }
 
-    public void setBeFollowUserSet(Set<Follow> beFollowUserSet) {
-        this.beFollowUserSet = beFollowUserSet;
+    public void setFollowerSet(Set<Follow> followerSet) {
+        this.followerSet = followerSet;
     }
 
     @XmlTransient

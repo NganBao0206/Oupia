@@ -16,6 +16,7 @@ import com.pn.validator.PasswordValidator;
 import com.pn.validator.UsernameValidator;
 import com.pn.validator.WebAppValidator;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -120,7 +123,6 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         validator.setSpringValidators(springValidators);
         return validator;
     }
-   
 
     @Bean
     WebAppValidator postValidator() {
@@ -137,7 +139,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         validator.setSpringValidators(springValidators);
         return validator;
     }
-    
+
     @Bean
     WebAppValidator postFindValidator() {
         Set<Validator> springValidators = new HashSet<>();

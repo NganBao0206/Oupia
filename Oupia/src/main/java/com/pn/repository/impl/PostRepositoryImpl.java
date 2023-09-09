@@ -117,6 +117,42 @@ public class PostRepositoryImpl implements PostRepository {
                 Predicate userPredicate = b.equal(root.get("userId").get("id"), userId);
                 predicates.add(userPredicate);
             }
+            
+            String minPrice = params.get("minPrice");
+            if (minPrice != null && !minPrice.isEmpty()) {
+                Predicate p = b.greaterThanOrEqualTo(root.get("postRentDetail").get("price"), minPrice);
+                predicates.add(p);
+            }
+            
+            String maxPrice = params.get("maxPrice");
+            if (maxPrice != null && !maxPrice.isEmpty()) {
+                Predicate p = b.lessThanOrEqualTo(root.get("postRentDetail").get("price"), maxPrice);
+                predicates.add(p);
+            }
+            
+            String maxPeople = params.get("maxPeople");
+            if (maxPeople != null && !maxPeople.isEmpty()) {
+                Predicate p = b.lessThanOrEqualTo(root.get("postRentDetail").get("maxPeople"), maxPeople);
+                predicates.add(p);
+            }
+            
+            String minPeople = params.get("minPeople");
+            if (minPeople != null && !minPeople.isEmpty()) {
+                Predicate p = b.greaterThanOrEqualTo(root.get("postRentDetail").get("minPeople"), minPeople);
+                predicates.add(p);
+            }
+            
+            String numOfBedrooms = params.get("numOfBedrooms");
+            if (numOfBedrooms != null && !numOfBedrooms.isEmpty()) {
+                Predicate p = b.equal(root.get("postRentDetail").get("numOfBedrooms"), numOfBedrooms);
+                predicates.add(p);
+            }
+            
+            String numOfBathrooms = params.get("numOfBathrooms");
+            if (numOfBathrooms != null && !numOfBathrooms.isEmpty()) {
+                Predicate p = b.equal(root.get("postRentDetail").get("numOfBathrooms"), numOfBathrooms);
+                predicates.add(p);
+            }
 
             String longitude = params.get("longitude");
             String latitude = params.get("latitude");
@@ -222,6 +258,42 @@ public class PostRepositoryImpl implements PostRepository {
             if (userId != null && !userId.isEmpty()) {
                 Predicate userPredicate = b.equal(root.get("userId").get("id"), userId);
                 predicates.add(userPredicate);
+            }
+            
+            String minPrice = params.get("minPrice");
+            if (minPrice != null && !minPrice.isEmpty()) {
+                Predicate p = b.greaterThanOrEqualTo(root.get("postRentDetail").get("price"), minPrice);
+                predicates.add(p);
+            }
+            
+            String maxPrice = params.get("maxPrice");
+            if (maxPrice != null && !maxPrice.isEmpty()) {
+                Predicate p = b.lessThanOrEqualTo(root.get("postRentDetail").get("price"), maxPrice);
+                predicates.add(p);
+            }
+            
+            String maxPeople = params.get("maxPeople");
+            if (maxPeople != null && !maxPeople.isEmpty()) {
+                Predicate p = b.lessThanOrEqualTo(root.get("postRentDetail").get("maxPeople"), maxPeople);
+                predicates.add(p);
+            }
+            
+            String minPeople = params.get("minPeople");
+            if (minPeople != null && !minPeople.isEmpty()) {
+                Predicate p = b.greaterThanOrEqualTo(root.get("postRentDetail").get("minPeople"), minPeople);
+                predicates.add(p);
+            }
+            
+            String numOfBedrooms = params.get("numOfBedrooms");
+            if (numOfBedrooms != null && !numOfBedrooms.isEmpty()) {
+                Predicate p = b.equal(root.get("postRentDetail").get("numOfBedrooms"), numOfBedrooms);
+                predicates.add(p);
+            }
+            
+            String numOfBathrooms = params.get("numOfBathrooms");
+            if (numOfBathrooms != null && !numOfBathrooms.isEmpty()) {
+                Predicate p = b.equal(root.get("postRentDetail").get("numOfBathrooms"), numOfBathrooms);
+                predicates.add(p);
             }
 
             q.where(predicates.toArray(Predicate[]::new));

@@ -10,6 +10,14 @@
         <put-attribute name="footer" 
                        value="/WEB-INF/layout/footer.jsp" />
     </definition>
+    <definition name="emailNe" 
+                template="/WEB-INF/layout/email.jsp">
+        <put-attribute name="title" value="" />
+        <put-attribute name="content" 
+                       value="/WEB-INF/pages/emailConfirm.jsp" />
+        <put-attribute name="footer" 
+                       value="" />
+    </definition>
     <definition name="index" extends="baseLayout">
         <put-attribute name="title" value="Trang chủ" />
         <put-attribute name="content" 
@@ -40,7 +48,7 @@
         <put-attribute name="content" 
                        value="/WEB-INF/pages/motels.jsp" />
     </definition>
-   <definition name="motelsApproval" extends="baseLayout">
+    <definition name="motelsApproval" extends="baseLayout">
         <put-attribute name="title" value="Xét duyệt nhà trọ" />
         <put-attribute name="content" 
                        value="/WEB-INF/pages/motelsApproval.jsp" />
@@ -55,12 +63,12 @@
         <put-attribute name="content" 
                        value="/WEB-INF/pages/editMotel.jsp" />
     </definition>    
-     <definition name="posts" extends="baseLayout">
+    <definition name="posts" extends="baseLayout">
         <put-attribute name="title" value="Quản lý bài đăng" />
         <put-attribute name="content" 
                        value="/WEB-INF/pages/posts.jsp" />
     </definition>
-     <definition name="postRentDetail" extends="baseLayout">
+    <definition name="postRentDetail" extends="baseLayout">
         <put-attribute name="title" value="Quản lý bài đăng" />
         <put-attribute name="content" 
                        value="/WEB-INF/pages/postRentDetail.jsp" />
