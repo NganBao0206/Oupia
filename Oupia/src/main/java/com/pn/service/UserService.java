@@ -36,13 +36,12 @@ public interface UserService extends UserDetailsService {
     boolean restoreUser(String username);
 
     boolean authUser(String username, String password);
-        
-     User prepareUser(User u);
+
+    User prepareUser(User u);
 
     User addUser(Map<String, String> params, MultipartFile avatar);
-        boolean updateStatus(int id, String status);
 
+    boolean updateStatus(int id, String status);
 
 //    Set<Post> getPostsOfUser (User user);
-
 }

@@ -92,7 +92,7 @@ public class PostRepositoryImpl implements PostRepository {
                 }
             }
 
-            if (type != null && !type.equals("tenantPost")) {
+            if (type == null || !type.equals("tenantPost")) {
                 String isAccepted = params.get("isAccepted");
                 if (isAccepted != null && !isAccepted.isEmpty()) {
                     if (isAccepted.equals("accepted")) {
@@ -238,7 +238,7 @@ public class PostRepositoryImpl implements PostRepository {
                 }
             }
 
-            if (type != null && !type.equals("tenantPost")) {
+            if (type == null || !type.equals("tenantPost")) {
                 String isAccepted = params.get("isAccepted");
                 if (isAccepted != null && !isAccepted.isEmpty()) {
                     if (isAccepted.equals("accepted")) {
