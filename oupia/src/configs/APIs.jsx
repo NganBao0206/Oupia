@@ -10,6 +10,7 @@ export const endpoints = {
     "register": `${SERVER_CONTEXT}/api/users/`,
     "motels": `${SERVER_CONTEXT}/api/motels/`,
     "posts" : `${SERVER_CONTEXT}/api/posts/`,
+    "countPosts" : `${SERVER_CONTEXT}/api/posts/count/`,
     "addPostRent" : `${SERVER_CONTEXT}/api/posts/rent/`,
     "addPostFind" : `${SERVER_CONTEXT}/api/posts/find/`,
     "userInfo": (username) => `${SERVER_CONTEXT}/api/users/${username}/`,
