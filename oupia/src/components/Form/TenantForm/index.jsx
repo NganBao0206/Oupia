@@ -14,10 +14,6 @@ const TenantForm = () => {
     const [provs, setProvs] = useState([]);
     const [dists, setDists] = useState([]);
     const [ws, setWs] = useState([]);
-
-    const [province, setProvince] = useState();
-    const [district, setDistrict] = useState();
-    const [ward, setWard] = useState();
     const [locationResult, setLocationResult] = useState(null);
     const [query, setQuery] = useState(null);
     const [errors, setErrors] = useState({});
@@ -150,37 +146,39 @@ const TenantForm = () => {
 
 
 
-    const getDetail = async (placeId) => {
-        const res = await APIs.get(endpoints["mapDetail"], {
-            params: {
-                placeId: placeId,
-            }
-        })
-        const data = await res.data;
-        setLocationResult(data.result.formatted_address);
-        changePostDetail(data.result.formatted_address, "location");
-        changePostDetail(data.result.geometry.location.lat, "locationLatitude");
-        changePostDetail(data.result.geometry.location.lng, "locationLongitude");
-    }
+    
 
-    const getDatas = async (queryInput) => {
-        const res = await APIs.get(endpoints["mapAutocomplate"], {
-            params: {
-                input: queryInput,
-                sessionToken: localStorage.getItem("sessionToken")
-            }
-        })
-        const data = await res.data;
-        if (data.predictions) {
-            const rs = data.predictions[0];
-            const placeId = rs.place_id;
-            getDetail(placeId)
-        } else {
-            setLocationResult(null);
-        }
-    }
+    
 
     useEffect(() => {
+        const getDetail = async (placeId) => {
+            const res = await APIs.get(endpoints["mapDetail"], {
+                params: {
+                    placeId: placeId,
+                }
+            })
+            const data = await res.data;
+            setLocationResult(data.result.formatted_address);
+            changePostDetail(data.result.formatted_address, "location");
+            changePostDetail(data.result.geometry.location.lat, "locationLatitude");
+            changePostDetail(data.result.geometry.location.lng, "locationLongitude");
+        }
+        const getDatas = async (queryInput) => {
+            const res = await APIs.get(endpoints["mapAutocomplate"], {
+                params: {
+                    input: queryInput,
+                    sessionToken: localStorage.getItem("sessionToken")
+                }
+            })
+            const data = await res.data;
+            if (data.predictions) {
+                const rs = data.predictions[0];
+                const placeId = rs.place_id;
+                getDetail(placeId)
+            } else {
+                setLocationResult(null);
+            }
+        }
         if (query) {
             console.log(query);
             getDatas(query);

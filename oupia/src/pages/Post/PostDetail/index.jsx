@@ -26,6 +26,9 @@ const PostDetail = () => {
                 console.log(res.data)
                 setComments(res.data);
             }
+            else {
+                
+            }
 
         } catch (err) {
             console.error(err);
@@ -33,6 +36,23 @@ const PostDetail = () => {
     }
 
     useEffect(() => {
+        const getComments = async () => {
+            try {
+                const url = endpoints.postComments(slugPost);
+    
+                let res = await APIs.get(url);
+                if (res.status === 200) {
+                    console.log(res.data)
+                    setComments(res.data);
+                }
+                else {
+                    
+                }
+    
+            } catch (err) {
+                console.error(err);
+            }
+        }
         const getPostDetail = async () => {
             try {
                 const url = endpoints.postInfo(slugPost);

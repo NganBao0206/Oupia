@@ -28,6 +28,7 @@ import MessageLayout from './layouts/MessageLayout';
 import SettingLayout from './layouts/SettingLayout';
 import ChangeInfo from './pages/Settings/ChangeInfo';
 import ChangePassword from './pages/Settings/ChangePassword';
+import { authApi, endpoints } from './configs/APIs';
 
 
 export const UserContext = createContext();
@@ -36,6 +37,23 @@ export const UserContext = createContext();
 const App = () => {
   const [user, dispatch] = useReducer(UserReducer, cookie.load("user") || null);
   useEffect(() => {
+    const refestCurrentUser = async () => {
+      const res = await authApi().get(endpoints['current-user']);
+      if (res.status === 200) {
+        cookie.save("user", res.data);
+
+        dispatch({
+          "type": "login",
+          "payload": res.data
+        });
+      } else {
+        dispatch({
+          "type": "logout"
+        })
+      }
+
+    }
+    refestCurrentUser();
     const newSessionToken = uuid();
     localStorage.setItem("sessionToken", newSessionToken);
   }, []);
