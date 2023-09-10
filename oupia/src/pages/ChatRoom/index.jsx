@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IoInformationCircleOutline, IoSendSharp } from 'react-icons/io5';
 import './style.scss';
 import LeftMessage from '../../components/Message/LeftMessage';
@@ -83,6 +83,16 @@ const ChatRoom = () => {
         getReceiverUser();
     }, [slugUser])
 
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     const updateMessage = () => {
         const chatroomsRef = collection(db, 'chatrooms');
         const combinedUsername = [currentUser.username, receiverUser.username].sort().join(':');
@@ -129,7 +139,7 @@ const ChatRoom = () => {
                 </div>
             </div>
             <div className="pl-5">
-                <div className=" chat-container overflow-y-auto">
+                <div className=" chat-container overflow-y-auto" >
                     <div className="pt-5 pr-5 flex flex-col gap-2">
                         {messages && messages.map((message) =>
                             <>
@@ -137,7 +147,9 @@ const ChatRoom = () => {
                                 {message.sender === receiverUser.username ? <LeftMessage content={message.content} avatar={receiverUser.avatar} /> : ""}
                             </>
                         )}
+                        <div ref={messagesEndRef}/>
                     </div>
+
                 </div>
             </div>
             <div className="p-5">

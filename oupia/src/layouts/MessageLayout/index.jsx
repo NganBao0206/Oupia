@@ -32,13 +32,6 @@ const MessageLayout = () => {
                 const q = query(chatroomsRef, where('members', 'array-contains', currentUser.username), orderBy("updatedAt", "desc"));
                 onSnapshot(q, (snapshot) => {
                     setChatRooms(snapshot.docs.map((doc) => doc.data()));
-                    
-                    snapshot.docs.forEach((doc) => {
-                        const chatroomRef = doc.ref;
-                        onSnapshot(chatroomRef, (chatroomSnapshot) => {
-                            // Update the specific chatroom in your state here
-                        });
-                    });
                 })
             }
         }
