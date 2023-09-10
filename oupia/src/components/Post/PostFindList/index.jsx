@@ -1,8 +1,5 @@
 import React from 'react';
-<<<<<<< HEAD
-=======
 import PostFindSkeleton from '../../MySkeleton/PostFindSkeleton';
->>>>>>> eae89bd62f899c1e434aadb870c21d071739a95e
 import PostFindItem from '../PostFindItem';
 import { Spinner } from 'flowbite-react';
 
