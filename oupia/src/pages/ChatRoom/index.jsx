@@ -3,13 +3,12 @@ import { IoInformationCircleOutline, IoSendSharp } from 'react-icons/io5';
 import './style.scss';
 import LeftMessage from '../../components/Message/LeftMessage';
 import RightMessage from '../../components/Message/RightMessage';
-import APIs, { authApi, endpoints } from '../../configs/APIs';
+import APIs, { endpoints } from '../../configs/APIs';
 import { UserContext } from '../../App';
 import { Link, useParams } from 'react-router-dom';
 import { PiUser } from 'react-icons/pi';
-import { auth, db } from '../../configs/FireBase';
+import { db } from '../../configs/FireBase';
 import { serverTimestamp, collection, query, where, getDocs, addDoc, orderBy, onSnapshot, updateDoc } from "firebase/firestore";
-import { signInWithCustomToken } from 'firebase/auth';
 
 const ChatRoom = () => {
     const [currentUser,] = useContext(UserContext);

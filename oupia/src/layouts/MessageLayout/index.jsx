@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { RiSearch2Line } from 'react-icons/ri';
 import './style.scss';
-import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import UserChatItem from '../../components/User/UserChatitem';
 import { UserContext } from '../../App';
 import { signInWithCustomToken } from 'firebase/auth';

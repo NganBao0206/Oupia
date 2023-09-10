@@ -1,6 +1,4 @@
-import React, { useContext } from 'react';
-import avatar from '../../../resources/avatar.jpg';
-import { UserContext } from '../../../App';
+import React from 'react';
 import Moment from 'react-moment';
 import moment from 'moment';
 import 'moment/locale/vi';
@@ -11,13 +9,11 @@ moment.locale('vi');
 
 
 const UserChatItem = (props) => {
-    const [currentUser,] = useContext(UserContext);
     const { message, user } = props;
     if (message && user) {
         return (
             <>
                 <Link to={`/messages/${user.username}`} className="py-3 px-2 rounded-lg hover:bg-gray-200">
-    
                     <div className="grid grid-cols-5 gap-7 w-full items-center">
                         <div className='col-span-1'>
                             <div className="w-16 h-16 ">
