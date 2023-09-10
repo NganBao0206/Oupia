@@ -1,4 +1,8 @@
 import React from 'react';
+<<<<<<< HEAD
+=======
+import PostFindSkeleton from '../../MySkeleton/PostFindSkeleton';
+>>>>>>> eae89bd62f899c1e434aadb870c21d071739a95e
 import PostFindItem from '../PostFindItem';
 import { Spinner } from 'flowbite-react';
 
@@ -15,7 +19,7 @@ const PostFindList = (props) => {
         <>
             {posts.map((post) => (
                 <div>
-                    {post.postFindDetail != null && <PostFindItem post={post} />}
+                    {post.postRentDetail != null && <PostFindItem post={post} />}
                 </div>
             ))}
         </>

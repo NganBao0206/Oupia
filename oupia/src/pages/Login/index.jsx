@@ -9,6 +9,7 @@ import cookie from "react-cookies";
 import { UserContext } from '../../App';
 import "./style.scss";
 
+
 const Login = () => {
     const [user, dispatch] = useContext(UserContext);
     const [alert, setAlert] = useState(false);
@@ -28,7 +29,6 @@ const Login = () => {
                     "password": password
                 });
                 cookie.save("token", res.data);
-
                 let { data } = await authApi().get(endpoints['current-user']);
                 cookie.save("user", data);
 

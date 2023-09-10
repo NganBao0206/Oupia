@@ -31,7 +31,7 @@ const UserCard = () => {
             </div>
             <div id="actions" className="grid grid-cols-2 gap-4 font-bold items-center">
                 <Link><Button color="dark">Theo dõi</Button></Link>
-                <Button className=" bg-blueTemplate hover:bg-blue-500" outline>Nhắn tin</Button>
+                <Button className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
             </div>
         </Card >
     );
