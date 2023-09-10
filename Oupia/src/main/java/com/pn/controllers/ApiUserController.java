@@ -137,7 +137,7 @@ public class ApiUserController {
         if (u != null && u.getIsDeleted() == false) {
             return new ResponseEntity<>(u, HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/users/bin/{username}/")
