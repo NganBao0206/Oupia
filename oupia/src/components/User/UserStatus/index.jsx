@@ -1,11 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../../App';
 import { Button } from 'flowbite-react';
 import { LuEdit } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
-const UserStatus = () => {
+const UserStatus = (props) => {
     const [currentUser,] = useContext(UserContext);
+    const [postCount, setPostCount] = useState(0);
+    const { posts } = props;
+    const today = new Date().getDate();
+
+    useEffect(() => {
+        let postCountToday = 0;
+        if (posts) {
+            posts.map(post => {
+                const date = new Date(post.createdAt).getDate();
+                if (post.userId.username === currentUser.username && date === today && post.isDeleted === false) {
+                    postCountToday++;
+                }
+            })
+        }
+        setPostCount(postCountToday);
+    }, [currentUser, posts, today])
+
+
 
     if (!currentUser) {
         return <>
@@ -27,13 +45,18 @@ const UserStatus = () => {
                     className="w-full h-full rounded-full ring-4 ring-gray-200 border-4 border-transparent rounded-full"
                 />
             </div>
-            <h2 className="text-Dark font-bold text-lg">Bạn chưa đăng bài viết mới trong hôm nay</h2>
-            <Button color="dark" className="ring-2 ring-Dark ml-auto">
-                <div className="flex gap-3 items-center">
-                    <LuEdit size="20" className="text-white" />
-                    <p className="font-bold mt-1"><Link to="/upload">Đăng bài mới</Link></p>
-                </div>
-            </Button>
+            {postCount > 0 ?
+                <h2 className="text-Dark font-bold text-lg">Bạn đã đăng {postCount} bài viết trong hôm nay</h2>
+                :
+                <h2 className="text-Dark font-bold text-lg">Bạn chưa đăng bài viết mới trong hôm nay</h2>}
+            <Link to="/upload" className="ml-auto">
+                <Button color="dark" className="ring-2 ring-Dark ">
+                    <div className="flex gap-3 items-center">
+                        <LuEdit size="20" className="text-white" />
+                        <p className="font-bold mt-1">Đăng bài mới</p>
+                    </div>
+                </Button>
+            </Link>
 
         </div>
     </>);

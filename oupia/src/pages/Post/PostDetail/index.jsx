@@ -6,6 +6,7 @@ import APIs, { endpoints } from '../../../configs/APIs';
 import PostContent from '../../../components/Post/PostContent';
 import MyBreadCrumb from '../../../components/MyBreadCrumb';
 import PostComment from '../../../components/Comment/PostComment';
+import NotFound from '../../NotFound';
 
 export const PostContext = createContext();
 
@@ -64,7 +65,7 @@ const PostDetail = () => {
         getPostDetail();
         getImages();
         getComments();
-    }, [])
+    }, [slugPost])
 
 
 
@@ -76,20 +77,20 @@ const PostDetail = () => {
 
     if (post && post.postFindDetail) {
         return (<>
-            not found
+            <NotFound />
         </>)
     }
     return (
-        <PostContext.Provider value={{post, images, comments, setComments, getComments}}>
+        <PostContext.Provider value={{ post, images, comments, setComments, getComments }}>
             <div className="lg:px-32">
                 <MyBreadCrumb BreadCrumbName={post.title} />
                 <div className="grid grid-cols-7 gap-5">
                     <div className="col-span-5">
-                        <PostContent/>
+                        <PostContent />
                     </div>
                     <div className="col-span-2 flex flex-col gap-5">
                         <UserCard />
-                        <PostComment/>
+                        <PostComment />
                     </div>
                 </div>
                 <RecommendList title="Bài đăng liên quan" />
