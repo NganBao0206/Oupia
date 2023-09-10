@@ -67,12 +67,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling()
                 .accessDeniedPage("/login?accessDenied");
 
-//        http.authorizeRequests().antMatchers("/").permitAll()
-//                .antMatchers("/**/add")
-//                .access("hasRole('ROLE_ADMIN')");
-//        .antMatchers("/**/pay")
-//                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-        http.csrf().disable();
+        http.authorizeRequests().antMatchers("/").permitAll()
+                .antMatchers("/", "/users", "/posts", "/motels", "/users-approval", "/motels-approval", "/admin")
+                .access("hasAuthority('ADMIN')");
+                http.csrf().disable();
     }
 
     @Bean
@@ -90,5 +88,5 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public SimpleDateFormat simpleDateFormat() {
         return new SimpleDateFormat("yyyy-MM-dd");
     }
-   
+
 }
