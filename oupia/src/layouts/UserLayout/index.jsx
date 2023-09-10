@@ -10,6 +10,7 @@ import { LuEdit, LuHeart } from "react-icons/lu";
 import { UserContext } from '../../App';
 import APIs, { authApi, endpoints } from '../../configs/APIs';
 import NotFound from '../../pages/NotFound';
+import MySpinner from '../../components/MySpinner';
 
 const UserLayout = () => {
     const { slugUser } = useParams();
@@ -23,6 +24,8 @@ const UserLayout = () => {
     const [followers, setFollowers] = useState(null);
 
     const [countFollowers, setCountFollowers] = useState(null);
+
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (currentUser == null || slugUser !== currentUser.username) {
@@ -97,13 +100,13 @@ const UserLayout = () => {
         }
     }, [currentUser, user])
 
-    
+
 
     useEffect(() => {
         if (user) {
             const getCountFollowers = async () => {
                 const path = endpoints.countFollowers(user.username);
-        
+
                 const res = await APIs.get(path);
                 if (res.status === 200) {
                     setCountFollowers(res.data);
@@ -129,10 +132,11 @@ const UserLayout = () => {
     }, [user, follow])
 
 
-
     if (user === null) {
         return <>
-            <NotFound />
+            <div className="w-full h-full flex flex-col items-center justify-center col-span-7">
+                <MySpinner />
+            </div>
         </>
     }
     return (
@@ -221,10 +225,18 @@ const UserLayout = () => {
                                                 </>
                                                 :
                                                 <>
-                                                    <Button color="dark" className="ring-2 ring-Dark"><p className="font-bold" onClick={() => addFollow()}>Theo dõi</p></Button>
-
+                                                    {currentUser ? <>
+                                                        <Button color="dark" className="ring-2 ring-Dark"><p className="font-bold" onClick={() => addFollow()}>Theo dõi</p></Button>
+                                                    </> : <>
+                                                        <Button color="dark" className="ring-2 ring-Dark"><p className="font-bold" ><Link to="/login">Theo dõi</Link></p></Button>
+                                                    </>}
                                                 </>}
-                                            <Button outline className="ring-2 ring-Dark"><p className="font-bold"><Link to={`/messages/${user.username}`}>Nhắn tin</Link></p></Button>
+
+                                            {currentUser ? <>
+                                                <Button outline className="ring-2 ring-Dark"><p className="font-bold"><Link to={`/messages/${user.username}`}>Nhắn tin</Link></p></Button>
+                                            </> : <>
+                                                <Button outline className="ring-2 ring-Dark"><p className="font-bold"><Link to="/login">Nhắn tin</Link></p></Button>
+                                            </>}
 
                                         </>
                                         :

@@ -24,9 +24,6 @@ const MessageLayout = () => {
         getFbToken();
     }, [])
 
-    useEffect(() => {
-        
-    })
 
     useEffect(() => {
         if (authToken) {

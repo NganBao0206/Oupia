@@ -7,6 +7,7 @@ import PostContent from '../../../components/Post/PostContent';
 import MyBreadCrumb from '../../../components/MyBreadCrumb';
 import PostComment from '../../../components/Comment/PostComment';
 import NotFound from '../../NotFound';
+import MySpinner from '../../../components/MySpinner';
 
 export const PostContext = createContext();
 
@@ -27,7 +28,7 @@ const PostDetail = () => {
                 setComments(res.data);
             }
             else {
-                
+
             }
 
         } catch (err) {
@@ -39,16 +40,16 @@ const PostDetail = () => {
         const getComments = async () => {
             try {
                 const url = endpoints.postComments(slugPost);
-    
+
                 let res = await APIs.get(url);
                 if (res.status === 200) {
                     console.log(res.data)
                     setComments(res.data);
                 }
                 else {
-                    
+
                 }
-    
+
             } catch (err) {
                 console.error(err);
             }
@@ -111,11 +112,13 @@ const PostDetail = () => {
         if (post) {
             getRecomments();
         }
-    }, [post] )
+    }, [post])
 
     if (!post || !images) {
         return (<>
-            <NotFound />
+            <div className="w-full h-full flex flex-col items-center justify-center col-span-7">
+                <MySpinner />
+            </div>
         </>)
     }
     return (
@@ -131,7 +134,7 @@ const PostDetail = () => {
                         <PostComment />
                     </div>
                 </div>
-                <RecommendList recommentList={recommentList} title="Phòng trọ gần đó" url={`/posts?location=${post.postRentDetail.motelId.fullLocation}&page=1&latitude=${post.postRentDetail.motelId.locationLatitude}&longitude=${post.postRentDetail.motelId.locationLongitude}`}/>
+                <RecommendList recommentList={recommentList} title="Phòng trọ gần đó" url={`/posts?location=${post.postRentDetail.motelId.fullLocation}&page=1&latitude=${post.postRentDetail.motelId.locationLatitude}&longitude=${post.postRentDetail.motelId.locationLongitude}`} />
             </div>
         </PostContext.Provider>
     );

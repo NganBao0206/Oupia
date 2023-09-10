@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import "./style.scss"
 import { PostContext } from '../../../pages/Post/PostDetail';
 import APIs, { endpoints } from '../../../configs/APIs';
+import { UserContext } from '../../../App';
 
 const UserCard = () => {
     const { post } = useContext(PostContext);
     const [countPosts, setCountPosts] = useState(null);
     const [countFollowers, setCountFollowers] = useState(null);
+    const [currentUser,] = useContext(UserContext);
 
     useEffect(() => {
         const getCountPost = async () => {
@@ -19,13 +21,13 @@ const UserCard = () => {
                     type: "landlordPost",
                 }
             })
-            if (res.status === 200) 
+            if (res.status === 200)
                 setCountPosts(res.data);
         }
 
         const getCountFollowers = async () => {
             const res = await APIs.get(endpoints.countFollowers(post.userId.username))
-            if (res.status === 200) 
+            if (res.status === 200)
                 setCountFollowers(res.data);
         }
         if (post) {
@@ -49,11 +51,11 @@ const UserCard = () => {
 
             <div id="stats" className="flex justify-between items-center my-2 mx-auto">
                 <div className="flex flex-col items-center mr-10">
-                    <div className="font-bold text-lg">{countPosts? countPosts : '...'}</div>
+                    <div className="font-bold text-lg">{countPosts ? countPosts : '...'}</div>
                     <div className="">Bài viết</div>
                 </div>
                 <div className="flex flex-col items-center">
-                    <div className="font-bold text-lg">{countFollowers? countFollowers : '...'}</div>
+                    <div className="font-bold text-lg">{countFollowers ? countFollowers : '...'}</div>
                     <div className="">Theo dõi</div>
                 </div>
             </div>
@@ -61,9 +63,13 @@ const UserCard = () => {
                 <Link to={`/${post.userId.username}`}>
                     <Button color="dark" className="w-full">Xem</Button>
                 </Link>
-                <Link to={`/messages/${post.userId.username}`}>
+
+                {currentUser ? <> <Link to={`/messages/${post.userId.username}`}>
                     <Button className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
-                </Link>
+                </Link></> : <> <Link to="/login">
+                    <Button className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
+                </Link></>}
+
             </div>
         </Card >
     );

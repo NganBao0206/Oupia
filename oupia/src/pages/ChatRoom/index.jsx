@@ -5,7 +5,7 @@ import LeftMessage from '../../components/Message/LeftMessage';
 import RightMessage from '../../components/Message/RightMessage';
 import APIs, { endpoints } from '../../configs/APIs';
 import { UserContext } from '../../App';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { PiUser } from 'react-icons/pi';
 import { db } from '../../configs/FireBase';
 import { serverTimestamp, collection, query, where, getDocs, addDoc, orderBy, onSnapshot, updateDoc } from "firebase/firestore";
@@ -112,7 +112,7 @@ const ChatRoom = () => {
 
     }
 
-    
+
 
     useEffect(() => {
         setMessages([]);
@@ -130,7 +130,7 @@ const ChatRoom = () => {
                     })
                 }
             });
-    
+
         }
         if (currentUser && receiverUser) {
             updateMessage();
@@ -148,15 +148,19 @@ const ChatRoom = () => {
 
     if (loading) {
         return (
-          <div className="w-full h-full flex items-center justify-center col-span-7">
-            <Spinner size="xl" className=" fill-blueTemplate" />
-          </div>
+            <div className="w-full h-full flex items-center justify-center col-span-7">
+                <Spinner size="xl" className=" fill-blueTemplate" />
+            </div>
         );
-      }
-    
-      if (!receiverUser) {
+    }
+
+    if (!receiverUser) {
         return <div className="w-full h-full flex items-center justify-center col-span-7">Không có người dùng</div>;
-      }
+    }
+
+    if (receiverUser && !currentUser) {
+        return <Navigate to="/login"/>
+    }
 
     return (<>
         <div className="col-span-5 flex flex-col">
