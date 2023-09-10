@@ -87,7 +87,6 @@ public class PostRepositoryImpl implements PostRepository {
             if (type != null && !type.isEmpty()) {
                 if (type.equals("tenantPost")) {
                     predicates.add(b.isNotNull(root.get("postFindDetail").get("id")));
-                    q.multiselect(root, join.get("imageSet"));
                 } else if (type.equals("landlordPost")) {
                     predicates.add(b.isNotNull(root.get("postRentDetail").get("id")));
                 }
