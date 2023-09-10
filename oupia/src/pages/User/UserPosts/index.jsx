@@ -33,6 +33,8 @@ const UserPosts = (props) => {
                     }
                 });
                 if (res.status === 200) {
+                    if (page && posts.length > (page * 8 - 8)) return;
+                    if (page === 1) setPosts([]);
                     setTotal(res.data.total);
                     setPosts(current => {
                         return [...current, ...res.data.posts]
