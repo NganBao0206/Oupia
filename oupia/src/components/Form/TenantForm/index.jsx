@@ -1,9 +1,10 @@
-import { Button } from 'flowbite-react';
+import { Button, Spinner } from 'flowbite-react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import DragDropFiles from '../../DragDropFIles';
 import { UserContext } from '../../../App';
 import APIs, { authApi, endpoints } from '../../../configs/APIs';
+import { Link } from 'react-router-dom';
 
 export const TenantFormContext = createContext();
 
@@ -26,15 +27,19 @@ const TenantForm = () => {
     const [postFindDetail, setPostFindDetail] = useState({});
     const [postImages, setPostImages] = useState([]);
 
+    const [loading, setLoading] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+
+
     const changePost = (value, field) => {
         setPost(current => {
-            return {...current, [field]: value }
+            return { ...current, [field]: value }
         });
     }
 
     const changePostDetail = (value, field) => {
         setPostFindDetail(current => {
-            return {...current, [field]: value }
+            return { ...current, [field]: value }
         });
     }
 
@@ -65,13 +70,13 @@ const TenantForm = () => {
 
     const handleProvince = async ({ target }) => {
         const selectedProvCode = target.value;
-        
+
         if (selectedProvCode) {
             try {
                 const res = await axios.get(`https://provinces.open-api.vn/api/p/${selectedProvCode}?depth=2`);
                 const resDist = res.data.districts;
                 setDists(resDist);
-                
+
             } catch (ex) {
                 console.error('Error fetching provinces: ', ex);
             }
@@ -80,20 +85,20 @@ const TenantForm = () => {
             setWs([]);
         }
         const distInput = document.querySelector("#district");
-                distInput.value = "";
-         refreshLocation();
+        distInput.value = "";
+        refreshLocation();
     }
 
 
     const handleDistrict = async ({ target }) => {
         const selectedDistCode = target.value;
-        
+
         if (selectedDistCode) {
             try {
                 const res = await axios.get(`https://provinces.open-api.vn/api/d/${selectedDistCode}?depth=2`);
                 const resWard = res.data.wards;
                 setWs(resWard);
-                
+
             } catch (ex) {
                 console.error('Error fetching districts: ', ex);
             }
@@ -103,7 +108,7 @@ const TenantForm = () => {
         refreshLocation();
     }
 
-    const handleWard = ({target}) => {
+    const handleWard = ({ target }) => {
         refreshLocation();
     }
 
@@ -170,6 +175,7 @@ const TenantForm = () => {
 
     const submitForm = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         let form = new FormData();
         form.append('post', JSON.stringify(post));
@@ -185,7 +191,8 @@ const TenantForm = () => {
             }
         });
         if (res.status === 201) {
-            console.log("success");
+            setLoading(false);
+            setIsSuccess(true);
         }
     }
 
@@ -206,7 +213,7 @@ const TenantForm = () => {
                                         <div className="relative w-full mt-2">
                                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                             </div>
-                                            <input value={postFindDetail.minPrice} onChange={e => changePostDetail(e.target.value, "minPrice")} type="text" className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-20 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Vd: 3000000..." required />
+                                            <input value={postFindDetail.minPrice} onChange={e => changePostDetail(e.target.value, "minPrice")} type="text" className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5 pr-20 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  " placeholder="Vd: 3000000..." required />
                                             <div className="absolute block inset-y-0 right-0 flex items-center px-3">
                                                 <span className="border-l-2 pl-3 text-gray-500 dark:text-gray-400">
                                                     VND
@@ -222,7 +229,7 @@ const TenantForm = () => {
                                         <div className="relative w-full mt-2">
                                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                             </div>
-                                            <input type="text" value={postFindDetail.maxPrice} onChange={e => changePostDetail(e.target.value, "maxPrice")} className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-20 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Vd: 6000000..." required />
+                                            <input type="text" value={postFindDetail.maxPrice} onChange={e => changePostDetail(e.target.value, "maxPrice")} className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5 pr-20 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  " placeholder="Vd: 6000000..." required />
                                             <div className="absolute block inset-y-0 right-0 flex items-center px-3">
                                                 <span className="border-l-2 pl-3 text-gray-500 dark:text-gray-400">
                                                     VND
@@ -299,24 +306,23 @@ const TenantForm = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <h5 id="locationResult" class="text-sm text-gray-700 mt-3">{locationResult ? locationResult : "Địa điểm..."}</h5>
+                                <h5 id="locationResult" className="text-lg font-bold text-gray-700 mt-5">{locationResult ? (<>Khu vực bạn chọn: <span className="text-blueTemplate">{locationResult}</span></>) : "Địa điểm..."}</h5>
                                 <h2 className="text-2xl font-bold leading-7 text-blueTemplate mt-10">Nội dung bài viết</h2>
                                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     <div className="col-span-full">
-                                        <label for="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tiêu đề </label>
-                                        <input onChange={e => changePost(e.target.value, "title")} type="text" id="title" className="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                        <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 "><div className="flex"><h3>Tiêu đề</h3><h3 className={`ml-auto ${(post.title && post.title.length >= 20 && post.title.length <= 100) ? "" : "text-red-700"}`}>Tối thiểu từ 20 đến 100 ký tự</h3></div> </label>
+                                        <input onChange={e => changePost(e.target.value, "title")} type="text" id="title" className={`w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5 ${(post.title && post.title.length >= 20 && post.title.length <= 100) ? "" : "border-red-700 focus:ring-red-700 focus:border-red-700"}`} required />
                                     </div>
 
                                     <div className="col-span-full">
                                         <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                                            Nội dung
-                                        </label>
+                                            <div className="flex"><h3>Nội dung</h3><h3 className={`ml-auto ${(post.description && post.description.length >= 50) ? "" : "text-red-700"}`}>Tối thiểu 50 ký tự</h3></div></label>
                                         <div className="mt-2">
                                             <textarea
                                                 id="about"
                                                 name="about"
                                                 rows={3}
-                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blueTemplate sm:text-sm sm:leading-6 ${(post.description && post.description.length >= 50) ? "" : "ring-red-700 focus:ring-red-700 focus:border-red-700"}`}
                                                 defaultValue={''}
                                                 onChange={e => changePost(e.target.value, "description")}
                                                 required
@@ -335,12 +341,36 @@ const TenantForm = () => {
                             </div>
                         </div>
                     </div>
-                    <Button type="submit" className="bg-blueTemplate w-1/2 mx-auto whitespace-nowrap">
-                        <p className="font-bold text-base">Đăng bài viết</p>
-                    </Button>
+                    <div className="flex justify-center">
+                        {loading !== false ?
+                            <Spinner
+                                size="lg" className="my-2 fill-blueTemplate" />
+                            : <Button type="submit" className="bg-blueTemplate w-1/2 mx-auto whitespace-nowrap">
+                                <p className="font-bold text-base">Đăng bài viết</p>
+                            </Button>}
+                    </div>
+
                 </form>
+            </div >
+        </TenantFormContext.Provider >
+        {isSuccess === false ? <></> : <div className="absolute right-10 bottom-10">
+            <div id="toast-success" className="border border-gray-300 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+                <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+                    <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                    </svg>
+                    <span className="sr-only">Check icon</span>
+                </div>
+                <div className="ml-3 text-sm font-normal">Bài viết của bạn đã thêm vào diễn đàn. <Link to="/forum" className="text-blueTemplate">Xem ngay</Link></div>
+                <button type="button" className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
+                    <span className="sr-only">Close</span>
+                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                </button>
             </div>
-        </TenantFormContext.Provider>
+        </div>}
+
     </>);
 };
 

@@ -3,9 +3,9 @@ import UserCard from '../../../components/User/UserCard';
 import RecommendList from '../../../components/RecommendList';
 import { useParams } from 'react-router-dom';
 import APIs, { endpoints } from '../../../configs/APIs';
-import PostComment from '../../../components/Post/PostComment';
 import PostContent from '../../../components/Post/PostContent';
 import MyBreadCrumb from '../../../components/MyBreadCrumb';
+import PostComment from '../../../components/Comment/PostComment';
 
 export const PostContext = createContext();
 

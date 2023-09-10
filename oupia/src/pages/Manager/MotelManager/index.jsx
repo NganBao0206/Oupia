@@ -1,8 +1,16 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../../../App';
+import { Navigate } from 'react-router-dom';
+import NotFound from '../../NotFound';
 
 const MotelManager = () => {
     const [currentUser,] = useContext(UserContext);
+    if (!currentUser) {
+        return (<Navigate to="/login" />)
+    }
+    if (currentUser && currentUser.userRole === "TENANT") {
+        return (<NotFound/>)
+    }
 
     return (<>
 

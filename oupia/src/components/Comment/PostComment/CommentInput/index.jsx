@@ -1,4 +1,4 @@
-import { Avatar, Button, Label, Textarea } from "flowbite-react";
+import { Avatar, Label, Textarea } from "flowbite-react";
 import { useContext, useState } from "react";
 import { UserContext } from "../../../../App";
 import { PostContext } from "../../../../pages/Post/PostDetail";

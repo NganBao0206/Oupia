@@ -3,7 +3,7 @@ import "./style.scss";
 import { PiUsers } from "react-icons/pi";
 import { Avatar, Button, Card } from 'flowbite-react';
 import { MdAlternateEmail } from 'react-icons/md';
-import { BsGenderTrans, BsCalendar4, BsClock } from "react-icons/bs";
+import { BsCalendar4, BsClock, BsGenderAmbiguous } from "react-icons/bs";
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { LuEdit, LuHeart } from "react-icons/lu";
@@ -162,25 +162,26 @@ const UserLayout = () => {
                             <hr />
                             <div className="flex gap-2">
                                 <MdAlternateEmail size="21" />
-                                <h3 className=" font-thin">{user.username}</h3>
+                                <h3>Tên người dùng: </h3>
+                                <h3 className=" font-bold">{user.username}</h3>
                             </div>
                             <div className="flex gap-2">
-                                <BsGenderTrans size="21" />
-                                <h3 className=" font-thin">
-                                    {user.gender === "MALE" && 'Nam'}
+                                <BsGenderAmbiguous size="21" />
+                                <h3 className="flex gap-2"> Giới tính:</h3>
+                                <span className="font-bold">{user.gender === "MALE" && 'Nam'}
                                     {user.gender === "FEMALE" && 'Nữ'}
-                                    {user.gender === "ORTHER" && 'Khác'}
-                                </h3>
+                                    {user.gender === "ORTHER" && 'Khác'}</span>
                             </div>
                             <div className="flex gap-2">
                                 <BsCalendar4 size="21" />
-                                <h3 className=" font-thin">{user.dob}</h3>
+                                <h3>Ngày sinh: </h3>
+                                <h3 className=" font-bold">{user.dob}</h3>
                             </div>
                             <div className="flex gap-2">
                                 <BsClock size="21" />
-                                <h3 className=" font-thin">Tham gia vào {user.dob}</h3>
+                                <h3>Tham gia vào</h3>
+                                <h3 className="font-bold">{user.createdAt.split(" ")[0]}</h3>
                             </div>
-
                         </Card>
                     </div>
                     <div className="md:col-span-6 col-span-10 mt-36 md:mt-0">

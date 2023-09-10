@@ -14,7 +14,7 @@ const PostRentSkeleton = () => {
 
 
     return (<>
-        <div role="status" className="w-full lg:h-80 h-auto bg-white rounded-xl shadow-lg overflow-hidden my-16 text-Dark animate-pulse">
+        <div role="status" className="w-full lg:h-96 h-auto bg-white rounded-xl shadow-lg overflow-hidden my-16 text-Dark animate-pulse">
 
             <div className="grid grid-cols-10 h-full ">
                 <div className="col-span-10 h-full lg:col-span-4 flex items-center justify-center bg-gray-300 dark:bg-gray-700">

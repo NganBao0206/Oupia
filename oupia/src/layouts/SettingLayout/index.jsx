@@ -9,7 +9,7 @@ const Settings = () => {
     return (<>
 
         <div className="lg:px-32">
-            <MyBreadCrumb BreadCrumbName={location.pathname === "/settings/change-password" ? "Đổi mật khẩu" : (location.pathname === "/settings/change-info" ? "Thay đổi thông tin" : "Bài viết")} />
+            <MyBreadCrumb BreadCrumbName={location.pathname === "/settings/change-password" ? "Đổi mật khẩu" : (location.pathname === "/settings/change-info" ? "Thay đổi thông tin" : "Cài đặt")} />
             <div className="grid grid-cols-7 my-5 gap-5">
                 <div className="col-span-5">
                     <div className="w-full">

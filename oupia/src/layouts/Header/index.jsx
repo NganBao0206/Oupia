@@ -1,6 +1,6 @@
 import { Avatar, Button, Dropdown, Navbar } from 'flowbite-react';
 import imgLogo from "../../resources/logoOupia.svg";
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, Navigate, useLocation } from 'react-router-dom';
 import "./style.scss";
 import { useContext, useEffect, useState } from 'react';
 import { PiBell, PiClipboardText } from "react-icons/pi"
@@ -60,6 +60,7 @@ const Header = () => {
         dispatch({
             "type": "logout"
         })
+        return (<Navigate to="/login"/>)
     }
 
     useEffect(() => {
@@ -176,28 +177,30 @@ const Header = () => {
                         <NavLink to="/upload" className="nav-item text-lg">
                             Đăng tin
                         </NavLink>
+                        {user.userRole === "LANDLORD" ? <>
+                            <Dropdown
+                                arrowIcon={<FaAngleDown />}
+                                inline
+                                label={<h1 className="text-lg">Quản lý</h1>}
+                                placement='bottom'>
+                                <div>
+                                    <Link to="/manager/motel" className="hover:text-white">
+                                        <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
+                                            <HiOutlineHomeModern size="20" className="mr-2" />
+                                            <p className="text-sm">Nhà trọ</p>
+                                        </div>
+                                    </Link>
+                                    <Link to="/manager/post" className="hover:text-white ">
+                                        <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
+                                            <PiClipboardText size="20" className="mr-2" />
+                                            <p className="text-sm">Bài viết</p>
+                                        </div>
+                                    </Link>
+                                </div>
 
-                        <Dropdown
-                            arrowIcon={<FaAngleDown />}
-                            inline
-                            label={<h1 className="text-lg">Quản lý</h1>}
-                            placement='bottom'>
-                            <div>
-                                <Link to="/manager/motel" className="hover:text-white">
-                                    <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
-                                        <HiOutlineHomeModern size="20" className="mr-2" />
-                                        <p className="text-sm">Nhà trọ</p>
-                                    </div>
-                                </Link>
-                                <Link to="/manager/post" className="hover:text-white ">
-                                    <div className="items-center px-8 py-3 flex p-2 hover:bg-Dark ">
-                                        <PiClipboardText size="20" className="mr-2" />
-                                        <p className="text-sm">Bài viết</p>
-                                    </div>
-                                </Link>
-                            </div>
+                            </Dropdown>
+                        </> : <></>}
 
-                        </Dropdown>
                     </>)}
 
                 </Navbar.Collapse>
