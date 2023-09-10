@@ -4,15 +4,18 @@
  */
 package com.pn.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pn.pojo.Favourite;
 import com.pn.pojo.Post;
 import com.pn.pojo.User;
 import com.pn.service.FavouriteService;
 import com.pn.service.UserService;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +42,9 @@ public class ApiFavouriteController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private Environment env;
+
     @GetMapping(path = "/")
     @CrossOrigin
     public ResponseEntity<Favourite> getFavourite(@RequestParam("userId") int userId, @RequestParam("postId") int postId) {
@@ -52,14 +58,29 @@ public class ApiFavouriteController {
 
     @GetMapping(path = "/user/")
     @CrossOrigin
-    public ResponseEntity<List<Post>> getFavouritePostList(@RequestParam("username") String username) {
-        List<Post> favs = favouriteService.getFavouritesOfUser(username);
+    public ResponseEntity<String> getFavouritePostList(@RequestParam("username") String username, @RequestParam Map<String, String> params) {
+        List<Post> favs = favouriteService.getFavouritesOfUser(username, params);
         if (favs != null) {
-            return new ResponseEntity<>(favs, HttpStatus.OK);
+            int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
+            int count = favouriteService.getCountFavouritesOfUser(username);
+            int pages = (int) Math.ceil(count * 1.0 / pageSize);
+            try {
+                Map<String, Object> response = new HashMap<>();
+                response.put("pages", pages);
+                response.put("posts", favs);
+                response.put("total", count);
+                ObjectMapper mapper = new ObjectMapper();
+                String json = mapper.writeValueAsString(response);
+                ResponseEntity<String> result = new ResponseEntity<>(json, HttpStatus.OK);
+                return result;
 
-        } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
     }
 
     @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)

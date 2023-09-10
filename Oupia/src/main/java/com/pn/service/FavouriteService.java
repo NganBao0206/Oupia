@@ -7,6 +7,7 @@ package com.pn.service;
 import com.pn.pojo.Favourite;
 import com.pn.pojo.Post;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -14,7 +15,8 @@ import java.util.List;
  */
 public interface FavouriteService {
     Favourite getFavourStatus(int userId, int postId);
-    List<Post> getFavouritesOfUser(String username);
+    List<Post> getFavouritesOfUser(String username, Map<String, String> params);
+    int getCountFavouritesOfUser(String username);
     Favourite addFavourite(Favourite fav);
     Favourite getFavById(int id);
     Boolean removeFavourite(int favId);

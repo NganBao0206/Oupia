@@ -25,6 +25,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +37,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class FavouriteRepositoryImpl implements FavouriteRepository {
-
+    
     @Autowired
     private LocalSessionFactoryBean factory;
-
+    
+    @Autowired
+    private Environment env;
+    
     @Override
     public Favourite getFavourStatus(int userId, int postId) {
         Session s = this.factory.getObject().getCurrentSession();
@@ -52,38 +56,40 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
             return null;
         }
     }
-
+    
     @Override
-    public List<Post> getFavouritesOfUser(String username) {
+    public List<Post> getFavouritesOfUser(String username, Map<String, String> params) {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<Object[]> q = b.createQuery(Object[].class);
         Root<Favourite> root = q.from(Favourite.class);
         Join<Favourite, Post> postJoin = root.join("postId", JoinType.INNER);
         Join<Post, Image> join = postJoin.join("imageSet", JoinType.INNER);
-
+        
         Subquery<Long> subquery = q.subquery(Long.class);
         Root<Image> subRoot = subquery.from(Image.class);
         subquery.select(b.min(subRoot.get("id")));
         subquery.where(b.equal(subRoot.get("postId"), root.get("postId")));
-
+        
         List<Predicate> predicates = new ArrayList<>();
         q.multiselect(root.get("postId"), join.get("image"));
-
+        
         predicates.add(b.in(join.get("id")).value(subquery));
-
+        
         predicates.add(b.equal(root.get("userId").get("username"), username));
         q.where(predicates.toArray(Predicate[]::new));
         Query query = s.createQuery(q);
-//        String page = params.get("page");
-
-//        if (page != null) {
-//            int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
-//            query.setFirstResult((Integer.parseInt(page) - 1) * pageSize);
-//            query.setMaxResults(pageSize);
-//        }
+        if (params != null) {
+            String page = params.get("page");
+            if (page != null) {
+                int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
+                query.setFirstResult((Integer.parseInt(page) - 1) * pageSize);
+                query.setMaxResults(pageSize);
+            }
+        }
+        
         List<Object[]> results = query.getResultList();
-
+        
         Set<Post> posts = new LinkedHashSet<>();
         for (Object[] result : results) {
             Post post = (Post) result[0];
@@ -97,14 +103,25 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
         postList.addAll(posts);
         return postList;
     }
-
-//    @Override
-//    public List<Post> getFavouritesOfUser(String username) {
-//        Session s = this.factory.getObject().getCurrentSession();
-//        Query query = s.createQuery("FROM Favourite WHERE userId.username = :username");
-//        query.setParameter("username", username);
-//        return (List<Post>) query.getResultList();
-//    }
+    
+    @Override
+    public int getCountFavouritesOfUser(String username) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<Long> q = b.createQuery(Long.class);
+        Root<Favourite> root = q.from(Favourite.class);
+        
+        List<Predicate> predicates = new ArrayList<>();
+        q.select(b.count(root.get("id")));
+        predicates.add(b.equal(root.get("userId").get("username"), username));
+        q.where(predicates.toArray(Predicate[]::new));
+        Query query = s.createQuery(q);
+   
+        Long count = (Long) query.getSingleResult();
+       
+        return count.intValue();
+    }
+    
     @Override
     public Favourite addFavourite(Favourite fav) {
         Session s = this.factory.getObject().getCurrentSession();
@@ -115,13 +132,13 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
             return null;
         }
     }
-
+    
     @Override
     public Favourite getFavById(int id) {
         Session s = this.factory.getObject().getCurrentSession();
         return s.get(Favourite.class, id);
     }
-
+    
     @Override
     public Boolean removeFavourite(int favId) {
         Session s = this.factory.getObject().getCurrentSession();
@@ -133,7 +150,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
             e.printStackTrace();
             return false;
         }
-
+        
     }
-
+    
 }
