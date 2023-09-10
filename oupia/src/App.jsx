@@ -28,6 +28,7 @@ import MessageLayout from './layouts/MessageLayout';
 import SettingLayout from './layouts/SettingLayout';
 import ChangeInfo from './pages/Settings/ChangeInfo';
 import ChangePassword from './pages/Settings/ChangePassword';
+import EmailConfirm from './pages/EmailConfirm';
 
 
 export const UserContext = createContext();
@@ -71,6 +72,7 @@ const App = () => {
               <Route path="change-password" element={<ChangePassword />} />
             </Route>
             <Route path="/upload" element={<Upload />} />
+            <Route path="/cofirm" element={<EmailConfirm />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

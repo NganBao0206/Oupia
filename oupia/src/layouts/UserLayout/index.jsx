@@ -10,6 +10,7 @@ import { LuEdit, LuHeart } from "react-icons/lu";
 import { IoImageOutline } from "react-icons/io5";
 import { UserContext } from '../../App';
 import APIs, { authApi, endpoints } from '../../configs/APIs';
+import NotFound from '../../pages/NotFound';
 
 const UserLayout = () => {
     const { slugUser } = useParams();
@@ -129,7 +130,7 @@ const UserLayout = () => {
 
     if (user === null) {
         return <>
-            đang loading nè
+            <NotFound/>
         </>
     }
     return (

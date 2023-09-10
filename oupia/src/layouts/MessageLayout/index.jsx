@@ -36,13 +36,6 @@ const MessageLayout = () => {
             }
         }
     }, [authToken]);
-    
-
-
-
-    useEffect(() => {
-        console.log(chatRooms);
-    }, [chatRooms])
 
     if (!currentUser) {
         return (<Navigate to="/login?next=/messages" />);
@@ -76,7 +69,7 @@ const MessageLayout = () => {
                     <h1 className="text-xl font-bold pb-20">Hãy chọn một đoạn chat để bắt đầu trò chuyện</h1>
                 </div>)
                     : (<>
-                        <div className="flex flex-col grid grid-cols-7">
+                        <div className="flex flex-col grid grid-cols-7 h-full">
                             <Outlet />
                         </div>
                     </>)

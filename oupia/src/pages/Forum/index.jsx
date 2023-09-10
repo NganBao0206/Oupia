@@ -14,6 +14,7 @@ const Forum = () => {
 
     useEffect(() => {
         getPosts();
+        console.log(posts);
     }, []);
 
 
@@ -57,11 +58,6 @@ const Forum = () => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-5">
-                            <UserItem />
-                            <UserItem />
-                            <UserItem />
-                            <UserItem />
-                            <UserItem />
                         </div>
                     </div>
                 </div>

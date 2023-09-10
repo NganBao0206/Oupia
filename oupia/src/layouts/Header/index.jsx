@@ -3,8 +3,7 @@ import imgLogo from "../../resources/logoOupia.svg";
 import { Link, NavLink, Navigate, useLocation } from 'react-router-dom';
 import "./style.scss";
 import { useContext, useEffect, useState } from 'react';
-import { PiBell, PiClipboardText } from "react-icons/pi"
-import { BsChat } from "react-icons/bs";
+import { PiClipboardText } from "react-icons/pi"
 import { FiLogOut } from "react-icons/fi";
 import { AiOutlineUser } from "react-icons/ai";
 import { LuSettings } from "react-icons/lu";
@@ -15,6 +14,8 @@ import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestor
 import { signInWithCustomToken } from 'firebase/auth';
 import { auth, db } from '../../configs/FireBase';
 import { authApi, endpoints } from '../../configs/APIs';
+import { RiChat1Line } from 'react-icons/ri';
+import { BiBell } from 'react-icons/bi';
 
 
 const Header = () => {
@@ -60,7 +61,7 @@ const Header = () => {
         dispatch({
             "type": "logout"
         })
-        return (<Navigate to="/login"/>)
+        return (<Navigate to="/login" />)
     }
 
     useEffect(() => {
@@ -113,17 +114,30 @@ const Header = () => {
                         <Button color="dark">Đăng nhập</Button>
                     </Link>
                 </div>) : (<div className="flex md:order-2 items-center">
+                    <Dropdown
+                        arrowIcon={null}
+                        inline
+                        label={<BiBell size="24" className={`mr-3 ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"} mt-0.5 hover:text-blueTemplate hover:cursor-pointer`} />
+                        }
+                        placement='left-start'>
+                        <div className="p-4 w-64 font-thin">
+                            {currentUser.isConfirm === true ? "" : <>
+                                Hãy xác nhận Email để nhận được thông báo từ Oupia. <span className="font-bold underline hover:text-blueTemplate hover:cursor-pointer"><Link to="/cofirm">Xác nhận</Link></span>
+                            </>}
+                        </div>
+
+                    </Dropdown>
                     <Link to="/messages">
                         <div className="relative mr-3">
-                            <BsChat size="20" className={` ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"} hover:text-blueTemplate hover:cursor-pointer`}>
+                            <RiChat1Line size="24" className={` ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"}  hover:text-blueTemplate hover:cursor-pointer`}>
 
-                            </BsChat>
+                            </RiChat1Line>
                             {isNotice && <span className="top-0 left-3 absolute  w-2.5 h-2.5 bg-red-500 rounded-full"></span>}
 
                         </div>
 
                     </Link>
-                    <PiBell size="24" className={`mr-4 ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"}`} />
+
                     <Dropdown
                         arrowIcon={null}
                         inline
