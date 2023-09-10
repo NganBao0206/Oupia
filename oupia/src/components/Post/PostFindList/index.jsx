@@ -15,7 +15,7 @@ const PostFindList = (props) => {
         <>
             {posts.map((post) => (
                 <div>
-                    {post.postRentDetail != null && <PostFindItem post={post} />}
+                    {post.postFindDetail != null && <PostFindItem post={post} />}
                 </div>
             ))}
         </>

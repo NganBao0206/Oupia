@@ -16,6 +16,10 @@ const Forum = () => {
         getPosts();
     }, []);
 
+    useEffect(() => {
+        console.log(posts);
+    }, [posts]);
+
 
     const getPosts = async () => {
         setPosts(null);

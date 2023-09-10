@@ -24,12 +24,12 @@ const LandlordForm = () => {
     const [motels, setMotels] = useState(null);
 
     useEffect(() => {
+        setErrors({});
         const validateAll = async () => {
             let schemas = [schemaPost, schemaPostRentDetail];
             let data = [post, postRentDetail];
             let dataNames = ['post', 'postRentDetail'];
 
-            setErrors({});
 
             for (let i = 0; i < schemas.length; i++) {
                 try {
@@ -69,11 +69,7 @@ const LandlordForm = () => {
                 console.error(err);
             }
         }
-        if (errors || postImages.length < 3)
-        {
-            alert("Thông tin chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
-        }
-        else
+
             getMotels();
     }, [])
 
@@ -107,6 +103,12 @@ const LandlordForm = () => {
         if (step < 2) {
             return;
         }
+        if (errors || postImages.length < 3)
+        {
+            alert("Thông tin chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
+            return;
+        }
+        
         let form = new FormData();
         form.append('post', JSON.stringify(post));
         form.append('postRentDetail', JSON.stringify(postRentDetail));

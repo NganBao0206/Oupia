@@ -115,7 +115,6 @@ const AddMotelForm = ({context}) => {
         }
     }, [mapReady]);
 
-
     return (<>
         <div className="w-full">
             <div className="border-b border-gray-900/10 pb-12">

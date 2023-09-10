@@ -8,6 +8,7 @@ import StepTwoLandlordForm from '../../../components/Form/LandlordForm/StepTwoLa
 import MyBreadCrumb from '../../../components/MyBreadCrumb';
 import { UserContext } from '../../../App';
 import { authApi, endpoints } from '../../../configs/APIs';
+import { schemaMotel, schemaPost, schemaPostRentDetail } from '../../../validators/yupValidators';
 
 export const MotelFormContext = createContext();
 
@@ -21,6 +22,43 @@ const AddMotel = () => {
     });
     const [postRentDetail, setPostRentDetail] = useState({});
     const [postImages, setPostImages] = useState([]);
+    const [motel, setMotel] = useState({
+        "name": null,
+        "phoneNumber": null,
+        "locationLongitude": null,
+        "locationLatitude": null,
+        "fullLocation": null,
+    });
+
+    const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        setErrors({});
+        const validateAll = async () => {
+            let schemas = [schemaPost, schemaPostRentDetail, schemaMotel];
+            let data = [post, postRentDetail, motel];
+            let dataNames = ['post', 'postRentDetail', 'motel'];
+
+
+            for (let i = 0; i < schemas.length; i++) {
+                try {
+                    await schemas[i].validate(data[i], { abortEarly: false });
+                } catch (error) {
+                    const errorMessages = {};
+                    error.inner.forEach(err => {
+                        errorMessages[err.path] = err.message;
+                    });
+                    setErrors(prevErrors => ({
+                        ...prevErrors,
+                        [dataNames[i]]: errorMessages
+                    }));
+                }
+            }
+        };
+
+        validateAll();
+    }, [post, postRentDetail, motel]);
+
 
     const handleNextStep = () => {
         setStep(prev => prev + 1);
@@ -31,14 +69,7 @@ const AddMotel = () => {
             setStep(prev => prev - 1);
     }
 
-    const [motel, setMotel] = useState({
-        "name": null,
-        "phoneNumber": null,
-        "locationLongitude": null,
-        "locationLatitude": null,
-        "fullLocation": null,
-    });
-
+  
     useEffect(() => {
         const components = [<AddMotelForm context={MotelFormContext} />,
         <StepTwoLandlordForm context={MotelFormContext} />,
@@ -72,7 +103,7 @@ const AddMotel = () => {
 
 
     return (<>
-        <MotelFormContext.Provider value={{ motel, setMotel, postImages, setPostImages, postRentDetail, setPostRentDetail, post, setPost }}>
+        <MotelFormContext.Provider value={{ errors, motel, setMotel, postImages, setPostImages, postRentDetail, setPostRentDetail, post, setPost }}>
             <div className="container">
                 <MyBreadCrumb BreadCrumbName="Thêm phòng trọ" />
                 <Card className="my-10 items-center my-card">
