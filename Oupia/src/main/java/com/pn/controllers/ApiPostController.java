@@ -131,8 +131,9 @@ public class ApiPostController {
         postService.addOrUpdatePost(postObj);
         List<Follow> followers = followService.getFollowers(postObj.getUserId().getUsername(), -1);
         for (Follow follower : followers) {
-            if (follower.getFollowUserId().getIsConfirm() == true)
+            if (follower.getFollowUserId().getIsConfirm() == true) {
                 mailService.sendEmailNewPost(postObj, follower.getFollowUserId().getEmail().toString());
+            }
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -202,6 +203,19 @@ public class ApiPostController {
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/count/")
+    @CrossOrigin
+    public ResponseEntity<Integer> getPostCounts(@RequestParam Map<String, String> params) {
+        params.put("isDeleted", "0");
+        params.put("isAccepted", "accepted");
+        if (params.get("page") == null) {
+            params.put("page", "1");
+        }
+        int count = postService.countPosts(params);
+        ResponseEntity<Integer> result = new ResponseEntity<>(count, HttpStatus.OK);
+        return result;
     }
 
     @GetMapping("/{slug}/images/")

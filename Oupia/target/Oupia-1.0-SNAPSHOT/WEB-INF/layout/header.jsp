@@ -28,40 +28,44 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="navbar-nav ms-5 mb-lg-0 w-100">
-                    <li class="nav-item">
-                        <a id="dashboardNav" class="nav-link text-nowrap" aria-current="page" href="${homeUrl}">Dashboard</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Người dùng
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a id="usersNav" class="nav-link text-nowrap text-dark" href="${usersUrl}">Quản lý người dùng</a>
-                            </li>
-                            <li>
-                                <a id="usersNav" class="nav-link text-nowrap text-dark" href="${usersApprovalUrl}">Xét duyệt người dùng</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                           Nhà trọ
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a id="usersNav" class="nav-link text-nowrap text-dark" href="${motelsUrl}">Quản lý nhà trọ</a>
-                            </li>
-                            <li>
-                                <a id="usersNav" class="nav-link text-nowrap text-dark" href="${motelsApprovalUrl}">Xét duyệt nhà trọ</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a id="postsNav" class="nav-link text-nowrap" href="${postsUrl}">Bài đăng</a>
-                    </li>
-                </ul>
+                <sec:authorize access="isAuthenticated()">
+                    <ul class="navbar-nav ms-5 mb-lg-0 w-100">
+                        <li class="nav-item">
+                            <a id="dashboardNav" class="nav-link text-nowrap" aria-current="page" href="${homeUrl}">Dashboard</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Người dùng
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a id="usersNav" class="nav-link text-nowrap text-dark" href="${usersUrl}">Quản lý người dùng</a>
+                                </li>
+                                <li>
+                                    <a id="usersNav" class="nav-link text-nowrap text-dark" href="${usersApprovalUrl}">Xét duyệt người dùng</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Nhà trọ
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a id="usersNav" class="nav-link text-nowrap text-dark" href="${motelsUrl}">Quản lý nhà trọ</a>
+                                </li>
+                                <li>
+                                    <a id="usersNav" class="nav-link text-nowrap text-dark" href="${motelsApprovalUrl}">Xét duyệt nhà trọ</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a id="postsNav" class="nav-link text-nowrap" href="${postsUrl}">Bài đăng</a>
+                        </li>
+
+                    </ul>
+                </sec:authorize>
+
             </div>
             <sec:authorize access="isAnonymous()">
                 <c:url value="/login/" var="loginUrl"/>
