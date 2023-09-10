@@ -9,7 +9,9 @@ export const endpoints = {
     "current-user": `${SERVER_CONTEXT}/api/current-user/`,
     "register": `${SERVER_CONTEXT}/api/users/`,
     "motels": `${SERVER_CONTEXT}/api/motels/`,
+
     "posts": `${SERVER_CONTEXT}/api/posts/`,
+    "countPosts": `${SERVER_CONTEXT}/api/posts/count/`,
     "addPostRent": `${SERVER_CONTEXT}/api/posts/rent/`,
     "addPostFind": `${SERVER_CONTEXT}/api/posts/find/`,
     "userInfo": (username) => `${SERVER_CONTEXT}/api/users/${username}/`,
@@ -23,14 +25,14 @@ export const endpoints = {
     "favour": `${SERVER_CONTEXT}/api/favourites/`,
     "getFavourOfUser": `${SERVER_CONTEXT}/api/favourites/user/`,
     "getAuthToken": `${SERVER_CONTEXT}/api/auth-token/`,
-    
+
     "follows": `${SERVER_CONTEXT}/api/follows/`,
     "followers": (username) => `${SERVER_CONTEXT}/api/follows/followers/${username}/`,
     "followings": (username) => `${SERVER_CONTEXT}/api/follows/followings/${username}/`,
 
     "countFollowers": (username) => `${SERVER_CONTEXT}/api/follows/followers-count/${username}/`,
     "countFollowings": (username) => `${SERVER_CONTEXT}/api/follows/followings-count/${username}/`,
-    
+
     "resend-confirm": `${SERVER_CONTEXT}/api/resend-confirm-email/`,
 }
 

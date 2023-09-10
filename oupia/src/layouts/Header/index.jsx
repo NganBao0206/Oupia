@@ -127,7 +127,6 @@ const Header = () => {
                                 </div>
                             </> : <div className="p-4 w-64 font-thin text-center">Đã xác thực Email</div>}
 
-
                     </Dropdown>
                     <Link to="/messages">
                         <div className="relative mr-3">

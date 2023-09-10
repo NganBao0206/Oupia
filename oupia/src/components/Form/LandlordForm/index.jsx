@@ -56,7 +56,7 @@ const LandlordForm = () => {
                 let res = await APIs.get(endpoints['motels'], {
                     params: {
                         username: currentUser.username,
-                        isAccepted: "ACCEPTED",
+                        status: "ACCEPTED",
                         isDelete: 0,
                     }
                 });

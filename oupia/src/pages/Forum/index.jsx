@@ -11,12 +11,7 @@ const Forum = () => {
 
     useEffect(() => {
         getPosts();
-        console.log(posts);
     }, []);
-
-    useEffect(() => {
-        console.log(posts);
-    }, [posts]);
 
 
     const getPosts = async () => {

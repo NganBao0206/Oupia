@@ -19,7 +19,7 @@ const StepTwoRegister = ({context}) => {
                     <Label className="text-lg mt-2" htmlFor="fullName" value="Họ tên" />
                 </div>
                 <TextInput id="fullName" name="fullName" value={user.fullName} require shadow type="text" onChange={e => changeUser(e.target.value, e.target.name)}/>
-                <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user.fullName}</p>
+                <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user && errors.user.fullName}</p>
             </div>
             <div className="grid grid-cols-2 gap-5 mt-3">
                 <div>
@@ -27,7 +27,7 @@ const StepTwoRegister = ({context}) => {
                         <Label className="text-lg mt-2" htmlFor="dob" value="Ngày sinh" />
                     </div>
                     <TextInput id="dob" name="dob" required value={user.dob} shadow type="date" onChange={e => changeUser(e.target.value, e.target.name)}/>
-                    <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user.dob}</p>
+                    <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user && errors.user.dob}</p>
                 </div>
                 <div className="max-w-md" id="select">
                     <div className="mb-2 block">
@@ -43,7 +43,7 @@ const StepTwoRegister = ({context}) => {
                         <option value="FEMALE">Nữ</option>
                         <option value="OTHER">Khác</option>
                     </Select>
-                    <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user.gender}</p>
+                    <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user && errors.user.gender}</p>
 
                 </div>
             </div>
@@ -52,7 +52,7 @@ const StepTwoRegister = ({context}) => {
                     <Label className="text-lg mt-2" htmlFor="identity" value="Số CMND/ CCCD" />
                 </div>
                 <TextInput id="identity" name="identityNumber" value={user.identityNumber} required shadow type="text" onChange={e => changeUser(e.target.value, e.target.name)}/>
-                <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user.identityNumber}</p>
+                <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user && errors.user.identityNumber}</p>
 
             </div>
             <div className="mt-3">
@@ -60,7 +60,7 @@ const StepTwoRegister = ({context}) => {
                     <Label className="text-lg mt-2" htmlFor="email" value="Địa chỉ email" />
                 </div>
                 <TextInput id="email" name="email" value={user.email} required shadow type="email" onChange={e => changeUser(e.target.value, e.target.name)}/>
-                <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user.email}</p>
+                <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user && errors.user.email}</p>
             </div>
         </div>
     );

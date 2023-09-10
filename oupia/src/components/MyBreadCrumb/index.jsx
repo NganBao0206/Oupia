@@ -31,7 +31,7 @@ const MyBreadCrumb = (props) => {
               </p>
             ) : (
               <Link to={routeTo} className="text-Darker font-bold text-lg dark:text-white">
-                {name === "settings" ? "Cài đặt": (name === "posts" ? "Bài viết": name )}
+                {name === "settings" ? "Cài đặt": (name === "posts" ? "Bài viết": (name === "motels" ? "Phòng trọ" : name) )}
               </Link>
             )}
           </Breadcrumb.Item>

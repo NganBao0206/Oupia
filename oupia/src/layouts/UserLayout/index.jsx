@@ -130,7 +130,7 @@ const UserLayout = () => {
 
     if (user === null) {
         return <>
-            <NotFound/>
+            <NotFound />
         </>
     }
     return (
@@ -206,14 +206,8 @@ const UserLayout = () => {
                                                     </>)}
                                                 </div>
                                             </>)}
-
                                         </div>
-
                                     </div>
-
-                                    <h3 >•</h3>
-                                    <LuEdit size="20" className="text-gray-500" />
-                                    <h3 className=" font-bold">{user.posts} bài viết</h3>
                                 </div>
                                 <div className="ml-auto flex gap-5">
                                     {currentUser == null || user.username !== currentUser.username ?
