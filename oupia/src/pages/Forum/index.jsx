@@ -6,15 +6,18 @@ import UserItem from '../../components/User/UserItem';
 import APIs, { endpoints } from '../../configs/APIs';
 import PostFindList from '../../components/Post/PostFindList';
 
+
 const Forum = () => {
     const [posts, setPosts] = useState(null);
+
     // const navigate = useNavigate();
 
     useEffect(() => {
-        getPost();
+        getPosts();
     }, []);
 
-    const getPost = async () => {
+
+    const getPosts = async () => {
         setPosts(null);
         // navigate({ search: new URLSearchParams(debouncedParams).toString() });
         try {
@@ -39,7 +42,7 @@ const Forum = () => {
             <MyBreadCrumb BreadCrumbName="Diễn đàn" />
             <div className="grid grid-cols-7 my-5 gap-5">
                 <div className="col-span-5 flex flex-col gap-5">
-                    <UserStatus />
+                    <UserStatus posts={posts} />
                     <PostFindList posts={posts} />
                 </div>
                 <div className="col-span-2">

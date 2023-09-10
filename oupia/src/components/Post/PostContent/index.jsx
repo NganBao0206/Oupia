@@ -10,6 +10,7 @@ import { PostContext } from '../../../pages/Post/PostDetail';
 import { authApi, endpoints } from '../../../configs/APIs';
 import { UserContext } from '../../../App';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
+import { FacebookShareButton } from 'react-share';
 
 
 const PostContent = () => {
@@ -97,14 +98,18 @@ const PostContent = () => {
             <div className="flex">
                 <h3 className="font-bold text-blueTemplate text-lg">{price}đ/tháng</h3>
                 <div className="ml-auto flex gap-3 mr-3">
-                    <div className="w-fit h-fit cursor-pointer" onClick={() => favour? removeFavour() : addFavour()} onMouseEnter={e => setIsHeartHover(true)} onMouseLeave={e => setIsHeartHover(false)}>
+                    <div className="w-fit h-fit cursor-pointer" onClick={() => favour ? removeFavour() : addFavour()} onMouseEnter={e => setIsHeartHover(true)} onMouseLeave={e => setIsHeartHover(false)}>
                         {favour && !isHeartHover && <PiHeartFill size="25" className="text-heartColor" />}
                         {!favour && !isHeartHover && <PiHeartBold size="25" className="text-heartColor" />}
                         {favour && isHeartHover && <PiHeartBreakFill size="25" className="text-heartColor" />}
                         {!favour && isHeartHover && <PiHeartFill size="25" className="text-heartColor" />}
                     </div>
-
-                    <PiShareFat size="25" className="text-Dark" />
+                    <FacebookShareButton
+                        url="https://nhatro123.com/"
+                        hashtag="#Oupia"
+                    >
+                        <PiShareFat size="25" className="text-Dark mb-2" />
+                    </FacebookShareButton>
                 </div>
             </div>
             <hr />

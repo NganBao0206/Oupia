@@ -1,17 +1,17 @@
+import React from 'react';
 import Comment from '../Comment';
-import "./style.scss";
 
 const CommentList = (props) => {
-    const {comments} = props;
+    const { comments } = props;
     return (
         <>
-            <div className="w-fit commentList overflow-y-auto w-full mt-5">
-                {comments.map((comment) => (
+            <div className="w-fit commentList overflow-y-auto w-full">
+                {comments && comments.map((comment) => (
                     <Comment comment={comment}></Comment>
                 ))}
             </div>
         </>
-    )
-}
+    );
+};
 
 export default CommentList;
