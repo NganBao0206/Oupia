@@ -60,7 +60,6 @@ public class PostRepositoryImpl implements PostRepository {
         subquery.select(b.min(subRoot.get("id")));
         subquery.where(b.equal(subRoot.get("postId"), root));
 
-
         Float lng = null;
         Float lat = null;
         Expression<Double> distance = null;
@@ -92,15 +91,16 @@ public class PostRepositoryImpl implements PostRepository {
                     predicates.add(b.isNotNull(root.get("postRentDetail").get("id")));
                 }
             }
-          
-            String isAccepted = params.get("isAccepted");
-            if (type == null || (!type.isEmpty() && !type.equals("tenantPost")))
+
+            if (type != null && !type.equals("tenantPost")) {
+                String isAccepted = params.get("isAccepted");
                 if (isAccepted != null && !isAccepted.isEmpty()) {
                     if (isAccepted.equals("accepted")) {
                         predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
                     }
                 }
-            
+            }
+
             String motelSlug = params.get("motelSlug");
             if (motelSlug != null && !motelSlug.isEmpty()) {
                 Predicate motelPredicate = b.equal(root.get("postRentDetail").get("motelId").get("slug"), motelSlug);
@@ -118,37 +118,37 @@ public class PostRepositoryImpl implements PostRepository {
                 Predicate userPredicate = b.equal(root.get("userId").get("id"), userId);
                 predicates.add(userPredicate);
             }
-            
+
             String minPrice = params.get("minPrice");
             if (minPrice != null && !minPrice.isEmpty()) {
                 Predicate p = b.greaterThanOrEqualTo(root.get("postRentDetail").get("price"), minPrice);
                 predicates.add(p);
             }
-            
+
             String maxPrice = params.get("maxPrice");
             if (maxPrice != null && !maxPrice.isEmpty()) {
                 Predicate p = b.lessThanOrEqualTo(root.get("postRentDetail").get("price"), maxPrice);
                 predicates.add(p);
             }
-            
+
             String maxPeople = params.get("maxPeople");
             if (maxPeople != null && !maxPeople.isEmpty()) {
                 Predicate p = b.lessThanOrEqualTo(root.get("postRentDetail").get("maxPeople"), maxPeople);
                 predicates.add(p);
             }
-            
+
             String minPeople = params.get("minPeople");
             if (minPeople != null && !minPeople.isEmpty()) {
                 Predicate p = b.greaterThanOrEqualTo(root.get("postRentDetail").get("minPeople"), minPeople);
                 predicates.add(p);
             }
-            
+
             String numOfBedrooms = params.get("numOfBedrooms");
             if (numOfBedrooms != null && !numOfBedrooms.isEmpty()) {
                 Predicate p = b.equal(root.get("postRentDetail").get("numOfBedrooms"), numOfBedrooms);
                 predicates.add(p);
             }
-            
+
             String numOfBathrooms = params.get("numOfBathrooms");
             if (numOfBathrooms != null && !numOfBathrooms.isEmpty()) {
                 Predicate p = b.equal(root.get("postRentDetail").get("numOfBathrooms"), numOfBathrooms);
@@ -166,7 +166,6 @@ public class PostRepositoryImpl implements PostRepository {
                 ex.printStackTrace();
             }
 
-            
         }
         q.where(predicates.toArray(Predicate[]::new));
         if (lng != null && lat != null && distance != null) {
@@ -237,13 +236,12 @@ public class PostRepositoryImpl implements PostRepository {
             }
 
             String isAccepted = params.get("isAccepted");
-            if (type == null || (!type.isEmpty() && !type.equals("tenantPost")))
-                if (isAccepted != null && !isAccepted.isEmpty()) {
-                    if (isAccepted.equals("accepted")) {
-                        predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
-                    }
+            if (isAccepted != null && !isAccepted.isEmpty()) {
+                if (isAccepted.equals("accepted")) {
+                    predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
                 }
-            
+            }
+
             String motelSlug = params.get("motelSlug");
             if (motelSlug != null && !motelSlug.isEmpty()) {
                 Predicate motelPredicate = b.equal(root.get("postRentDetail").get("motelId").get("slug"), motelSlug);
@@ -261,37 +259,37 @@ public class PostRepositoryImpl implements PostRepository {
                 Predicate userPredicate = b.equal(root.get("userId").get("id"), userId);
                 predicates.add(userPredicate);
             }
-            
+
             String minPrice = params.get("minPrice");
             if (minPrice != null && !minPrice.isEmpty()) {
                 Predicate p = b.greaterThanOrEqualTo(root.get("postRentDetail").get("price"), minPrice);
                 predicates.add(p);
             }
-            
+
             String maxPrice = params.get("maxPrice");
             if (maxPrice != null && !maxPrice.isEmpty()) {
                 Predicate p = b.lessThanOrEqualTo(root.get("postRentDetail").get("price"), maxPrice);
                 predicates.add(p);
             }
-            
+
             String maxPeople = params.get("maxPeople");
             if (maxPeople != null && !maxPeople.isEmpty()) {
                 Predicate p = b.lessThanOrEqualTo(root.get("postRentDetail").get("maxPeople"), maxPeople);
                 predicates.add(p);
             }
-            
+
             String minPeople = params.get("minPeople");
             if (minPeople != null && !minPeople.isEmpty()) {
                 Predicate p = b.greaterThanOrEqualTo(root.get("postRentDetail").get("minPeople"), minPeople);
                 predicates.add(p);
             }
-            
+
             String numOfBedrooms = params.get("numOfBedrooms");
             if (numOfBedrooms != null && !numOfBedrooms.isEmpty()) {
                 Predicate p = b.equal(root.get("postRentDetail").get("numOfBedrooms"), numOfBedrooms);
                 predicates.add(p);
             }
-            
+
             String numOfBathrooms = params.get("numOfBathrooms");
             if (numOfBathrooms != null && !numOfBathrooms.isEmpty()) {
                 Predicate p = b.equal(root.get("postRentDetail").get("numOfBathrooms"), numOfBathrooms);

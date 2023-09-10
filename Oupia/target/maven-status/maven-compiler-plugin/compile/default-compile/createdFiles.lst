@@ -35,7 +35,6 @@ com/pn/configs/WebApplicationContextConfig.class
 com/pn/repository/ImageRepository.class
 com/pn/service/PostService.class
 com/pn/controllers/UserController.class
-.netbeans_automatic_build
 com/pn/pojo/User_.class
 com/pn/controllers/ApiMotelController.class
 com/pn/service/FavouriteService.class
