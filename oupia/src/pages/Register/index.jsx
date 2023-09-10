@@ -125,7 +125,7 @@ const Register = () => {
 
         if (step < components.length - 1)
             return;
-        if (errors || !avatarFile || !user.userRole || (user.userRole === "LANDLORD" && postImages.length < 3)) {
+        if (Object.keys(errors).length > 0 || !avatarFile || !user.userRole || (user.userRole === "LANDLORD" && postImages.length < 3)) {
             alert("Thông tin đăng ký chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
             setLoading(false);
             return;

@@ -53,7 +53,8 @@ const App = () => {
       }
 
     }
-    refestCurrentUser();
+    if (user)
+      refestCurrentUser();
     const newSessionToken = uuid();
     localStorage.setItem("sessionToken", newSessionToken);
   }, []);
