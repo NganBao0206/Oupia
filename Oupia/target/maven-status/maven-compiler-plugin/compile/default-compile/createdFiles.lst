@@ -21,6 +21,7 @@ com/pn/pojo/Message.class
 com/pn/utils/DistanceUtils.class
 com/pn/pojo/Follow.class
 com/pn/controllers/MotelController.class
+com/pn/configs/ThreadPoolConfig.class
 com/pn/enums/Status.class
 com/pn/formatters/PostFormatter.class
 com/pn/repository/FavouriteRepository.class

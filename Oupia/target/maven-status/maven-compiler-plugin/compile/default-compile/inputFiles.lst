@@ -52,6 +52,7 @@
 /home/yuu/Documents/WorkSpace/oupiatemp/Oupia/src/main/java/com/pn/pojo/Favourite.java
 /home/yuu/Documents/WorkSpace/oupiatemp/Oupia/src/main/java/com/pn/pojo/Comment.java
 /home/yuu/Documents/WorkSpace/oupiatemp/Oupia/src/main/java/com/pn/utils/SlugUtils.java
+/home/yuu/Documents/WorkSpace/oupiatemp/Oupia/src/main/java/com/pn/configs/ThreadPoolConfig.java
 /home/yuu/Documents/WorkSpace/oupiatemp/Oupia/src/main/java/com/pn/pojo/Message.java
 /home/yuu/Documents/WorkSpace/oupiatemp/Oupia/src/main/java/com/pn/repository/impl/StatRepositoryImpl.java
 /home/yuu/Documents/WorkSpace/oupiatemp/Oupia/src/main/java/com/pn/service/impl/MultipleServiceImpl.java

@@ -18,6 +18,7 @@ import static com.pn.components.JwtService.SHARED_SECRET_KEY;
 import com.pn.pojo.Post;
 import com.pn.pojo.User;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.mail.internet.MimeMessage;
 import org.apache.tiles.Definition;
@@ -49,6 +50,9 @@ public class MailService {
 
     public void sendEmail(User user) {
         Runnable emailTask = () -> {
+            Date expiryTime = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            String dateString = formatter.format(expiryTime);
             String token = generateTokenEmail(user.getEmail());
             String url = "http://localhost:8080/Oupia/api/confirm-email/" + user.getUsername() + "/" + token + "/";
             try {
@@ -92,6 +96,11 @@ public class MailService {
                         + "            <tr>\n"
                         + "                <td align=\"center\">\n"
                         + "                    <p class=\"col-12\"><a style=\"display: block; color: white; padding: 15px; background-color: #46AAFF; width: 30%; min-width: fit-content; border-radius: 9px\" href=\"" + url + "\">Xác thực email của tôi</a></p>\n"
+                        + "                </td>\n"
+                        + "            </tr>\n"
+                        + "            <tr>\n"
+                        + "                <td align=\"center\">\n"
+                        + "                    <p>Mã xác thực sẽ hết hạn vào lúc " + dateString  + "\nBạn có thể đăng nhập vào hệ thống để yêu cầu cấp thư xác thực mới</p>"
                         + "                </td>\n"
                         + "            </tr>\n"
                         + "            <tr>\n"

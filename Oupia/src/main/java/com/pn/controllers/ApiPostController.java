@@ -131,7 +131,8 @@ public class ApiPostController {
         postService.addOrUpdatePost(postObj);
         List<Follow> followers = followService.getFollowers(postObj.getUserId().getUsername(), -1);
         for (Follow follower : followers) {
-            mailService.sendEmailNewPost(postObj, follower.getFollowUserId().getEmail().toString());
+            if (follower.getFollowUserId().getIsConfirm() == true)
+                mailService.sendEmailNewPost(postObj, follower.getFollowUserId().getEmail().toString());
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -24,6 +24,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -88,6 +90,11 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         m.setBasenames("messages");
 
         return m;
+    }
+    
+    @Bean
+    public ResourceLoader resourceLoader() {
+        return new DefaultResourceLoader();
     }
 
     @Bean(name = "validator")
