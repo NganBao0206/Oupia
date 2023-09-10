@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.pn.components.FirebaseService;
 import com.pn.components.JwtService;
+import com.pn.components.MailService;
 import com.pn.pojo.Motel;
 import com.pn.pojo.Post;
 import com.pn.pojo.PostRentDetail;
@@ -14,11 +15,13 @@ import com.pn.service.MultipleService;
 import com.pn.service.PostService;
 import com.pn.service.UserService;
 import com.pn.validator.WebAppValidator;
+import java.io.IOException;
 import java.util.Map;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,6 +61,9 @@ public class ApiUserController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private MailService mailService;
 
     @Autowired
     private MultipleService multipleService;
@@ -155,7 +161,7 @@ public class ApiUserController {
 
     @PostMapping(value = "/register-landlord/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @CrossOrigin
-    public ResponseEntity<?> register(
+    public ResponseEntity<User> register(
             @RequestParam Map<String, String> info,
             @RequestPart("avatar") MultipartFile avatarFile,
             @RequestPart(name = "files", required = false) MultipartFile[] files) throws JsonProcessingException {
@@ -196,14 +202,52 @@ public class ApiUserController {
         motelObj = motelService.prepareMotel(motelObj);
         postObj = postService.preparePost(postObj);
         multipleService.addUserWithMotelPost(userObj, motelObj, postObj);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        User finalUser = userService.getUserByUsername(userObj.getUsername());
+        if (finalUser != null) {
+            mailService.sendEmail(finalUser);
+        }
+        return new ResponseEntity<>(finalUser, HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/users/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @CrossOrigin
     public ResponseEntity<User> addUser(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
         User user = this.userService.addUser(params, avatar);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        if (user != null) {
+
+            mailService.sendEmail(user);
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping(path = "/resend-confirm-email/")
+    @CrossOrigin
+    public ResponseEntity<?> resend(Principal u) {
+        User user = userService.getUserByUsername(u.getName());
+        if (user != null && user.getIsConfirm() == false) {
+            mailService.sendEmail(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping(path = "/confirm-email/{username}/{token}/")
+    @CrossOrigin
+    public ResponseEntity<?> confirmUser(@PathVariable("token") String token, @PathVariable("username") String username, HttpServletResponse response) {
+        User user = userService.getUserByUsername(username);
+        String email = mailService.getEmailFromToken(token);
+        if (user.getEmail().equals(email)) {
+            try {
+                user.setIsConfirm(true);
+                userService.addOrUpdateUser(user);
+                response.sendRedirect("http://localhost:3000/login");
+            } catch (IOException ex) {
+                Logger.getLogger(ApiUserController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

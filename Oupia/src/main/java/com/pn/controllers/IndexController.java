@@ -4,6 +4,7 @@
  */
 package com.pn.controllers;
 
+import com.pn.components.MailService;
 import com.pn.pojo.User;
 import com.pn.service.UserService;
 import java.time.Year;
@@ -24,7 +25,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  */
 @Controller
 public class IndexController {
-
+   
+    
     @RequestMapping(value = "/")
     public String index(Model model) {
         Year currentYear = Year.now();

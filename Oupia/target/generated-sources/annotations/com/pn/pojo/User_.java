@@ -13,7 +13,7 @@ import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-09-10T12:39:32", comments="EclipseLink-2.7.10.v20211216-rNA")
+@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-09-10T14:35:19", comments="EclipseLink-2.7.10.v20211216-rNA")
 @StaticMetamodel(User.class)
 public class User_ { 
 
@@ -23,6 +23,7 @@ public class User_ {
     public static volatile SingularAttribute<User, String> avatar;
     public static volatile SetAttribute<User, Post> postSet;
     public static volatile SetAttribute<User, Motel> motelSet;
+    public static volatile SetAttribute<User, Follow> followingSet;
     public static volatile SingularAttribute<User, Date> createdAt;
     public static volatile SingularAttribute<User, String> password;
     public static volatile SingularAttribute<User, Boolean> isDeleted;
@@ -31,15 +32,14 @@ public class User_ {
     public static volatile SingularAttribute<User, String> identityNumber;
     public static volatile SetAttribute<User, Message> receivedMessageSet;
     public static volatile SingularAttribute<User, Date> dob;
+    public static volatile SetAttribute<User, Follow> followerSet;
     public static volatile SingularAttribute<User, Integer> id;
-    public static volatile SetAttribute<User, Follow> followUserSet;
     public static volatile SetAttribute<User, Rate> rateSet;
     public static volatile SingularAttribute<User, String> userRole;
     public static volatile SetAttribute<User, Favourite> favouriteSet;
     public static volatile SingularAttribute<User, String> email;
     public static volatile SingularAttribute<User, Date> updatedAt;
     public static volatile SingularAttribute<User, String> username;
-    public static volatile SetAttribute<User, Follow> beFollowUserSet;
     public static volatile SingularAttribute<User, String> status;
 
 }

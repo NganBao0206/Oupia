@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
         if (u.getOldPassword() == null || !u.getPassword().equals(u.getOldPassword())) {
             hashAndSetPassword(u);
         }
-        if (!u.getFile().isEmpty()) {
+        if (u.getFile() != null && !u.getFile().isEmpty()) {
             try {
                 Map res = uploadImage(u);
                 String publicId = (String) res.get("public_id");
@@ -204,11 +204,11 @@ public class UserServiceImpl implements UserService {
         }
         u.setGender(params.get("gender"));
         u.setEmail(params.get("email"));
-        u.setIdentityNumber(params.get("identity"));
+        u.setIdentityNumber(params.get("identityNumber"));
         u.setUsername(params.get("username"));
         u.setPassword(this.passwordEncoder.encode(params.get("password")));
-        u.setUserRole(params.get("role"));
-        if (params.get("role").equals("TENANT")) {
+        u.setUserRole(params.get("userRole"));
+        if (params.get("userRole").equals("TENANT")) {
             u.setStatus("ACCEPTED");
         } else {
             u.setStatus("PENDING");
@@ -223,14 +223,8 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        this.userRepository.addUser(u);
-        return u;
+        return this.userRepository.addUser(u);
     }
-
-//    @Override
-//    public Set<Post> getPostsOfUser(User user) {
-//        return this.userRepository.getPostsOfUser(user);
-//    }
 
     @Override
     public boolean updateStatus(int id, String status) {
