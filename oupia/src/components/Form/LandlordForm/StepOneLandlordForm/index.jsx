@@ -29,7 +29,7 @@ const StepOneLandlordForm = ({ context }) => {
                                 </option>
                             ))}
                         </select>
-                        <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{postRentDetail.motelId && 'Bắt buộc chọn trọ'}</p>
+                        <p class="mt-2 text-xs text-red-600 dark:text-red-400">{postRentDetail.motelId && 'Bắt buộc chọn trọ'}</p>
                     </div>
                     <Button className="bg-blueTemplate mt-auto col-span-2">
                         <Link to="/motels/add" className="flex items-center gap-2" >

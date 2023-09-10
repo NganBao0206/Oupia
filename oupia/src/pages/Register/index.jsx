@@ -74,7 +74,7 @@ const Register = () => {
                 <StepOne context={FormContext} />,
                 <StepTwo context={FormContext} />,
                 <StepThree context={FormContext} />,
-                <LastStep context={FormContext} />]);
+            ]);
         } else if (user.userRole === "LANDLORD") {
             setComponents([
                 <StepOne context={FormContext} />,
@@ -83,96 +83,94 @@ const Register = () => {
                 <StepFour context={FormContext} />,
                 <StepFive context={FormContext} />,
                 <StepSix context={FormContext} />,
-                // <LastStep context={FormContext} />
             ]);
         }
     }, [user.userRole])
 
     useEffect(() => {
         const validateAll = async () => {
-          let schemas = [schemaUser, schemaPost, schemaPostRentDetail, schemaMotel];
-          let data = [user, post, postRentDetail, motel];
-          let dataNames = ['user', 'post', 'postRentDetail', 'motel'];
-      
-          if (user.userRole == "TENANT") {
-              schemas = [schemaUser];
-              data = [user];
-              dataNames = ['user'];
-          }
-      
-          setErrors({});
-      
-          for (let i = 0; i < schemas.length; i++) {
-            try {
-              await schemas[i].validate(data[i], { abortEarly: false });
-            } catch (error) {
-              const errorMessages = {};
-              error.inner.forEach(err => {
-                errorMessages[err.path] = err.message;
-              });
-              setErrors(prevErrors => ({
-                ...prevErrors,
-                [dataNames[i]]: errorMessages
-              }));
+            let schemas = [schemaUser, schemaPost, schemaPostRentDetail, schemaMotel];
+            let data = [user, post, postRentDetail, motel];
+            let dataNames = ['user', 'post', 'postRentDetail', 'motel'];
+
+            if (user.userRole == "TENANT") {
+                schemas = [schemaUser];
+                data = [user];
+                dataNames = ['user'];
             }
-          }
+
+            setErrors({});
+
+            for (let i = 0; i < schemas.length; i++) {
+                try {
+                    await schemas[i].validate(data[i], { abortEarly: false });
+                } catch (error) {
+                    const errorMessages = {};
+                    error.inner.forEach(err => {
+                        errorMessages[err.path] = err.message;
+                    });
+                    setErrors(prevErrors => ({
+                        ...prevErrors,
+                        [dataNames[i]]: errorMessages
+                    }));
+                }
+            }
         };
-      
+
         validateAll();
-      }, [user, post, postRentDetail, motel, user.userRole]);
-         
-
-    useEffect(() => {
-        if (!errors) {
-
-        }
-    }, [errors])
+    }, [user, post, postRentDetail, motel, user.userRole]);
 
     const register = (evt) => {
         evt.preventDefault();
-        if (step < 2 && errors)
+        if (step < components.length - 1)
             return;
-        const process = async () => {
-            let form = new FormData();
-            if (user.userRole === "LANDLORD") {
-                form.append('user', JSON.stringify(user));
-                form.append('motel', JSON.stringify(motel));
-                form.append('post', JSON.stringify(post));
-                form.append('postRentDetail', JSON.stringify(postRentDetail));
+        if (errors || !avatarFile || postImages.length < 3) {
+            alert("Thông tin đăng ký chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
+            return;
+        }
+        else {
+            const process = async () => {
+                let form = new FormData();
+                if (user.userRole === "LANDLORD") {
+                    form.append('user', JSON.stringify(user));
+                    form.append('motel', JSON.stringify(motel));
+                    form.append('post', JSON.stringify(post));
+                    form.append('postRentDetail', JSON.stringify(postRentDetail));
 
 
-                form.append("avatar", avatarFile[0]);
-                postImages.forEach((file) => {
-                    form.append('files', file);
-                });
+                    form.append("avatar", avatarFile[0]);
+                    postImages.forEach((file) => {
+                        form.append('files', file);
+                    });
 
-                console.log(form.get("postImages"));
+                    console.log(form.get("postImages"));
 
-                setLoading(true)
-                console.log(endpoints['register-landlord']);
-                let res = await APIs.post(endpoints['register-landlord'], form, {
-                    headers: {
-                        "Custom-Header": "value",
+                    setLoading(true)
+                    console.log(endpoints['register-landlord']);
+                    let res = await APIs.post(endpoints['register-landlord'], form, {
+                        headers: {
+                            "Custom-Header": "value",
+                        }
+                    });
+                    if (res.status === 201) {
+                        nav("/login");
                     }
-                });
-                if (res.status === 201) {
-                    nav("/login");
-                }
-            } else {
-                for (let field in user)
-                    if (field !== "confirmPass")
-                        form.append(field, user[field]);
+                } else {
+                    for (let field in user)
+                        if (field !== "confirmPass")
+                            form.append(field, user[field]);
 
-                form.append("avatar", avatarFile[0]);
+                    form.append("avatar", avatarFile[0]);
 
-                setLoading(true)
-                let res = await APIs.post(endpoints['register'], form);
-                if (res.status === 201) {
-                    nav("/login");
+                    setLoading(true)
+                    let res = await APIs.post(endpoints['register'], form);
+                    if (res.status === 201) {
+                        nav("/login");
+                    }
                 }
             }
+            process();
         }
-        process();
     }
 
     if (currentUser) {
@@ -201,7 +199,7 @@ const Register = () => {
                                     <Button onClick={handlePrevStep} className="bg-Dark text-white hover:bg-Darker">
                                         <p className="font-bold text-base">Quay lại</p>
                                     </Button>
-                                    {step === components.length - 2 ? <Button onClick={register} className="bg-blueTemplate w-full">
+                                    {step === components.length - 1 ? <Button onClick={register} className="bg-blueTemplate w-full">
                                         <p className="font-bold text-base">Hoàn tất</p>
                                     </Button> : <Button onClick={handleNextStep} type="button" className="bg-blueTemplate w-full">
                                         <p className="font-bold text-base">Tiếp tục</p>

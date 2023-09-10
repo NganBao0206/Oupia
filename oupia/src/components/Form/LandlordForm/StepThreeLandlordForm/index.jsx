@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { FormContext } from '../../../../pages/Register';
 
 const StepThreeLandlordForm = ({context}) => {
-    const { postRentDetail, setPostRentDetail } = useContext(context);
+    const { postRentDetail, setPostRentDetail, errors} = useContext(context);
     const changePostRentDetail = (value, field) => {
         setPostRentDetail(current => {
             return { ...current, [field]: value }
@@ -31,6 +31,7 @@ const StepThreeLandlordForm = ({context}) => {
                                     </span>
                                 </div>
                             </div>
+                            <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.postRentDetail && errors.postRentDetail.price}</p>
                         </div>
                         <div className="sm:col-span-6 sm:col-start-1">
                             <label htmlFor="area" className="block leading-6 text-gray-900">
@@ -49,6 +50,8 @@ const StepThreeLandlordForm = ({context}) => {
                                     </span>
                                 </div>
                             </div>
+                            <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.postRentDetail && errors.postRentDetail.area}</p>
+
                         </div>
 
                         <div className="sm:col-span-3">
@@ -68,6 +71,8 @@ const StepThreeLandlordForm = ({context}) => {
                                     </span>
                                 </div>
                             </div>
+                            <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.postRentDetail && errors.postRentDetail.minPeople}</p>
+
                         </div>
 
                         <div className="sm:col-span-3">
@@ -86,6 +91,8 @@ const StepThreeLandlordForm = ({context}) => {
                                     </span>
                                 </div>
                             </div>
+                            <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.postRentDetail && errors.postRentDetail.maxPeople}</p>
+
                         </div>
 
                         <div className="sm:col-span-3">
@@ -104,6 +111,8 @@ const StepThreeLandlordForm = ({context}) => {
                                     </span>
                                 </div>
                             </div>
+                            <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.postRentDetail && errors.postRentDetail.numOfBathrooms}</p>
+
                         </div>
                         <div className="sm:col-span-3">
                             <label htmlFor="bedroom" className="block leading-6 text-gray-900">
@@ -121,6 +130,8 @@ const StepThreeLandlordForm = ({context}) => {
                                     </span>
                                 </div>
                             </div>
+                            <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.postRentDetail && errors.postRentDetail.numOfBedrooms}</p>
+
                         </div>
                     </div>
                 </div>
