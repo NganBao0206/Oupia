@@ -88,15 +88,17 @@ const TenantForm = () => {
     const refreshLocation = () => {
         const provInput = document.querySelector("#province");
         const provVal = getValue(provInput);
-        setProvince(provVal);
 
         const distInput = document.querySelector("#district");
         const distVal = getValue(distInput);
-        setDistrict(distVal);
 
         const wardInput = document.querySelector("#ward");
         const wardVal = getValue(wardInput);
-        setWard(wardVal);
+        let queryTemp;
+        if (provVal) queryTemp = provVal;
+        if (distVal) queryTemp = distVal + ", " + provVal;
+        if (wardVal) queryTemp = wardVal + ", " + distVal + ", " + provVal;
+        setQuery(queryTemp);
     }
 
     const handleProvince = async ({ target }) => {
@@ -116,7 +118,10 @@ const TenantForm = () => {
             setWs([]);
         }
         const distInput = document.querySelector("#district");
+        const wardInput = document.querySelector("#ward");
+
         distInput.value = "";
+        wardInput.value = "";
         refreshLocation();
     }
 
@@ -143,13 +148,7 @@ const TenantForm = () => {
         refreshLocation();
     }
 
-    useEffect(() => {
-        let queryTemp;
-        if (province) queryTemp = province;
-        if (district) queryTemp = district + ", " + province;
-        if (ward) queryTemp = ward + ", " + district + ", " + province;
-        setQuery(queryTemp);
-    }, [province, district, ward])
+
 
     const getDetail = async (placeId) => {
         const res = await APIs.get(endpoints["mapDetail"], {
@@ -183,6 +182,7 @@ const TenantForm = () => {
 
     useEffect(() => {
         if (query) {
+            console.log(query);
             getDatas(query);
         } else {
             setLocationResult(null);
@@ -208,8 +208,7 @@ const TenantForm = () => {
         e.preventDefault();
         setLoading(true);
 
-        if (errors)
-        {
+        if (errors) {
             alert("Thông tin chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
             return;
         }
@@ -354,7 +353,7 @@ const TenantForm = () => {
                                     <div className="col-span-full">
                                         <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 "><div className="flex"><h3>Tiêu đề</h3><h3 className={`ml-auto ${(post.title && post.title.length >= 20 && post.title.length <= 100) ? "" : "text-red-700"}`}>Tối thiểu từ 20 đến 100 ký tự</h3></div> </label>
                                         <input onChange={e => changePost(e.target.value, "title")} type="text" id="title" className={`w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5 ${(post.title && post.title.length >= 20 && post.title.length <= 100) ? "" : "border-red-700 focus:ring-red-700 focus:border-red-700"}`} required />
-                                        <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post && errors.post.title}</p>
+                                        <p class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post && errors.post.title}</p>
 
                                     </div>
 
@@ -373,7 +372,7 @@ const TenantForm = () => {
                                             />
                                         </div>
                                         <p className="mt-3 text-sm leading-6 text-gray-600">Viết một vài yêu cầu như tiện ích phòng trọ, ...</p>
-                                        <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post && errors.post.description}</p>
+                                        <p class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post && errors.post.description}</p>
 
                                     </div>
 
