@@ -8,11 +8,10 @@ import { UserContext } from '../../App';
 import { Link, useParams } from 'react-router-dom';
 import { PiUser } from 'react-icons/pi';
 import { auth, db } from '../../configs/FireBase';
-import { serverTimestamp, collection, query, where, getDocs, addDoc, orderBy, onSnapshot } from "firebase/firestore";
+import { serverTimestamp, collection, query, where, getDocs, addDoc, orderBy, onSnapshot, updateDoc } from "firebase/firestore";
 import { signInWithCustomToken } from 'firebase/auth';
 
 const ChatRoom = () => {
-    const [authToken, setAuthToken] = useState();
     const [currentUser,] = useContext(UserContext);
     const { slugUser } = useParams();
     const [receiverUser, setReceiverUser] = useState(null);
@@ -23,26 +22,41 @@ const ChatRoom = () => {
         evt.preventDefault();
         if (msg.trim().length > 0) {
             const chatroomsRef = collection(db, 'chatrooms');
-            const q = query(chatroomsRef, where('user1', 'in', [currentUser.username, receiverUser.username]), where('user2', 'in', [currentUser.username, receiverUser.username]));
+            const combinedUsername = [currentUser.username, receiverUser.username].sort().join(':');
+
+            const q = query(chatroomsRef, where('roomId', '==', combinedUsername));
             getDocs(q).then((snapshot) => {
                 const chatroom = snapshot.docs[0];
+                const newMesssage = {
+                    sender: currentUser.username,
+                    content: msg,
+                    type: 'text',
+                    createdAt: serverTimestamp(),
+                }
                 if (chatroom) {
                     addDoc(collection(chatroom.ref, 'messages'), {
-                        sender: currentUser.username,
-                        content: msg,
-                        type: 'text',
-                        createdAt: serverTimestamp(),
+                        ...newMesssage
+                    }).then(() => {
+                        updateDoc(chatroom.ref, {
+                            lastMessage: newMesssage,
+                            updatedAt: serverTimestamp(),
+                        });
                     });
                 } else {
                     addDoc(chatroomsRef, {
-                        user1: currentUser.username,
-                        user2: receiverUser.username,
+                        roomId: combinedUsername,
+                        members: [currentUser.username, receiverUser.username],
+                        user1: currentUser,
+                        user2: receiverUser
                     }).then((chatroomsRef) => {
+                        updateMessage();
                         addDoc(collection(chatroomsRef, 'messages'), {
-                            sender: currentUser.username,
-                            content: msg,
-                            type: 'text',
-                            createdAt: serverTimestamp(),
+                            ...newMesssage
+                        }).then(() => {
+                            updateDoc(chatroomsRef, {
+                                lastMessage: newMesssage,
+                                updatedAt: serverTimestamp(),
+                            });
                         });
                     });
                 }
@@ -53,10 +67,6 @@ const ChatRoom = () => {
 
 
     useEffect(() => {
-        const getFbToken = async () => {
-            const res = await authApi().get(endpoints["getAuthToken"]);
-            setAuthToken(res.data);
-        }
 
         const getReceiverUser = async () => {
             try {
@@ -72,26 +82,31 @@ const ChatRoom = () => {
             }
         }
         getReceiverUser();
-        getFbToken();
     }, [slugUser])
 
+    const updateMessage = () => {
+        const chatroomsRef = collection(db, 'chatrooms');
+        const combinedUsername = [currentUser.username, receiverUser.username].sort().join(':');
+        const q = query(chatroomsRef, where('roomId', '==', combinedUsername));
+        getDocs(q).then((snapshot) => {
+            const chatroom = snapshot.docs[0];
+            if (chatroom) {
+                const messageRef = collection(chatroom.ref, "messages");
+                const q2 = query(messageRef, orderBy("createdAt"));
+                onSnapshot(q2, (snapshot) => {
+                    setMessages(snapshot.docs.map((doc) => doc.data()));
+                })
+            }
+        });
+
+    }
+
     useEffect(() => {
-        if (authToken && currentUser && receiverUser) {
-            signInWithCustomToken(auth, authToken);
-            const chatroomsRef = collection(db, 'chatrooms');
-            const q = query(chatroomsRef, where('user1', 'in', [currentUser.username, receiverUser.username]), where('user2', 'in', [currentUser.username, receiverUser.username]));
-            getDocs(q).then((snapshot) => {
-                const chatroom = snapshot.docs[0];
-                if (chatroom) {
-                    const messageRef = collection(chatroom.ref, "messages");
-                    const q2 = query(messageRef, orderBy("createdAt"));
-                    onSnapshot(q2, (snapshot) => {
-                        setMessages(snapshot.docs.map((doc) => doc.data()));
-                    })
-                }
-            });
+        setMessages([]);
+        if (currentUser && receiverUser) {
+            updateMessage();
         }
-    }, [authToken, currentUser, receiverUser])
+    }, [currentUser, receiverUser])
 
     if (!receiverUser) {
         return (<div className="w-full h-full flex items-center justify-center">Đợi tí nha</div>)

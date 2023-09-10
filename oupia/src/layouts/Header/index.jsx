@@ -11,6 +11,10 @@ import { LuSettings } from "react-icons/lu";
 import { UserContext } from '../../App';
 import { FaAngleDown } from 'react-icons/fa6';
 import { HiOutlineHomeModern } from 'react-icons/hi2';
+import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
+import { signInWithCustomToken } from 'firebase/auth';
+import { auth, db } from '../../configs/FireBase';
+import { authApi, endpoints } from '../../configs/APIs';
 
 
 const Header = () => {
@@ -23,6 +27,18 @@ const Header = () => {
     const [bgColor, setBgColor] = useState(false);
     const location = useLocation();
     const bgTrans = (location.pathname === '/' || location.pathname === '/login');
+    const [authToken, setAuthToken] = useState();
+    const [currentUser,] = useContext(UserContext);
+    const [isNotice, setIsNotice] = useState(false);
+
+
+    useEffect(() => {
+        if (location.pathname.startsWith('/messages')) {
+            console.log(location.pathname);
+            setIsNotice(false);
+        }
+    }, [location, isNotice]);
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -45,6 +61,29 @@ const Header = () => {
             "type": "logout"
         })
     }
+
+    useEffect(() => {
+        if (currentUser) {
+            const getFbToken = async () => {
+                const res = await authApi().get(endpoints["getAuthToken"]);
+                setAuthToken(res.data);
+            }
+            getFbToken();
+        }
+    }, [])
+
+    useEffect(() => {
+        if (authToken) {
+            signInWithCustomToken(auth, authToken);
+            if (authToken) {
+                const chatroomsRef = collection(db, 'chatrooms');
+                const q = query(chatroomsRef, where('members', 'array-contains', currentUser.username), orderBy("updatedAt", "desc"));
+                onSnapshot(q, (snapshot) => {
+                    setIsNotice(true);
+                })
+            }
+        }
+    }, [authToken]);
 
     return (<>
         <div className={`${bgTrans ? (bgColor ? "bg-header shadow-sm border-b border-gray-200" : "header") : "bg-header shadow-sm border-b border-gray-200"}`} >
@@ -73,7 +112,16 @@ const Header = () => {
                         <Button color="dark">Đăng nhập</Button>
                     </Link>
                 </div>) : (<div className="flex md:order-2 items-center">
-                    <Link to="/messages"><BsChat size="20" className={`mr-3  ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"} hover:text-blueTemplate hover:cursor-pointer`}></BsChat></Link>
+                    <Link to="/messages">
+                        <div className="relative mr-3">
+                            <BsChat size="20" className={` ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"} hover:text-blueTemplate hover:cursor-pointer`}>
+
+                            </BsChat>
+                            {isNotice && <span className="top-0 left-3 absolute  w-2.5 h-2.5 bg-red-500 rounded-full"></span>}
+
+                        </div>
+
+                    </Link>
                     <PiBell size="24" className={`mr-4 ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"}`} />
                     <Dropdown
                         arrowIcon={null}

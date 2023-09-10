@@ -1,17 +1,61 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RiSearch2Line } from 'react-icons/ri';
 import './style.scss';
 import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
 import UserChatItem from '../../components/User/UserChatitem';
 import { UserContext } from '../../App';
+import { signInWithCustomToken } from 'firebase/auth';
+import { auth, db } from '../../configs/FireBase';
+import { authApi, endpoints } from '../../configs/APIs';
+import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 
 const MessageLayout = () => {
-    const [user,] = useContext(UserContext);
-    const location = (useLocation().pathname === "/messages");
+    const [authToken, setAuthToken] = useState();
+    const [currentUser,] = useContext(UserContext);
 
-    if (!user) {
+    const location = (useLocation().pathname === "/messages");
+    const [chatRooms, setChatRooms] = useState([]);
+
+    useEffect(() => {
+        const getFbToken = async () => {
+            const res = await authApi().get(endpoints["getAuthToken"]);
+            setAuthToken(res.data);
+        }
+        getFbToken();
+    }, [])
+
+    useEffect(() => {
+        if (authToken) {
+            signInWithCustomToken(auth, authToken);
+            if (authToken) {
+                const chatroomsRef = collection(db, 'chatrooms');
+                const q = query(chatroomsRef, where('members', 'array-contains', currentUser.username), orderBy("updatedAt", "desc"));
+                onSnapshot(q, (snapshot) => {
+                    setChatRooms(snapshot.docs.map((doc) => doc.data()));
+                    
+                    snapshot.docs.forEach((doc) => {
+                        const chatroomRef = doc.ref;
+                        onSnapshot(chatroomRef, (chatroomSnapshot) => {
+                            // Update the specific chatroom in your state here
+                        });
+                    });
+                })
+            }
+        }
+    }, [authToken]);
+    
+
+
+
+    useEffect(() => {
+        console.log(chatRooms);
+    }, [chatRooms])
+
+    if (!currentUser) {
         return (<Navigate to="/login?next=/messages" />);
     }
+
+
 
     return (<>
         <div className="mess-height grid grid-cols-9">
@@ -28,12 +72,9 @@ const MessageLayout = () => {
                         </div>
                     </div>
                     <div className="mt-5 flex flex-col">
-                        <Link to="/messages/Dung" className="py-3 px-2 rounded-lg hover:bg-gray-200">
-                            <UserChatItem />
-                        </Link>
-                        <Link to="/messages/haha" className="py-3 px-2 rounded-lg hover:bg-gray-200">
-                            <UserChatItem />
-                        </Link>
+                        {chatRooms.map(room => {
+                            return <UserChatItem user={room.user1.username === currentUser.username ? room.user2 : room.user1} message={room.lastMessage} />
+                        })}
                     </div>
                 </div>
             </div>

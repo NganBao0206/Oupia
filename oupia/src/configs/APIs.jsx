@@ -23,6 +23,11 @@ export const endpoints = {
     "favour": `${SERVER_CONTEXT}/api/favourites/`,
     "getFavourOfUser": `${SERVER_CONTEXT}/api/favourites/user/`,
     "getAuthToken": `${SERVER_CONTEXT}/api/auth-token/`,
+    "follows": `${SERVER_CONTEXT}/api/follows/`,
+    "followers": (username) => `${SERVER_CONTEXT}/api/follows/followers/${username}/`,
+    "followings": (username) => `${SERVER_CONTEXT}/api/follows/followings/${username}/`,
+    "countFollowers": (username) => `${SERVER_CONTEXT}/api/follows/followers-count/${username}/`,
+    "countFollowings": (username) => `${SERVER_CONTEXT}/api/follows/followings-count/${username}/`,
 }
 
 export const authApi = () => {

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import "./style.scss";
 import { PiUsers } from "react-icons/pi";
-import { Button, Card } from 'flowbite-react';
+import { Avatar, Button, Card } from 'flowbite-react';
 import { MdAlternateEmail } from 'react-icons/md';
 import { BsGenderTrans, BsCalendar4, BsClock } from "react-icons/bs";
 import { Link, Outlet, useParams } from 'react-router-dom';
@@ -9,25 +9,32 @@ import { NavLink } from 'react-router-dom';
 import { LuEdit, LuHeart } from "react-icons/lu";
 import { IoImageOutline } from "react-icons/io5";
 import { UserContext } from '../../App';
-import APIs, { endpoints } from '../../configs/APIs';
+import APIs, { authApi, endpoints } from '../../configs/APIs';
 
 const UserLayout = () => {
     const { slugUser } = useParams();
 
-    const [currentUser, ] = useContext(UserContext);
+    const [currentUser,] = useContext(UserContext);
 
     const [user, setUser] = useState(null);
-    useEffect (() => {
+
+    const [follow, setFollow] = useState(null);
+
+    const [followers, setFollowers] = useState(null);
+
+    const [countFollowers, setCountFollowers] = useState(null);
+
+    useEffect(() => {
         if (currentUser == null || slugUser !== currentUser.username) {
             const getUser = async () => {
                 try {
                     const url = endpoints.userInfo(slugUser);
 
-                    let res = await APIs.get(url);    
+                    let res = await APIs.get(url);
                     if (res.status === 200) {
                         setUser(res.data);
                     }
-            
+
                 } catch (err) {
                     console.error(err);
                 }
@@ -38,6 +45,88 @@ const UserLayout = () => {
             setUser(currentUser);
         }
     }, [slugUser, currentUser])
+
+    const addFollow = async () => {
+        if (currentUser && user) {
+            const follow = {
+                beFollowedUserId: user,
+            }
+            const path = endpoints["follows"];
+            const res = await authApi().post(path, follow);
+            if (res.status === 201) {
+                setFollow(res.data)
+            }
+        }
+    }
+
+    const unfollow = async () => {
+        if (currentUser && user && follow) {
+            const path = endpoints["follows"];
+            const res = await authApi().delete(path, {
+                params: {
+                    id: follow.id,
+                }
+            });
+            if (res.status === 204) {
+                setFollow(null);
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (currentUser && user && currentUser.username !== user.username) {
+            const getFollow = async () => {
+                const path = endpoints["follows"];
+
+                const res = await authApi().get(path, {
+                    params: {
+                        follower: currentUser.username,
+                        following: user.username,
+                    }
+                });
+                if (res.status = 200) {
+                    setFollow(res.data);
+                }
+                else {
+                    setFollow(null);
+                }
+            }
+            getFollow();
+        }
+    }, [currentUser, user])
+
+    const getCountFollowers = async () => {
+        const path = endpoints.countFollowers(user.username);
+
+        const res = await APIs.get(path);
+        if (res.status = 200) {
+            setCountFollowers(res.data);
+        }
+        else {
+            setCountFollowers(0);
+        }
+    }
+
+    useEffect(() => {
+        if (user) {
+            getCountFollowers();
+            const getFollowers = async () => {
+                const path = endpoints.followers(user.username);
+
+                const res = await APIs.get(path);
+                if (res.status = 200) {
+                    setFollowers(res.data);
+                }
+                else {
+                    setFollowers(null);
+                }
+            }
+            getFollowers();
+        }
+    }, [user, follow])
+
+
+
     if (user === null) {
         return <>
             đang loading nè
@@ -98,16 +187,54 @@ const UserLayout = () => {
                         <div className="flex flex-col mt-5 gap-2">
                             <h1 className="text-3xl font-bold text-left">{user.fullName}</h1>
                             <div className="flex">
-                                <div className="flex md:w-auto w-full gap-2 text-gray-500">
-                                    <PiUsers size="21" />
-                                    <h3 className=" font-bold">{user.follows} người theo dõi</h3>
+                                <div className="flex lg:w-auto w-full gap-2 text-gray-500 items-start">
+                                    <div>
+                                        <div className="flex gap-2">
+                                            <PiUsers size="21" />
+                                            <h3 className=" font-bold">{user.follows} người theo dõi</h3>
+                                        </div>
+                                        <div className="">
+                                            {countFollowers > 0 && (<>
+                                                <div class="flex -space-x-4">
+                                                    {followers && (<>
+                                                        {followers.map(follower => {
+                                                            return <img class="w-9 h-9 border-2 border-gray-300 rounded-full" src={follower.followUserId.avatar} alt="" />
+                                                        })}
+                                                        <a class="flex items-center justify-center w-9 h-9 text-xs font-medium text-white bg-gray-700 border-2 border-gray-300 rounded-full hover:bg-gray-600" href="#">+{countFollowers > 8 ? countFollowers - 8 : 0}</a>
+                                                    </>)}
+                                                </div>
+                                            </>)}
+
+                                        </div>
+
+                                    </div>
+
                                     <h3 >•</h3>
                                     <LuEdit size="20" className="text-gray-500" />
                                     <h3 className=" font-bold">{user.posts} bài viết</h3>
                                 </div>
                                 <div className="ml-auto flex gap-5">
-                                    <Button color="dark" className="ring-2 ring-Dark"><p className="font-bold"><Link to="/upload">Đăng tin mới</Link></p></Button>
-                                    <Button outline className="ring-2 ring-Dark"><p className="font-bold">Chỉnh sửa thông tin</p></Button>
+                                    {currentUser == null || user.username !== currentUser.username ?
+                                        <>
+                                            {follow ?
+                                                <>
+                                                    <Button color="dark" className="ring-2 ring-Dark"><p className="font-bold" onClick={() => unfollow()}>Đang theo dõi</p></Button>
+
+                                                </>
+                                                :
+                                                <>
+                                                    <Button color="dark" className="ring-2 ring-Dark"><p className="font-bold" onClick={() => addFollow()}>Theo dõi</p></Button>
+
+                                                </>}
+                                            <Button outline className="ring-2 ring-Dark"><p className="font-bold"><Link to={`/messages/${user.username}`}>Nhắn tin</Link></p></Button>
+
+                                        </>
+                                        :
+                                        <>
+                                            <Button color="dark" className="ring-2 ring-Dark"><p className="font-bold"><Link to="/upload">Đăng tin mới</Link></p></Button>
+                                            <Button outline className="ring-2 ring-Dark"><p className="font-bold">Chỉnh sửa thông tin</p></Button>
+                                        </>}
+
                                 </div>
                             </div>
                         </div>
