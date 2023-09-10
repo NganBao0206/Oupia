@@ -15,6 +15,7 @@ const PostDetail = () => {
     const [post, setPost] = useState();
     const [images, setImages] = useState();
     const [comments, setComments] = useState();
+    const [recommentList, setRecommentList] = useState();
 
     const getComments = async () => {
         try {
@@ -68,6 +69,30 @@ const PostDetail = () => {
     }, [slugPost])
 
 
+    useEffect(() => {
+        const getRecomments = async () => {
+            try {
+                let res = await APIs.get(endpoints['posts'], {
+                    params: {
+                        page: 1,
+                        longitude: post.postRentDetail.motelId.locationLongitude,
+                        latitude: post.postRentDetail.motelId.locationLatitude,
+                    }
+                });
+                if (res.status === 200) {
+                    console.log(res.data)
+                    setRecommentList(res.data.posts);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        if (post) {
+            getRecomments();
+        }
+    }, [post] )
+
+
 
     if (!post || !images) {
         return (<>
@@ -93,7 +118,7 @@ const PostDetail = () => {
                         <PostComment />
                     </div>
                 </div>
-                <RecommendList title="Bài đăng liên quan" />
+                <RecommendList recommentList={recommentList} title="Phòng trọ gần đó" url={`/posts?location=${post.postRentDetail.motelId.fullLocation}&page=1&latitude=${post.postRentDetail.motelId.locationLatitude}&longitude=${post.postRentDetail.motelId.locationLongitude}`}/>
             </div>
         </PostContext.Provider>
     );

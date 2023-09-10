@@ -120,12 +120,20 @@ const Register = () => {
         validateAll();
     }, [user, post, postRentDetail, motel, user.userRole]);
 
-    const register = (evt) => {
+    const register = async (evt) => {
         evt.preventDefault();
         if (step < components.length - 1)
             return;
-        if (errors || !avatarFile || postImages.length < 3) {
+        if (errors || !avatarFile || !user.userRole || (user.userRole === "LANDLORD" && postImages.length < 3)) {
             alert("Thông tin đăng ký chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
+            return;
+        }
+
+        const url = endpoints.userInfo(user.username);
+
+        let res = await APIs.get(url);
+        if (res.status === 200) {
+            alert("Tên người dùng đã tồn tại, vui lòng chọn tên khác");
             return;
         }
         else {
