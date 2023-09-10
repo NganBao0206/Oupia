@@ -221,11 +221,11 @@ public class ApiUserController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(path = "/resend-confirm-email/{username}/")
+    @GetMapping(path = "/resend-confirm-email/")
     @CrossOrigin
-    public ResponseEntity<?> resend(@PathVariable("username") String username) {
-        User user = userService.getUserByUsername(username);
-        if (user != null) {
+    public ResponseEntity<?> resend(Principal u) {
+        User user = userService.getUserByUsername(u.getName());
+        if (user != null && user.getIsConfirm() == false) {
             mailService.sendEmail(user);
             return new ResponseEntity<>(HttpStatus.OK);
         }
