@@ -92,13 +92,14 @@ public class PostRepositoryImpl implements PostRepository {
                     predicates.add(b.isNotNull(root.get("postRentDetail").get("id")));
                 }
             }
-
+          
             String isAccepted = params.get("isAccepted");
-            if (isAccepted != null && !isAccepted.isEmpty()) {
-                if (isAccepted.equals("accepted")) {
-                    predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
+            if (type == null || (!type.isEmpty() && !type.equals("tenantPost")))
+                if (isAccepted != null && !isAccepted.isEmpty()) {
+                    if (isAccepted.equals("accepted")) {
+                        predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
+                    }
                 }
-            }
             
             String motelSlug = params.get("motelSlug");
             if (motelSlug != null && !motelSlug.isEmpty()) {
@@ -200,11 +201,12 @@ public class PostRepositoryImpl implements PostRepository {
             }
 
             String isAccepted = params.get("isAccepted");
-            if (isAccepted != null && !isAccepted.isEmpty()) {
-                if (isAccepted.equals("accepted")) {
-                    predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
+            if (type == null || (!type.isEmpty() && !type.equals("tenantPost")))
+                if (isAccepted != null && !isAccepted.isEmpty()) {
+                    if (isAccepted.equals("accepted")) {
+                        predicates.add(b.and(b.isNotNull(root.get("postRentDetail").get("id")), b.equal(root.get("postRentDetail").get("motelId").get("status"), "ACCEPTED")));
+                    }
                 }
-            }
             
             String motelSlug = params.get("motelSlug");
             if (motelSlug != null && !motelSlug.isEmpty()) {

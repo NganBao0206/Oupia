@@ -167,6 +167,7 @@ public class ApiPostController {
     @CrossOrigin
     public ResponseEntity<String> getPosts(@RequestParam Map<String, String> params) {
         params.put("isDeleted", "0");
+        
         params.put("isAccepted", "accepted");
         if (params.get("page") == null) {
             params.put("page", "1");
