@@ -7,10 +7,10 @@ import StepThree from '../../components/Form/Register/StepThreeRegister';
 import StepFour from '../../components/Form/AddMotelForm';
 import StepFive from '../../components/Form/LandlordForm/StepThreeLandlordForm';
 import StepSix from '../../components/Form/LandlordForm/StepTwoLandlordForm';
-import LastStep from '../../components/Form/Register/StepFourRegister';
 import RegisterStepper from "../../components/Stepper/RegisterStepper";
 import APIs, { endpoints } from '../../configs/APIs';
 import { UserContext } from '../../App';
+import { schemaMotel, schemaPost, schemaPostRentDetail, schemaUser } from '../../validators/yupValidators';
 
 export const FormContext = createContext();
 
@@ -34,14 +34,17 @@ const Register = () => {
     const [avatar, setAvatar] = useState(null);
     const [avatarFile, setAvatarFile] = useState(null);
     const [postImages, setPostImages] = useState([]);
+    const [errors, setErrors] = useState({});
 
 
-  
+
+
 
     const handleNextStep = () => {
-
         if (step === 0 && !user.userRole) {
-
+            return;
+        }
+        if (step === 1 && !user.userRole) {
             return;
         }
         if (step !== components.length - 1)
@@ -50,7 +53,6 @@ const Register = () => {
     }
 
     const handlePrevStep = () => {
-
         if (step !== 0)
             setStep(prev => prev - 1);
     }
@@ -70,8 +72,7 @@ const Register = () => {
             setComponents([
                 <StepOne context={FormContext} />,
                 <StepTwo context={FormContext} />,
-                <StepThree context={FormContext} />,
-                <LastStep context={FormContext} />]);
+                <StepThree context={FormContext} />]);
         } else if (user.userRole === "LANDLORD") {
             setComponents([
                 <StepOne context={FormContext} />,
@@ -80,18 +81,56 @@ const Register = () => {
                 <StepFour context={FormContext} />,
                 <StepFive context={FormContext} />,
                 <StepSix context={FormContext} />,
-                <LastStep context={FormContext} />]);
+            ]);
         }
     }, [user.userRole])
 
+    useEffect(() => {
+        const validateAll = async () => {
+            let schemas = [schemaUser, schemaPost, schemaPostRentDetail, schemaMotel];
+            let data = [user, post, postRentDetail, motel];
+            let dataNames = ['user', 'post', 'postRentDetail', 'motel'];
+
+            if (user.userRole === "TENANT") {
+                schemas = [schemaUser];
+                data = [user];
+                dataNames = ['user'];
+            }
+
+            setErrors({});
+
+            for (let i = 0; i < schemas.length; i++) {
+                try {
+                    await schemas[i].validate(data[i], { abortEarly: false });
+                } catch (error) {
+                    const errorMessages = {};
+                    error.inner.forEach(err => {
+                        errorMessages[err.path] = err.message;
+                    });
+                    setErrors(prevErrors => ({
+                        ...prevErrors,
+                        [dataNames[i]]: errorMessages
+                    }));
+                }
+            }
+        };
+
+        validateAll();
+    }, [user, post, postRentDetail, motel, user.userRole]);
+
+
+    useEffect(() => {
+        if (!errors) {
+
+        }
+    }, [errors])
 
     const register = (evt) => {
         evt.preventDefault();
-        if (step < 2)
+        if (step < 2 && errors)
             return;
         const process = async () => {
             let form = new FormData();
-
             if (user.userRole === "LANDLORD") {
                 form.append('user', JSON.stringify(user));
                 form.append('motel', JSON.stringify(motel));
@@ -129,8 +168,6 @@ const Register = () => {
                     nav("/login");
                 }
             }
-
-
         }
         process();
     }
@@ -140,7 +177,7 @@ const Register = () => {
     }
 
     return (<>
-        <FormContext.Provider value={{ user, setUser, avatar, setAvatar, setAvatarFile, postImages, setPostImages, motel, setMotel, postRentDetail, setPostRentDetail, post, setPost, validate, setValidate }}>
+        <FormContext.Provider value={{ errors, user, setUser, avatar, setAvatar, setAvatarFile, postImages, setPostImages, motel, setMotel, postRentDetail, setPostRentDetail, post, setPost, validate, setValidate , setStep}}>
             <div className="min-h-screen">
                 <div className="grid grid-cols-3 rounded-xl border shadow-lg m-20">
                     <div className=" col-span-1 bg-Dark flex items-start h-full rounded-l-xl py-24">

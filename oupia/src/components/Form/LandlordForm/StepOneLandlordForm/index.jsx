@@ -15,7 +15,7 @@ const StepOneLandlordForm = ({ context }) => {
             <div>
                 <h2 className="text-2xl font-bold leading-7 text-blueTemplate">Chọn phòng trọ</h2>
                 <div className="grid grid-cols-8 gap-5">
-                    <div className="col-span-6 mt-5">
+                    <div className="col-span-6">
                         <div className="mb-2 block">
                             <Label htmlFor="motels" value="Chọn nhà trọ" className="text-md hidden" />
                         </div>
@@ -29,8 +29,9 @@ const StepOneLandlordForm = ({ context }) => {
                                 </option>
                             ))}
                         </select>
+                        <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{!postRentDetail.motelId && 'Bắt buộc chọn trọ'}</p>
                     </div>
-                    <Button className="bg-blueTemplate mt-auto col-span-2">
+                    <Button className={`bg-blueTemplate my-auto col-span-2 ${!postRentDetail.motelId && "mt-2"}`}>
                         <Link to="/motels/add" className="flex items-center gap-2" >
                             <MdAdd className="h-5 w-5" color='white' />
                             <p className="font-bold">

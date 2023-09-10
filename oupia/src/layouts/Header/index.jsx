@@ -121,7 +121,9 @@ const Header = () => {
                         }
                         placement='left-start'>
                         <div className="p-4 w-64 font-thin">
-                            {currentUser.isConfirm === true ? "" : <>
+                            {currentUser.isConfirm === true ? <>
+                                <h1 className="text-center font-bold">Thông báo</h1>
+                            </> : <>
                                 Hãy xác nhận Email để nhận được thông báo từ Oupia. <span className="font-bold underline hover:text-blueTemplate hover:cursor-pointer"><Link to="/cofirm">Xác nhận</Link></span>
                             </>}
                         </div>

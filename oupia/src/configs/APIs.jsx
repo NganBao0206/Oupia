@@ -30,8 +30,8 @@ export const endpoints = {
 
     "countFollowers": (username) => `${SERVER_CONTEXT}/api/follows/followers-count/${username}/`,
     "countFollowings": (username) => `${SERVER_CONTEXT}/api/follows/followings-count/${username}/`,
-
-    "resend-confirm": `${ SERVER_CONTEXT }/api/resend-confirm-email/`,
+    
+    "resend-confirm": `${SERVER_CONTEXT}/api/resend-confirm-email/`,
 }
 
 export const authApi = () => {

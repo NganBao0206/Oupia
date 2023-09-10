@@ -25,6 +25,10 @@ const MessageLayout = () => {
     }, [])
 
     useEffect(() => {
+        
+    })
+
+    useEffect(() => {
         if (authToken) {
             signInWithCustomToken(auth, authToken);
             if (authToken) {
@@ -40,8 +44,6 @@ const MessageLayout = () => {
     if (!currentUser) {
         return (<Navigate to="/login?next=/messages" />);
     }
-
-
 
     return (<>
         <div className="mess-height grid grid-cols-9">

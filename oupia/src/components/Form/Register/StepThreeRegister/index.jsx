@@ -5,7 +5,7 @@ import { FormContext } from '../../../../pages/Register';
 
 const StepThreeRegister = ({context}) => {
 
-    const {user, setUser, avatar, setAvatar, setAvatarFile} = useContext(context);
+    const {user, setUser, avatar, setAvatar, setAvatarFile, errors} = useContext(context);
 
     const changeUser = (value, field) => {
         setUser(current => {
@@ -39,12 +39,15 @@ const StepThreeRegister = ({context}) => {
                     </div>
 
                 </div>
+                
             </div>
             <div className="mt-5">
                 <div className="mb-2 block">
                     <Label className="text-lg mt-2" htmlFor="username" value="Tên người dùng" />
                 </div>
                 <TextInput id="username" name="username" value={user.username} required shadow type="text" onChange={e => changeUser(e.target.value, e.target.name)} />
+                <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user.username}</p>
+
             </div>
             <div className="grid grid-cols-2 gap-5 mt-3">
                 <div>
@@ -52,12 +55,15 @@ const StepThreeRegister = ({context}) => {
                         <Label className="text-lg mt-2" htmlFor="password" value="Mật khẩu" />
                     </div>
                     <TextInput id="password" name="password" value={user.password} required shadow type="password"  onChange={e => changeUser(e.target.value, e.target.name)} />
+                    <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user.password}</p>
                 </div>
                 <div>
                     <div className="mb-2 block">
                         <Label className="text-lg mt-2" htmlFor="confirmPass" value="Xác nhận mật khẩu" />
                     </div>
                     <TextInput id="confirmPass" name="confirmPassword" value={user.confirmPassword} required  shadow type="password"  onChange={e => changeUser(e.target.value, e.target.name)}/>
+                    <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.user.confirmPassword}</p>
+
                 </div>
             </div>
 

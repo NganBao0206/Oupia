@@ -45,6 +45,9 @@ const LandlordForm = () => {
     }, [])
 
     const handleNextStep = () => {
+        if (step === 0 && !postRentDetail.motelId) {
+            return;
+        }
         setStep(prev => prev + 1);
     }
 

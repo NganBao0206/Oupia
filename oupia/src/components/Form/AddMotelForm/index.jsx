@@ -4,7 +4,7 @@ import APIs, { endpoints } from '../../../configs/APIs';
 import goongJs from '@goongmaps/goong-js';
 
 const AddMotelForm = ({context}) => {
-    const { motel, setMotel } = useContext(context);
+    const { motel, setMotel, errors } = useContext(context);
     const [isSelect, setIsSelect] = useState(false);
     const query = useDebounce(motel.fullLocation, 300);
     const [isFocused, setIsFocused] = useState(false);
@@ -124,10 +124,14 @@ const AddMotelForm = ({context}) => {
                     <div className="col-span-3">
                         <label htmlFor="motelName" className="block mb-2 text-gray-900 dark:text-white">Tên phòng trọ</label>
                         <input value={motel.name} onChange={e => changeMotel(e.target.value, "name")} type="text" id="motelName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5" />
+                        <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.motel && errors.motel.name}</p>
+
                     </div>
                     <div className="col-span-3">
                         <label htmlFor="motelPhone" className="block mb-2 text-gray-900 dark:text-white">Số điện thoại</label>
                         <input value={motel.phoneNumber} onChange={e => changeMotel(e.target.value, "phoneNumber")} type="tel" id="motelPhone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5" />
+                        <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.motel  && errors.motel.phoneNumber}</p>
+
                     </div>
                     <div className="col-span-3 relative">
                         <label htmlFor="location" className="block mb-2 text-gray-900 dark:text-white">Địa chỉ chi tiết</label>
@@ -140,12 +144,14 @@ const AddMotelForm = ({context}) => {
                                 <li onClick={(e) => handleSelectPlace(e)} className="cursor-pointer px-4 py-2 hover:bg-blueTemplate hover:text-white" data-place-id={result.place_id}>{result.description}</li>
                             ))}
                         </ul>
+                        <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.motel && errors.motel.fullLocation}</p>
                     </div>
 
                     <div className="col-span-3">
                         <label className="block mb-2 text-gray-900 dark:text-white">Địa điểm trên bản đồ</label>
                         <div id="map" style={{ width: "100%", height: "350px" }}>
                         </div>
+                        <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.motel && errors.motel.locationLongitude}</p>
                     </div>
                 </div>
             </div>

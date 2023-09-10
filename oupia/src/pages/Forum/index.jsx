@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import MyBreadCrumb from '../../components/MyBreadCrumb';
 import UserStatus from '../../components/User/UserStatus';
 import UserItem from '../../components/User/UserItem';
-// import { useNavigate } from 'react-router-dom';
 import APIs, { endpoints } from '../../configs/APIs';
 import PostFindList from '../../components/Post/PostFindList';
 
@@ -10,7 +9,6 @@ import PostFindList from '../../components/Post/PostFindList';
 const Forum = () => {
     const [posts, setPosts] = useState(null);
 
-    // const navigate = useNavigate();
 
     useEffect(() => {
         getPosts();
@@ -19,8 +17,6 @@ const Forum = () => {
 
 
     const getPosts = async () => {
-        setPosts(null);
-        // navigate({ search: new URLSearchParams(debouncedParams).toString() });
         try {
             let res = await APIs.get(endpoints['posts'], {
                 params: {
@@ -29,8 +25,8 @@ const Forum = () => {
                 }
             });
             if (res.status === 200) {
-                setPosts(res.data.posts);
-                // setTotalPages(res.data.pages);
+                const data = res.data;
+                setPosts(data.posts);
             }
         } catch (err) {
             console.error(err);
