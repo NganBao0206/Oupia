@@ -9,6 +9,7 @@ import com.pn.pojo.Post;
 import com.pn.repository.FavouriteRepository;
 import com.pn.service.FavouriteService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,8 @@ public class FavouriteServiceImpl implements FavouriteService{
     }
 
     @Override
-    public List<Post> getFavouritesOfUser(String username) {
-        return favouriteRepository.getFavouritesOfUser(username);
+    public List<Post> getFavouritesOfUser(String username, Map<String, String> params) {
+        return favouriteRepository.getFavouritesOfUser(username, params);
     }
 
     @Override
@@ -43,6 +44,12 @@ public class FavouriteServiceImpl implements FavouriteService{
     @Override
     public Favourite getFavById(int id) {
         return favouriteRepository.getFavById(id);
+    }
+
+    @Override
+    public int getCountFavouritesOfUser(String username) {
+        return favouriteRepository.getCountFavouritesOfUser(username);
+
     }
     
 }
