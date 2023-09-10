@@ -120,13 +120,13 @@ const Header = () => {
                         label={<BiBell size="24" className={`mr-3 ${bgTrans ? (bgColor ? "text-Dark" : "text-white") : "text-Dark"} mt-0.5 hover:text-blueTemplate hover:cursor-pointer`} />
                         }
                         placement='left-start'>
-                        <div className="p-4 w-64 font-thin">
-                            {currentUser.isConfirm === true ? <>
-                                <h1 className="text-center font-bold">Thông báo</h1>
-                            </> : <>
-                                Hãy xác nhận Email để nhận được thông báo từ Oupia. <span className="font-bold underline hover:text-blueTemplate hover:cursor-pointer"><Link to="/cofirm">Xác nhận</Link></span>
-                            </>}
-                        </div>
+                        {currentUser.isConfirm !== true ?
+                            <>
+                                <div className="p-4 w-64 font-thin">
+                                    Hãy xác nhận Email để nhận được thông báo từ Oupia. <span className="font-bold underline hover:text-blueTemplate hover:cursor-pointer"><Link to="/cofirm">Xác nhận</Link></span>
+                                </div>
+                            </> : <div className="p-4 w-64 font-thin text-center">Đã xác thực Email</div>}
+
 
                     </Dropdown>
                     <Link to="/messages">

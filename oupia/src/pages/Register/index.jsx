@@ -1,4 +1,4 @@
-import { Button } from 'flowbite-react';
+import { Button, Spinner } from 'flowbite-react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import StepOne from '../../components/Form/Register/StepOneRegister';
@@ -72,12 +72,7 @@ const Register = () => {
             setComponents([
                 <StepOne context={FormContext} />,
                 <StepTwo context={FormContext} />,
-<<<<<<< HEAD
                 <StepThree context={FormContext} />]);
-=======
-                <StepThree context={FormContext} />,
-            ]);
->>>>>>> 4e1a9258cfcf041e27ccbabeecfa5845b7ca8e2e
         } else if (user.userRole === "LANDLORD") {
             setComponents([
                 <StepOne context={FormContext} />,
@@ -96,11 +91,7 @@ const Register = () => {
             let data = [user, post, postRentDetail, motel];
             let dataNames = ['user', 'post', 'postRentDetail', 'motel'];
 
-<<<<<<< HEAD
             if (user.userRole === "TENANT") {
-=======
-            if (user.userRole == "TENANT") {
->>>>>>> 4e1a9258cfcf041e27ccbabeecfa5845b7ca8e2e
                 schemas = [schemaUser];
                 data = [user];
                 dataNames = ['user'];
@@ -126,23 +117,22 @@ const Register = () => {
 
         validateAll();
     }, [user, post, postRentDetail, motel, user.userRole]);
-<<<<<<< HEAD
-
 
     useEffect(() => {
         if (!errors) {
 
         }
     }, [errors])
-=======
->>>>>>> 4e1a9258cfcf041e27ccbabeecfa5845b7ca8e2e
 
     const register = (evt) => {
         evt.preventDefault();
+        setLoading(true);
+
         if (step < components.length - 1)
             return;
         if (errors || !avatarFile || postImages.length < 3) {
             alert("Thông tin đăng ký chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
+            setLoading(false);
             return;
         }
         else {
@@ -162,7 +152,6 @@ const Register = () => {
 
                     console.log(form.get("postImages"));
 
-                    setLoading(true)
                     console.log(endpoints['register-landlord']);
                     let res = await APIs.post(endpoints['register-landlord'], form, {
                         headers: {
@@ -179,13 +168,13 @@ const Register = () => {
 
                     form.append("avatar", avatarFile[0]);
 
-                    setLoading(true)
                     let res = await APIs.post(endpoints['register'], form);
                     if (res.status === 201) {
                         nav("/login");
                     }
                 }
             }
+            setLoading(false);
             process();
         }
     }
@@ -195,7 +184,7 @@ const Register = () => {
     }
 
     return (<>
-        <FormContext.Provider value={{ errors, user, setUser, avatar, setAvatar, setAvatarFile, postImages, setPostImages, motel, setMotel, postRentDetail, setPostRentDetail, post, setPost, validate, setValidate , setStep}}>
+        <FormContext.Provider value={{ errors, user, setUser, avatar, setAvatar, setAvatarFile, postImages, setPostImages, motel, setMotel, postRentDetail, setPostRentDetail, post, setPost, validate, setValidate, setStep }}>
             <div className="min-h-screen">
                 <div className="grid grid-cols-3 rounded-xl border shadow-lg m-20">
                     <div className=" col-span-1 bg-Dark flex items-start h-full rounded-l-xl py-24">
@@ -216,11 +205,19 @@ const Register = () => {
                                     <Button onClick={handlePrevStep} className="bg-Dark text-white hover:bg-Darker">
                                         <p className="font-bold text-base">Quay lại</p>
                                     </Button>
-                                    {step === components.length - 1 ? <Button onClick={register} className="bg-blueTemplate w-full">
-                                        <p className="font-bold text-base">Hoàn tất</p>
-                                    </Button> : <Button onClick={handleNextStep} type="button" className="bg-blueTemplate w-full">
-                                        <p className="font-bold text-base">Tiếp tục</p>
-                                    </Button>}
+                                    {step === components.length - 1 ?
+                                        <>
+                                            {setLoading === true ? <div className="h-full w-full justify-center flex items-center">
+                                                <Spinner size="xl" className=" fill-blueTemplate" />
+                                            </div> : <>
+                                                <Button onClick={register} className="bg-blueTemplate w-full">
+                                                    <p className="font-bold text-base">Hoàn tất</p>
+                                                </Button>
+                                            </>}
+                                        </>
+                                        : <Button onClick={handleNextStep} type="button" className="bg-blueTemplate w-full">
+                                            <p className="font-bold text-base">Tiếp tục</p>
+                                        </Button>}
 
                                 </div>)
                                 :

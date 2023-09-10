@@ -29,14 +29,9 @@ export const schemaPostRentDetail = yup.object().shape({
 });
 
 export const schemaPostFindDetail = yup.object().shape({
-    price: yup.number().required('Giá không được trống').min(100000, 'Giá phải tối thiểu 100.000đ').max(100000000, 'Giá tối đa là 100.000.000đ'),
-    minPeople: yup.number().required('Số người tối thiểu không được trống').min(1, 'Số người tối thiểu phải ít nhất một người'),
-    maxPeople: yup.number().required('Số người tối đa không được trống').min(1, 'Số người tối đa phải ít nhất một người').test('is-greater', 'Số người tối đa không được ít hơn số người tối thiểu', function (value) {
-        return value >= this.parent.minPeople;
-    }),
-    area: yup.number().required('Diện tích không được trống').typeError('Giá trị phải là một số').moreThan(0, 'Diện tích phải lớn hơn 0'),
-    numOfBedrooms: yup.number().typeError('Giá trị phải là một số').min(1, 'Số phòng ngủ tối thiểu là 1'),
-    numOfBathrooms: yup.number().typeError('Giá trị phải là một số').min(1, 'Số nhà tắm tối thiểu là 1'),
+    minPrice: yup.number().required('Giá không được trống').typeError('Giá trị phải là một số').min(100000, 'Giá phải tối thiểu 100.000đ').max(100000000, 'Giá tối đa là 100.000.000đ'),
+    maxPrice: yup.number().required('Giá không được trống').typeError('Giá trị phải là một số').min(100000, 'Giá phải tối thiểu 100.000đ').max(100000000, 'Giá tối đa là 100.000.000đ'),
+    location: yup.string().required("Khu vực không được trống"),
 });
 
 export const schemaMotel = yup.object().shape({

@@ -13,15 +13,9 @@ const PostFindList = (props) => {
 
     return (
         <>
-<<<<<<< HEAD
-            {posts.map((post, index) => (
-                <div key={index}>
-                    {post.postRentDetail != null && <PostFindItem post={post} />}
-=======
             {posts.map((post) => (
                 <div>
                     {post.postFindDetail != null && <PostFindItem post={post} />}
->>>>>>> 4e1a9258cfcf041e27ccbabeecfa5845b7ca8e2e
                 </div>
             ))}
         </>

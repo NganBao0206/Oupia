@@ -5,7 +5,12 @@ import "./style.scss"
 import { PostContext } from '../../../pages/Post/PostDetail';
 
 const UserCard = () => {
-    const { post } = useContext(PostContext)
+    const { post } = useContext(PostContext);
+
+
+
+
+
     return (
         <Card className='items-center'>
             <Link to={`/${post.userId.username}`}>
@@ -27,11 +32,15 @@ const UserCard = () => {
                 <div className="flex flex-col items-center">
                     <div className="font-bold text-lg">45</div>
                     <div className="">Theo dõi</div>
-                </div>  
+                </div>
             </div>
             <div id="actions" className="grid grid-cols-2 gap-4 font-bold items-center">
-                <Link><Button color="dark">Theo dõi</Button></Link>
-                <Button className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
+                <Link to={`/${post.userId.username}`}>
+                    <Button color="dark" className="w-full">Xem</Button>
+                </Link>
+                <Link to={`/messages/${post.userId.username}`}>
+                    <Button className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
+                </Link>
             </div>
         </Card >
     );

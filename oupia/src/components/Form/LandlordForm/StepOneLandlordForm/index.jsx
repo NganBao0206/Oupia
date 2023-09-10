@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { Button, Label, Select } from 'flowbite-react';
+import { Button, Label } from 'flowbite-react';
 
 const StepOneLandlordForm = ({ context }) => {
     const { motels, postRentDetail, setPostRentDetail } = useContext(context);
@@ -30,11 +30,7 @@ const StepOneLandlordForm = ({ context }) => {
                                 </option>
                             ))}
                         </select>
-<<<<<<< HEAD
                         <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{!postRentDetail.motelId && 'Bắt buộc chọn trọ'}</p>
-=======
-                        <p class="mt-2 text-xs text-red-600 dark:text-red-400">{!postRentDetail.motelId && 'Bắt buộc chọn trọ'}</p>
->>>>>>> 4e1a9258cfcf041e27ccbabeecfa5845b7ca8e2e
                     </div>
                     <Button className={`bg-blueTemplate my-auto col-span-2 ${!postRentDetail.motelId && "mt-2"}`}>
                         <Link to="/motels/add" className="flex items-center gap-2" >

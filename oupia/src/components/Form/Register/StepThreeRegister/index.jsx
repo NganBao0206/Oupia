@@ -1,7 +1,6 @@
 import { Label, TextInput } from 'flowbite-react';
 import React, { useContext } from 'react';
 import { BiImageAdd } from "react-icons/bi";
-import { FormContext } from '../../../../pages/Register';
 
 const StepThreeRegister = ({context}) => {
 

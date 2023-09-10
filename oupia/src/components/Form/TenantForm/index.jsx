@@ -5,7 +5,7 @@ import DragDropFiles from '../../DragDropFIles';
 import { UserContext } from '../../../App';
 import APIs, { authApi, endpoints } from '../../../configs/APIs';
 import { Link } from 'react-router-dom';
-import { schemaPost } from '../../../validators/yupValidators';
+import { schemaPost, schemaPostFindDetail } from '../../../validators/yupValidators';
 
 export const TenantFormContext = createContext();
 
@@ -42,9 +42,9 @@ const TenantForm = () => {
 
     useEffect(() => {
         const validateAll = async () => {
-            let schemas = [schemaPost];
-            let data = [post];
-            let dataNames = ['post'];
+            let schemas = [schemaPost, schemaPostFindDetail];
+            let data = [post, postFindDetail];
+            let dataNames = ['post', 'postFindDetail'];
 
             setErrors({});
 
@@ -65,7 +65,7 @@ const TenantForm = () => {
         };
 
         validateAll();
-    }, [post]);
+    }, [post, postFindDetail]);
 
 
     const changePostDetail = (value, field) => {
@@ -208,14 +208,15 @@ const TenantForm = () => {
         e.preventDefault();
         setLoading(true);
 
-        if (errors)
-        {
+        if (errors) {
             alert("Thông tin chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
+            setLoading(false);
             return;
         }
 
         if (!postFindDetail.location) {
             alert("Thông tin chưa hợp lệ, vui lòng chọn khu vực");
+            setLoading(false);
             return;
         }
 
@@ -262,6 +263,7 @@ const TenantForm = () => {
                                                 </span>
                                             </div>
                                         </div>
+                                        <p class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.postFindDetail && errors.postFindDetail.minPrice}</p>
                                     </div>
 
                                     <div className="sm:col-span-3">
@@ -278,6 +280,8 @@ const TenantForm = () => {
                                                 </span>
                                             </div>
                                         </div>
+                                        <p class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.postFindDetail && errors.postFindDetail.maxPrice}</p>
+
                                     </div>
 
                                     <div className="sm:col-span-2 sm:col-start-1">
@@ -349,31 +353,32 @@ const TenantForm = () => {
                                     </div>
                                 </div>
                                 <h5 id="locationResult" className="text-lg font-bold text-gray-700 mt-5">{locationResult ? (<>Khu vực bạn chọn: <span className="text-blueTemplate">{locationResult}</span></>) : "Địa điểm..."}</h5>
+                                <p class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.postFindDetail && errors.postFindDetail.location}</p>
                                 <h2 className="text-2xl font-bold leading-7 text-blueTemplate mt-10">Nội dung bài viết</h2>
                                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     <div className="col-span-full">
-                                        <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 "><div className="flex"><h3>Tiêu đề</h3><h3 className={`ml-auto ${(post.title && post.title.length >= 20 && post.title.length <= 100) ? "" : "text-red-700"}`}>Tối thiểu từ 20 đến 100 ký tự</h3></div> </label>
-                                        <input onChange={e => changePost(e.target.value, "title")} type="text" id="title" className={`w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5 ${(post.title && post.title.length >= 20 && post.title.length <= 100) ? "" : "border-red-700 focus:ring-red-700 focus:border-red-700"}`} required />
-                                        <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post && errors.post.title}</p>
+                                        <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 ">Tiêu đề </label>
+                                        <input onChange={e => changePost(e.target.value, "title")} type="text" id="title" className="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5" required />
+                                        <p class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post && errors.post.title}</p>
 
                                     </div>
 
                                     <div className="col-span-full">
                                         <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                                            <div className="flex"><h3>Nội dung</h3><h3 className={`ml-auto ${(post.description && post.description.length >= 50) ? "" : "text-red-700"}`}>Tối thiểu 50 ký tự</h3></div></label>
+                                            Nội dung
+                                        </label>
                                         <div className="mt-2">
                                             <textarea
                                                 id="about"
                                                 name="about"
                                                 rows={3}
-                                                className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blueTemplate sm:text-sm sm:leading-6 ${(post.description && post.description.length >= 50) ? "" : "ring-red-700 focus:ring-red-700 focus:border-red-700"}`}
+                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blueTemplate sm:text-sm sm:leading-6"
                                                 defaultValue={''}
                                                 onChange={e => changePost(e.target.value, "description")}
                                                 required
                                             />
                                         </div>
-                                        <p className="mt-3 text-sm leading-6 text-gray-600">Viết một vài yêu cầu như tiện ích phòng trọ, ...</p>
-                                        <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post && errors.post.description}</p>
+                                        <p class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post && errors.post.description}</p>
 
                                     </div>
 

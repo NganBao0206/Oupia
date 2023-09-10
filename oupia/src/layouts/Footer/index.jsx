@@ -12,7 +12,7 @@ const Footer = () => {
                      location.pathname.includes('/messages'));
 
     return (<>
-        <div className={`${bgTrans ? 'hidden' : ''}`}>
+        <div className={`${bgTrans ? 'hidden' : ''} border-t-2 border-gray-100 mt-5`}>
             <TailwindFooter container>
                 <div className="w-full">
                     <div className="grid w-full md:w-auto flex-wrap justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
