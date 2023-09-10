@@ -3,7 +3,7 @@ import { RiSearch2Line } from "react-icons/ri";
 import { HiOutlineHomeModern } from 'react-icons/hi2';
 
 const StepOneRegister = ({context}) => {
-    const { user, setUser } = useContext(context);
+    const { user, setUser, errors } = useContext(context);
 
     const changeUser = (value, field) => {
         setUser(current => {

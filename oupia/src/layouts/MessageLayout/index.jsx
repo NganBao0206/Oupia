@@ -25,6 +25,10 @@ const MessageLayout = () => {
     }, [])
 
     useEffect(() => {
+        
+    })
+
+    useEffect(() => {
         if (authToken) {
             signInWithCustomToken(auth, authToken);
             if (authToken) {

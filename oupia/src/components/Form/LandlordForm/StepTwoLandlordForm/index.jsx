@@ -3,7 +3,7 @@ import DragDropFiles from '../../../DragDropFIles';
 import { FormContext } from '../../../../pages/Register';
 
 const StepTwoLandlordForm = ({context}) => {
-    const { post, setPost } = useContext(context);
+    const { post, setPost, errors, postImages } = useContext(context);
     const changePost = (value, field) => {
         setPost(current => {
             return { ...current, [field]: value }
@@ -17,6 +17,8 @@ const StepTwoLandlordForm = ({context}) => {
                     <div className="col-span-full">
                         <label for="title" className="block mb-2 text-gray-900 dark:text-white">Tiêu đề </label>
                         <input value={post.title} onChange={e => changePost(e.target.value, "title")} type="text" id="title" className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5" required />
+                        <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post.title}</p>
+
                     </div>
 
                     <div className="col-span-full">
@@ -36,6 +38,8 @@ const StepTwoLandlordForm = ({context}) => {
                             />
                         </div>
                         <p className="mt-3 text-sm leading-6 text-gray-600">Viết một tiện ích nhà trọ như bãi gửi xe, mô tả , ...</p>
+                        <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post.description}</p>
+
                     </div>
 
                     <div className="col-span-full">
@@ -43,6 +47,7 @@ const StepTwoLandlordForm = ({context}) => {
                             Hình ảnh
                         </label>
                         <DragDropFiles context={context} id="photo" />
+                        <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{postImages.length < 3 && 'Ít nhất 3 ảnh'}</p>
                     </div>
                 </div>
             </div>
