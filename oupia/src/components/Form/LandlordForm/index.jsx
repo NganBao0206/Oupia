@@ -51,29 +51,35 @@ const LandlordForm = () => {
     }, [post, postRentDetail]);
 
     useEffect(() => {
-        let getMotels = async () => {
-            try {
-                let res = await APIs.get(endpoints['motels'], {
-                    params: {
-                        username: currentUser.username,
-                        status: "ACCEPTED",
-                        isDelete: 0,
+        if (currentUser) {
+            let getMotels = async () => {
+                try {
+                    let res = await APIs.get(endpoints['motels'], {
+                        params: {
+                            username: currentUser.username,
+                            status: "ACCEPTED",
+                            isDelete: 0,
+                        }
+                    });
+                    if (res.status === 200) {
+    
+                        setMotels(res.data);
                     }
-                });
-                if (res.status === 200) {
-
-                    setMotels(res.data);
+    
+                } catch (err) {
+                    console.error(err);
                 }
-
-            } catch (err) {
-                console.error(err);
             }
+    
+                getMotels();
         }
-
-            getMotels();
-    }, [])
+        
+    }, [currentUser])
 
     const handleNextStep = () => {
+        if (step === 0 && !postRentDetail.motelId) {
+            return;
+        }
         setStep(prev => prev + 1);
     }
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { UserContext } from '../../../App';
 import { Button } from 'flowbite-react';
 import { LuEdit } from 'react-icons/lu';
@@ -7,9 +7,6 @@ import { FaRegHandPointRight } from 'react-icons/fa6';
 
 const UserStatus = (props) => {
     const [currentUser,] = useContext(UserContext);
-    const [postCount, setPostCount] = useState(0);
-    const { posts } = props;
-    const today = new Date().getDate();
 
     if (!currentUser) {
         return <>
@@ -22,7 +19,7 @@ const UserStatus = (props) => {
         </>
     }
 
-    if (currentUser.userRole != "TENANT") {
+    if (currentUser.userRole !== "TENANT") {
         return <>
             
         </>

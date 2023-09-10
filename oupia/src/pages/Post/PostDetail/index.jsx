@@ -54,6 +54,7 @@ const PostDetail = () => {
             }
         }
         const getPostDetail = async () => {
+            setPost(null);
             try {
                 const url = endpoints.postInfo(slugPost);
 
@@ -112,15 +113,7 @@ const PostDetail = () => {
         }
     }, [post] )
 
-
-
     if (!post || !images) {
-        return (<>
-            dang loading
-        </>)
-    }
-
-    if (post && post.postFindDetail) {
         return (<>
             <NotFound />
         </>)

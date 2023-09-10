@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { Button, Label, Select } from 'flowbite-react';
+import { Button, Label } from 'flowbite-react';
 
 const StepOneLandlordForm = ({ context }) => {
     const { motels, postRentDetail, setPostRentDetail } = useContext(context);
@@ -16,7 +16,7 @@ const StepOneLandlordForm = ({ context }) => {
             <div>
                 <h2 className="text-2xl font-bold leading-7 text-blueTemplate">Chọn phòng trọ</h2>
                 <div className="grid grid-cols-8 gap-5">
-                    <div className="col-span-6 mt-5">
+                    <div className="col-span-6">
                         <div className="mb-2 block">
                             <Label htmlFor="motels" value="Chọn nhà trọ" className="text-md hidden" />
                         </div>
@@ -31,7 +31,7 @@ const StepOneLandlordForm = ({ context }) => {
                             ))}
                         </select>
                     </div>
-                    <Button className="bg-blueTemplate mt-auto col-span-2">
+                    <Button className={`bg-blueTemplate my-auto col-span-2 ${!postRentDetail.motelId && "mt-2"}`}>
                         <Link to="/motels/add" className="flex items-center gap-2" >
                             <MdAdd className="h-5 w-5" color='white' />
                             <p className="font-bold">

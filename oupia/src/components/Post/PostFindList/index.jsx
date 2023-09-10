@@ -1,13 +1,13 @@
 import React from 'react';
 import PostFindItem from '../PostFindItem';
-import { Spinner } from 'flowbite-react';
+import MySpinner from '../../MySpinner';
 
 const PostFindList = (props) => {
     const { posts } = props;
 
     if (!posts) return (
-        <div className="h-full w-full justify-center flex items-center">
-            <Spinner size="xl" className=" fill-blueTemplate" />
+        <div className="h-screen w-full items-center flex flex-col ">
+            <MySpinner/>
         </div>
     )
 

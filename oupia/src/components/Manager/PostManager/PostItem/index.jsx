@@ -13,7 +13,7 @@ const PostItem = (props) => {
             <h2 className="font-bold text-lg text-Dark line-clamp-2 px-5 mt-3"> {post.title}</h2>
             <div className="text-blueTemplate px-5 font-bold"><h2 className="text-left">{price}đ/tháng</h2></div>
             <div className="p-5">
-                hehe
+                SĐT: {post.postRentDetail.motelId.phoneNumber}
             </div>
         </div>
 

@@ -9,6 +9,7 @@ import { Link, useParams } from 'react-router-dom';
 import { PiUser } from 'react-icons/pi';
 import { db } from '../../configs/FireBase';
 import { serverTimestamp, collection, query, where, getDocs, addDoc, orderBy, onSnapshot, updateDoc } from "firebase/firestore";
+import { Spinner } from 'flowbite-react';
 
 const ChatRoom = () => {
     const [currentUser,] = useContext(UserContext);
@@ -16,6 +17,8 @@ const ChatRoom = () => {
     const [receiverUser, setReceiverUser] = useState(null);
     const [msg, setMsg] = useState('');
     const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(true);
+
 
     const sendMessage = (evt) => {
         evt.preventDefault();
@@ -64,15 +67,14 @@ const ChatRoom = () => {
         }
     }
 
-
     useEffect(() => {
-
         const getReceiverUser = async () => {
             try {
                 const url = endpoints.userInfo(slugUser);
 
                 let res = await APIs.get(url);
                 if (res.status === 200) {
+                    setLoading(false);
                     setReceiverUser(res.data);
                 }
 
@@ -110,16 +112,51 @@ const ChatRoom = () => {
 
     }
 
+    
+
     useEffect(() => {
         setMessages([]);
+        const updateMessage = () => {
+            const chatroomsRef = collection(db, 'chatrooms');
+            const combinedUsername = [currentUser.username, receiverUser.username].sort().join(':');
+            const q = query(chatroomsRef, where('roomId', '==', combinedUsername));
+            getDocs(q).then((snapshot) => {
+                const chatroom = snapshot.docs[0];
+                if (chatroom) {
+                    const messageRef = collection(chatroom.ref, "messages");
+                    const q2 = query(messageRef, orderBy("createdAt"));
+                    onSnapshot(q2, (snapshot) => {
+                        setMessages(snapshot.docs.map((doc) => doc.data()));
+                    })
+                }
+            });
+    
+        }
         if (currentUser && receiverUser) {
             updateMessage();
         }
     }, [currentUser, receiverUser])
 
-    if (!receiverUser) {
-        return (<div className="w-full h-full flex items-center justify-center">Đợi tí nha</div>)
-    }
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (!receiverUser) {
+                setLoading(false);
+            }
+        }, 3000);
+        return () => clearTimeout(timeoutId);
+    }, [receiverUser]);
+
+    if (loading) {
+        return (
+          <div className="w-full h-full flex items-center justify-center col-span-7">
+            <Spinner size="xl" className=" fill-blueTemplate" />
+          </div>
+        );
+      }
+    
+      if (!receiverUser) {
+        return <div className="w-full h-full flex items-center justify-center col-span-7">Không có người dùng</div>;
+      }
 
     return (<>
         <div className="col-span-5 flex flex-col">
@@ -147,7 +184,7 @@ const ChatRoom = () => {
                                 {message.sender === receiverUser.username ? <LeftMessage content={message.content} avatar={receiverUser.avatar} /> : ""}
                             </>
                         )}
-                        <div ref={messagesEndRef}/>
+                        <div ref={messagesEndRef} />
                     </div>
 
                 </div>

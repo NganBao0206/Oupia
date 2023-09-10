@@ -15,7 +15,6 @@ import cookie from "react-cookies";
 import Motels from './pages/Motel/motels';
 import UserPosts from './pages/User/UserPosts';
 import UserFavourite from './pages/User/UserFavorites';
-import UserPhotos from './pages/User/UserPhotos';
 import Post from './pages/Post/PostDetail';
 import Posts from './pages/Post/Posts';
 import { v4 as uuid } from 'uuid';
@@ -29,6 +28,7 @@ import SettingLayout from './layouts/SettingLayout';
 import ChangeInfo from './pages/Settings/ChangeInfo';
 import ChangePassword from './pages/Settings/ChangePassword';
 import { authApi, endpoints } from './configs/APIs';
+import EmailConfirm from './pages/EmailConfirm';
 
 
 export const UserContext = createContext();
@@ -81,7 +81,6 @@ const App = () => {
               <Route index path="" element={<UserPosts />} />
               <Route path="posts" element={<UserPosts />} />
               <Route path="favourites" element={<UserFavourite />} />
-              <Route path="photos" element={<UserPhotos />} />
             </Route>
             <Route path="/settings" element={<SettingLayout />}>
               <Route index path="" element={<></>} />
@@ -89,6 +88,7 @@ const App = () => {
               <Route path="change-password" element={<ChangePassword />} />
             </Route>
             <Route path="/upload" element={<Upload />} />
+            <Route path="/cofirm" element={<EmailConfirm />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

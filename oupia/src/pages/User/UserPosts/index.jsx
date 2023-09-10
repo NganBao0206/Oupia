@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom/dist';
 import APIs, { endpoints } from '../../../configs/APIs';
 import PostList from '../../../components/Post/PostRentList';
 import { BiCaretDown } from 'react-icons/bi';
+import MySpinner from '../../../components/MySpinner';
+
 
 const UserPosts = (props) => {
     const { slugUser } = useParams();
@@ -10,6 +12,8 @@ const UserPosts = (props) => {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(null);
+
+    
     useEffect(() => {
         if (props.userRole === "TENANT")
             setType("tenantPost");
@@ -44,7 +48,11 @@ const UserPosts = (props) => {
     }, [page, slugUser, type])
 
     if (posts === null) {
-        return <>doi xiu</>
+        return <>
+            <div className="h-32 w-full items-center flex flex-col ">
+                <MySpinner/>
+            </div>
+        </>
     }
     return (
         <>
@@ -55,7 +63,7 @@ const UserPosts = (props) => {
                 </div>
             </>)}
 
-        </>
+        </> 
 
     );
 };

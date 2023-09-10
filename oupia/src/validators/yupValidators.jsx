@@ -28,6 +28,12 @@ export const schemaPostRentDetail = yup.object().shape({
     numOfBathrooms: yup.number().required('Không được trống').typeError('Giá trị phải là một số').min(1, 'Số nhà tắm tối thiểu là 1'),
 });
 
+export const schemaPostFindDetail = yup.object().shape({
+    minPrice: yup.number().required('Giá không được trống').typeError('Giá trị phải là một số').min(100000, 'Giá phải tối thiểu 100.000đ').max(100000000, 'Giá tối đa là 100.000.000đ'),
+    maxPrice: yup.number().required('Giá không được trống').typeError('Giá trị phải là một số').min(100000, 'Giá phải tối thiểu 100.000đ').max(100000000, 'Giá tối đa là 100.000.000đ'),
+    location: yup.string().required("Khu vực không được trống"),
+});
+
 export const schemaMotel = yup.object().shape({
     name: yup.string().required('Tên nhà trọ không được rỗng').min(20, 'Tên nhà trọ phải từ 20 đến 100 kí tự').max(100, 'Tên nhà trọ phải từ 20 đến 100 kí tự'),
     fullLocation: yup.string().required('Địa chỉ không được trống').min(10, 'Địa chỉ phải từ 10 kí tự').max(150, 'Địa chỉ tối đa 150 kí tự'),

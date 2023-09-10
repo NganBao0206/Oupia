@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import "./style.scss";
 import { PiUsers } from "react-icons/pi";
-import { Avatar, Button, Card } from 'flowbite-react';
+import { Button, Card } from 'flowbite-react';
 import { MdAlternateEmail } from 'react-icons/md';
 import { BsCalendar4, BsClock, BsGenderAmbiguous } from "react-icons/bs";
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { LuEdit, LuHeart } from "react-icons/lu";
-import { IoImageOutline } from "react-icons/io5";
 import { UserContext } from '../../App';
 import APIs, { authApi, endpoints } from '../../configs/APIs';
+import NotFound from '../../pages/NotFound';
 
 const UserLayout = () => {
     const { slugUser } = useParams();
@@ -33,6 +33,8 @@ const UserLayout = () => {
                     let res = await APIs.get(url);
                     if (res.status === 200) {
                         setUser(res.data);
+                    } else {
+                        setUser(null)
                     }
 
                 } catch (err) {
@@ -84,7 +86,7 @@ const UserLayout = () => {
                         following: user.username,
                     }
                 });
-                if (res.status = 200) {
+                if (res.status === 200) {
                     setFollow(res.data);
                 }
                 else {
@@ -95,26 +97,27 @@ const UserLayout = () => {
         }
     }, [currentUser, user])
 
-    const getCountFollowers = async () => {
-        const path = endpoints.countFollowers(user.username);
-
-        const res = await APIs.get(path);
-        if (res.status = 200) {
-            setCountFollowers(res.data);
-        }
-        else {
-            setCountFollowers(0);
-        }
-    }
+    
 
     useEffect(() => {
         if (user) {
+            const getCountFollowers = async () => {
+                const path = endpoints.countFollowers(user.username);
+        
+                const res = await APIs.get(path);
+                if (res.status === 200) {
+                    setCountFollowers(res.data);
+                }
+                else {
+                    setCountFollowers(0);
+                }
+            }
             getCountFollowers();
             const getFollowers = async () => {
                 const path = endpoints.followers(user.username);
 
                 const res = await APIs.get(path);
-                if (res.status = 200) {
+                if (res.status === 200) {
                     setFollowers(res.data);
                 }
                 else {
@@ -129,7 +132,7 @@ const UserLayout = () => {
 
     if (user === null) {
         return <>
-            đang loading nè
+            <NotFound />
         </>
     }
     return (
@@ -201,18 +204,12 @@ const UserLayout = () => {
                                                         {followers.map(follower => {
                                                             return <img class="w-9 h-9 border-2 border-gray-300 rounded-full" src={follower.followUserId.avatar} alt="" />
                                                         })}
-                                                        <a class="flex items-center justify-center w-9 h-9 text-xs font-medium text-white bg-gray-700 border-2 border-gray-300 rounded-full hover:bg-gray-600" href="#">+{countFollowers > 8 ? countFollowers - 8 : 0}</a>
+                                                        <Link className="flex items-center justify-center w-9 h-9 text-xs font-medium text-white bg-gray-700 border-2 border-gray-300 rounded-full hover:bg-gray-600" >+{countFollowers > 8 ? countFollowers - 8 : 0}</Link>
                                                     </>)}
                                                 </div>
                                             </>)}
-
                                         </div>
-
                                     </div>
-
-                                    <h3 >•</h3>
-                                    <LuEdit size="20" className="text-gray-500" />
-                                    <h3 className=" font-bold">{user.posts} bài viết</h3>
                                 </div>
                                 <div className="ml-auto flex gap-5">
                                     {currentUser == null || user.username !== currentUser.username ?
@@ -250,10 +247,7 @@ const UserLayout = () => {
                                     <LuHeart size="20" className="mr-2" />
                                     <p className="mt-1">Yêu thích</p>
                                 </NavLink>
-                                <NavLink to={`/${user.username}/photos`} className="flex font-bold items-center justify-center p-4 text-sm first:ml-0 focus:outline-none rounded-t-lg border-b-2 border-transparent text-gray-500">
-                                    <IoImageOutline size="20" className="mr-2" />
-                                    <p className="mt-1">Hình ảnh</p>
-                                </NavLink>
+
                             </div>
                             <div>
                                 <Outlet userRole={user.userRole} />

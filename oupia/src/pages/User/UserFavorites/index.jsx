@@ -1,38 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import APIs, { endpoints } from '../../../configs/APIs';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PostList from '../../../components/Post/PostRentList';
+import MySpinner from '../../../components/MySpinner';
+import { BiCaretDown } from 'react-icons/bi';
 
 const UserFavourites = () => {
     const { slugUser } = useParams();
-    const [posts, setPosts] = useState(null);
+    const [posts, setPosts] = useState([]);
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(null);
     useEffect(() => {
-    
-        const getPost = async () => {
-            try {
-                let res = await APIs.get(endpoints['getFavourOfUser'], {
-                    params: {
-                        username: slugUser,
-                        // page: 1
+        if (page && slugUser) {
+            const getPost = async () => {
+                try {
+                    let res = await APIs.get(endpoints['getFavourOfUser'], {
+                        params: {
+                            username: slugUser,
+                            page: page,
+                        }
+                    });
+                    if (res.status === 200) {
+                        setTotal(res.data.total)
+                        setPosts(current => {
+                            return [...current, ...res.data.posts]
+                        });
                     }
-                });
-                if (res.status === 200) {
-                    console.log(res.data)
-                    setPosts(res.data);
+    
+                } catch (err) {
+                    console.error(err);
                 }
-
-            } catch (err) {
-                console.error(err);
             }
+            getPost();
         }
-        getPost();
+        
 
-    }, [])
+    }, [page, slugUser])
     if (posts === null) {
-        return <>doi xiu</>
+        return <>
+            <div className="h-32 w-full items-center flex flex-col ">
+                <MySpinner />
+            </div>
+        </>
     }
-    return (
+    return (<>
         <PostList posts={posts}></PostList>
+        {posts.length < total && (<>
+            <div className="flex justify-center">
+                <Link onClick={() => setPage(page + 1)} className="flex font-medium w-fit my-3 gap-1 text-blueTemplate hover:underline">Xem thêm <BiCaretDown size={20} /></Link>
+            </div>
+        </>)}
+    </>
+
     );
 };
 

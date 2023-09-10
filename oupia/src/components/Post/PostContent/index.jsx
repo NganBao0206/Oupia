@@ -11,6 +11,7 @@ import { authApi, endpoints } from '../../../configs/APIs';
 import { UserContext } from '../../../App';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FacebookShareButton } from 'react-share';
+import goongJs from '@goongmaps/goong-js';
 
 
 const PostContent = () => {
@@ -19,29 +20,40 @@ const PostContent = () => {
     const [currentUser,] = useContext(UserContext);
     const [favour, setFavour] = useState(null);
     const [isHeartHover, setIsHeartHover] = useState(false);
-    const getFavourStatus = async () => {
-        try {
-            const res = await authApi().get(endpoints["favour"], {
-                params: {
-                    userId: currentUser.id,
-                    postId: post.id
-                }
-            });
+    const [map, setMap] = useState(null);
+    const [, setMarker] = useState(null);
 
-            if (res.status === 200) {
-                setFavour(res.data);
-            }
-            else {
-                setFavour(null);
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    }
+    const key = process.env.REACT_APP_GOONG_MAPS_MAPTILES_KEY;
+    goongJs.accessToken = key;
+
+
+    
 
     useEffect(() => {
-        getFavourStatus();
-    }, [])
+        if (currentUser && post ) {
+            const getFavourStatus = async () => {
+                try {
+                    const res = await authApi().get(endpoints["favour"], {
+                        params: {
+                            userId: currentUser.id,
+                            postId: post.id
+                        }
+                    });
+        
+                    if (res.status === 200) {
+                        setFavour(res.data);
+                    }
+                    else {
+                        setFavour(null);
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+            getFavourStatus();
+        }
+        
+    }, [currentUser, post])
 
     const addFavour = async () => {
         try {
@@ -81,6 +93,47 @@ const PostContent = () => {
         }
     }
 
+
+
+    const [mapReady, setMapReady] = useState(false);
+
+    useEffect(() => {
+        if (post) {
+            if (document.querySelector("#map").innerHTML === "") {
+                if (post.postRentDetail.motelId.locationLongitude && post.postRentDetail.motelId.locationLatitude) {
+                    setMap(new goongJs.Map({
+                        container: 'map',
+                        style: 'https://tiles.goong.io/assets/goong_map_web.json',
+                        center: [post.postRentDetail.motelId.locationLongitude, post.postRentDetail.motelId.locationLatitude],
+                        zoom: 20
+                    }));
+                    setMapReady(true);
+                }
+            }
+        }
+    }, [post]);
+
+    useEffect(() => { 
+        if(!post){
+            document.querySelector("#map").innerHTML = "";
+            setMapReady(false);
+        }
+    }, [post])
+
+    useEffect(() => {
+        const initMarker = (x, y) => {
+            if (map)
+                setMarker(
+                    new goongJs.Marker()
+                        .setLngLat([x, y])
+                        .addTo(map)
+                );
+        }
+        if (mapReady) {
+            initMarker(post.postRentDetail.motelId.locationLongitude, post.postRentDetail.motelId.locationLatitude);
+        }
+    }, [mapReady, post, map]);
+
     return (
         <Card className="h-full">
             <Carousel slideInterval={5000} className="mb-5" style={{ height: "600px" }}>
@@ -113,7 +166,7 @@ const PostContent = () => {
                 </div>
             </div>
             <hr />
-            <h2 className="font-extrabold text-xl" >Thông tin phòng trọ</h2>
+            <h2 className="font-bold text-xl" >Thông tin phòng trọ</h2>
             <div className=" mb-2 flex flex-col gap-2">
                 <div className="flex text-gray-700 items-center gap-1">
                     <HiOutlineHomeModern size="25" />
@@ -138,7 +191,7 @@ const PostContent = () => {
                 </div>
             </div>
             <hr />
-            <h2 className="font-extrabold text-xl" >Đặc điểm phòng trọ</h2>
+            <h2 className="font-bold text-xl" >Đặc điểm phòng trọ</h2>
             <div className="grid grid-cols-1 lg:grid-cols-4 container gap-5 mb-2">
                 <div className="max-w-sm p-5 bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700 flex items-center">
                     <BiArea className="mr-3 text-blueTemplate" size="25"></BiArea>
@@ -158,8 +211,11 @@ const PostContent = () => {
                 </div>
             </div>
             <hr />
-            <h2 className="font-extrabold text-xl" >Mô tả chi tiết</h2>
+            <h2 className="font-bold text-xl" >Mô tả chi tiết</h2>
             <div className="whitespace-break-spaces">{post.description}</div>
+            <hr />
+            <h2 className="font-bold text-xl" >Địa điểm trên bản đồ</h2>
+            <div id="map" style={{ width: "100%", height: "350px" }}></div>
         </Card>
     );
 };
