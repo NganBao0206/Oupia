@@ -15,7 +15,6 @@ import cookie from "react-cookies";
 import Motels from './pages/Motel/motels';
 import UserPosts from './pages/User/UserPosts';
 import UserFavourite from './pages/User/UserFavorites';
-import UserPhotos from './pages/User/UserPhotos';
 import Post from './pages/Post/PostDetail';
 import Posts from './pages/Post/Posts';
 import { v4 as uuid } from 'uuid';
@@ -64,7 +63,6 @@ const App = () => {
               <Route index path="" element={<UserPosts />} />
               <Route path="posts" element={<UserPosts />} />
               <Route path="favourites" element={<UserFavourite />} />
-              <Route path="photos" element={<UserPhotos />} />
             </Route>
             <Route path="/settings" element={<SettingLayout />}>
               <Route index path="" element={<></>} />

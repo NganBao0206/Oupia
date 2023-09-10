@@ -34,6 +34,8 @@ const UserLayout = () => {
                     let res = await APIs.get(url);
                     if (res.status === 200) {
                         setUser(res.data);
+                    } else {
+                        setUser(null)
                     }
 
                 } catch (err) {
@@ -245,10 +247,7 @@ const UserLayout = () => {
                                     <LuHeart size="20" className="mr-2" />
                                     <p className="mt-1">Yêu thích</p>
                                 </NavLink>
-                                <NavLink to={`/${user.username}/photos`} className="flex font-bold items-center justify-center p-4 text-sm first:ml-0 focus:outline-none rounded-t-lg border-b-2 border-transparent text-gray-500">
-                                    <IoImageOutline size="20" className="mr-2" />
-                                    <p className="mt-1">Hình ảnh</p>
-                                </NavLink>
+
                             </div>
                             <div>
                                 <Outlet userRole={user.userRole} />
