@@ -41,6 +41,8 @@ const StepThreeRegister = ({context}) => {
                 </div>
                 
             </div>
+            <p class="mt-2 text-xs text-red-600 dark:text-red-400 text-center">{avatar && 'Phải có ảnh đại diện'}</p>
+
             <div className="mt-5">
                 <div className="mb-2 block">
                     <Label className="text-lg mt-2" htmlFor="username" value="Tên người dùng" />

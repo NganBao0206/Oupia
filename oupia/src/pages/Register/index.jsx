@@ -72,7 +72,12 @@ const Register = () => {
             setComponents([
                 <StepOne context={FormContext} />,
                 <StepTwo context={FormContext} />,
+<<<<<<< HEAD
                 <StepThree context={FormContext} />]);
+=======
+                <StepThree context={FormContext} />,
+            ]);
+>>>>>>> 4e1a9258cfcf041e27ccbabeecfa5845b7ca8e2e
         } else if (user.userRole === "LANDLORD") {
             setComponents([
                 <StepOne context={FormContext} />,
@@ -91,7 +96,11 @@ const Register = () => {
             let data = [user, post, postRentDetail, motel];
             let dataNames = ['user', 'post', 'postRentDetail', 'motel'];
 
+<<<<<<< HEAD
             if (user.userRole === "TENANT") {
+=======
+            if (user.userRole == "TENANT") {
+>>>>>>> 4e1a9258cfcf041e27ccbabeecfa5845b7ca8e2e
                 schemas = [schemaUser];
                 data = [user];
                 dataNames = ['user'];
@@ -117,6 +126,7 @@ const Register = () => {
 
         validateAll();
     }, [user, post, postRentDetail, motel, user.userRole]);
+<<<<<<< HEAD
 
 
     useEffect(() => {
@@ -124,52 +134,60 @@ const Register = () => {
 
         }
     }, [errors])
+=======
+>>>>>>> 4e1a9258cfcf041e27ccbabeecfa5845b7ca8e2e
 
     const register = (evt) => {
         evt.preventDefault();
-        if (step < 2 && errors)
+        if (step < components.length - 1)
             return;
-        const process = async () => {
-            let form = new FormData();
-            if (user.userRole === "LANDLORD") {
-                form.append('user', JSON.stringify(user));
-                form.append('motel', JSON.stringify(motel));
-                form.append('post', JSON.stringify(post));
-                form.append('postRentDetail', JSON.stringify(postRentDetail));
+        if (errors || !avatarFile || postImages.length < 3) {
+            alert("Thông tin đăng ký chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
+            return;
+        }
+        else {
+            const process = async () => {
+                let form = new FormData();
+                if (user.userRole === "LANDLORD") {
+                    form.append('user', JSON.stringify(user));
+                    form.append('motel', JSON.stringify(motel));
+                    form.append('post', JSON.stringify(post));
+                    form.append('postRentDetail', JSON.stringify(postRentDetail));
 
 
-                form.append("avatar", avatarFile[0]);
-                postImages.forEach((file) => {
-                    form.append('files', file);
-                });
+                    form.append("avatar", avatarFile[0]);
+                    postImages.forEach((file) => {
+                        form.append('files', file);
+                    });
 
-                console.log(form.get("postImages"));
+                    console.log(form.get("postImages"));
 
-                setLoading(true)
-                console.log(endpoints['register-landlord']);
-                let res = await APIs.post(endpoints['register-landlord'], form, {
-                    headers: {
-                        "Custom-Header": "value",
+                    setLoading(true)
+                    console.log(endpoints['register-landlord']);
+                    let res = await APIs.post(endpoints['register-landlord'], form, {
+                        headers: {
+                            "Custom-Header": "value",
+                        }
+                    });
+                    if (res.status === 201) {
+                        nav("/login");
                     }
-                });
-                if (res.status === 201) {
-                    nav("/login");
-                }
-            } else {
-                for (let field in user)
-                    if (field !== "confirmPass")
-                        form.append(field, user[field]);
+                } else {
+                    for (let field in user)
+                        if (field !== "confirmPass")
+                            form.append(field, user[field]);
 
-                form.append("avatar", avatarFile[0]);
+                    form.append("avatar", avatarFile[0]);
 
-                setLoading(true)
-                let res = await APIs.post(endpoints['register'], form);
-                if (res.status === 201) {
-                    nav("/login");
+                    setLoading(true)
+                    let res = await APIs.post(endpoints['register'], form);
+                    if (res.status === 201) {
+                        nav("/login");
+                    }
                 }
             }
+            process();
         }
-        process();
     }
 
     if (currentUser) {
@@ -198,7 +216,7 @@ const Register = () => {
                                     <Button onClick={handlePrevStep} className="bg-Dark text-white hover:bg-Darker">
                                         <p className="font-bold text-base">Quay lại</p>
                                     </Button>
-                                    {step === components.length - 2 ? <Button onClick={register} className="bg-blueTemplate w-full">
+                                    {step === components.length - 1 ? <Button onClick={register} className="bg-blueTemplate w-full">
                                         <p className="font-bold text-base">Hoàn tất</p>
                                     </Button> : <Button onClick={handleNextStep} type="button" className="bg-blueTemplate w-full">
                                         <p className="font-bold text-base">Tiếp tục</p>

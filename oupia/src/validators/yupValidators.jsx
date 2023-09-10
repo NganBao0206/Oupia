@@ -24,8 +24,8 @@ export const schemaPostRentDetail = yup.object().shape({
         return value >= this.parent.minPeople;
     }),
     area: yup.number().required('Diện tích không được trống').typeError('Giá trị phải là một số').moreThan(0, 'Diện tích phải lớn hơn 0'),
-    numOfBedrooms: yup.number().typeError('Giá trị phải là một số').min(1, 'Số phòng ngủ tối thiểu là 1'),
-    numOfBathrooms: yup.number().typeError('Giá trị phải là một số').min(1, 'Số nhà tắm tối thiểu là 1'),
+    numOfBedrooms: yup.number().required('Không được trống').typeError('Giá trị phải là một số').min(1, 'Số phòng ngủ tối thiểu là 1'),
+    numOfBathrooms: yup.number().required('Không được trống').typeError('Giá trị phải là một số').min(1, 'Số nhà tắm tối thiểu là 1'),
 });
 
 export const schemaPostFindDetail = yup.object().shape({

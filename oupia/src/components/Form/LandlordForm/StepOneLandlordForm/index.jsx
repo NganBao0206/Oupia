@@ -9,6 +9,7 @@ const StepOneLandlordForm = ({ context }) => {
         setPostRentDetail(current => {
             return { ...current, motelId: e.target.value }
         })
+        console.log(postRentDetail);
     }
     return (
         <div>
@@ -29,7 +30,11 @@ const StepOneLandlordForm = ({ context }) => {
                                 </option>
                             ))}
                         </select>
+<<<<<<< HEAD
                         <p id="standard_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{!postRentDetail.motelId && 'Bắt buộc chọn trọ'}</p>
+=======
+                        <p class="mt-2 text-xs text-red-600 dark:text-red-400">{!postRentDetail.motelId && 'Bắt buộc chọn trọ'}</p>
+>>>>>>> 4e1a9258cfcf041e27ccbabeecfa5845b7ca8e2e
                     </div>
                     <Button className={`bg-blueTemplate my-auto col-span-2 ${!postRentDetail.motelId && "mt-2"}`}>
                         <Link to="/motels/add" className="flex items-center gap-2" >

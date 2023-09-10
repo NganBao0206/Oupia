@@ -5,6 +5,7 @@ import DragDropFiles from '../../DragDropFIles';
 import { UserContext } from '../../../App';
 import APIs, { authApi, endpoints } from '../../../configs/APIs';
 import { Link } from 'react-router-dom';
+import { schemaPost } from '../../../validators/yupValidators';
 
 export const TenantFormContext = createContext();
 
@@ -19,6 +20,7 @@ const TenantForm = () => {
     const [ward, setWard] = useState();
     const [locationResult, setLocationResult] = useState(null);
     const [query, setQuery] = useState(null);
+    const [errors, setErrors] = useState({});
 
     const [currentUser,] = useContext(UserContext);
     const [post, setPost] = useState({
@@ -36,6 +38,35 @@ const TenantForm = () => {
             return { ...current, [field]: value }
         });
     }
+
+
+    useEffect(() => {
+        const validateAll = async () => {
+            let schemas = [schemaPost];
+            let data = [post];
+            let dataNames = ['post'];
+
+            setErrors({});
+
+            for (let i = 0; i < schemas.length; i++) {
+                try {
+                    await schemas[i].validate(data[i], { abortEarly: false });
+                } catch (error) {
+                    const errorMessages = {};
+                    error.inner.forEach(err => {
+                        errorMessages[err.path] = err.message;
+                    });
+                    setErrors(prevErrors => ({
+                        ...prevErrors,
+                        [dataNames[i]]: errorMessages
+                    }));
+                }
+            }
+        };
+
+        validateAll();
+    }, [post]);
+
 
     const changePostDetail = (value, field) => {
         setPostFindDetail(current => {
@@ -177,6 +208,17 @@ const TenantForm = () => {
         e.preventDefault();
         setLoading(true);
 
+        if (errors)
+        {
+            alert("Thông tin chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
+            return;
+        }
+
+        if (!postFindDetail.location) {
+            alert("Thông tin chưa hợp lệ, vui lòng chọn khu vực");
+            return;
+        }
+
         let form = new FormData();
         form.append('post', JSON.stringify(post));
         form.append('postFindDetail', JSON.stringify(postFindDetail));
@@ -312,6 +354,8 @@ const TenantForm = () => {
                                     <div className="col-span-full">
                                         <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 "><div className="flex"><h3>Tiêu đề</h3><h3 className={`ml-auto ${(post.title && post.title.length >= 20 && post.title.length <= 100) ? "" : "text-red-700"}`}>Tối thiểu từ 20 đến 100 ký tự</h3></div> </label>
                                         <input onChange={e => changePost(e.target.value, "title")} type="text" id="title" className={`w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blueTemplate focus:border-blueTemplate block w-full p-2.5 ${(post.title && post.title.length >= 20 && post.title.length <= 100) ? "" : "border-red-700 focus:ring-red-700 focus:border-red-700"}`} required />
+                                        <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post && errors.post.title}</p>
+
                                     </div>
 
                                     <div className="col-span-full">
@@ -329,6 +373,8 @@ const TenantForm = () => {
                                             />
                                         </div>
                                         <p className="mt-3 text-sm leading-6 text-gray-600">Viết một vài yêu cầu như tiện ích phòng trọ, ...</p>
+                                        <p  class="mt-2 text-xs text-red-600 dark:text-red-400">{errors.post && errors.post.description}</p>
+
                                     </div>
 
                                     <div className="col-span-full">
