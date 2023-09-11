@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import UserCard from '../../../components/User/UserCard';
 import RecommendList from '../../../components/RecommendList';
 import { useParams } from 'react-router-dom';
@@ -14,45 +14,40 @@ const PostDetail = () => {
     const { slugPost } = useParams();
     const [post, setPost] = useState();
     const [images, setImages] = useState();
-    const [comments, setComments] = useState();
+    const [comments, setComments] = useState([]);
     const [recommentList, setRecommentList] = useState();
+    const hasFetched = useRef(false);
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(0);
 
-    const getComments = async () => {
+    const getComments = useCallback(async () => {
+        if (!page || !slugPost) return;
         try {
             const url = endpoints.postComments(slugPost);
-
-            let res = await APIs.get(url);
+    
+            let res = await APIs.get(url, {
+                params: {
+                    page: page
+                }
+            });
             if (res.status === 200) {
-                console.log(res.data)
-                setComments(res.data);
+                setComments(current => {
+                    return [...current, ...res.data.comments]
+                });
+                setTotal(res.data.total);
+                hasFetched.current = false;
             }
             else {
-                
+    
             }
-
+    
         } catch (err) {
             console.error(err);
         }
-    }
+    }, [slugPost, page]);
 
     useEffect(() => {
-        const getComments = async () => {
-            try {
-                const url = endpoints.postComments(slugPost);
-    
-                let res = await APIs.get(url);
-                if (res.status === 200) {
-                    console.log(res.data)
-                    setComments(res.data);
-                }
-                else {
-                    
-                }
-    
-            } catch (err) {
-                console.error(err);
-            }
-        }
+        
         const getPostDetail = async () => {
             setPost(null);
             try {
@@ -86,7 +81,17 @@ const PostDetail = () => {
 
         getPostDetail();
         getImages();
-        getComments();
+    }, [slugPost])
+
+    useEffect(() => {
+        if (!hasFetched.current) {
+            getComments();
+            hasFetched.current = true;
+        }
+    }, [page, getComments])
+
+    useEffect(() => {
+        setPage(1);
     }, [slugPost])
 
 
@@ -111,7 +116,7 @@ const PostDetail = () => {
         if (post) {
             getRecomments();
         }
-    }, [post] )
+    }, [post])
 
     if (!post || !images) {
         return (<>
@@ -119,7 +124,7 @@ const PostDetail = () => {
         </>)
     }
     return (
-        <PostContext.Provider value={{ post, images, comments, setComments, getComments }}>
+        <PostContext.Provider value={{ post, images, comments, setComments, total, setPage, page}}>
             <div className="lg:px-32">
                 <MyBreadCrumb BreadCrumbName={post.title} />
                 <div className="grid grid-cols-7 gap-5">
@@ -131,7 +136,7 @@ const PostDetail = () => {
                         <PostComment />
                     </div>
                 </div>
-                <RecommendList recommentList={recommentList} title="Phòng trọ gần đó" url={`/posts?location=${post.postRentDetail.motelId.fullLocation}&page=1&latitude=${post.postRentDetail.motelId.locationLatitude}&longitude=${post.postRentDetail.motelId.locationLongitude}`}/>
+                <RecommendList recommentList={recommentList} title="Phòng trọ gần đó" url={`/posts?location=${post.postRentDetail.motelId.fullLocation}&page=1&latitude=${post.postRentDetail.motelId.locationLatitude}&longitude=${post.postRentDetail.motelId.locationLongitude}`} />
             </div>
         </PostContext.Provider>
     );
