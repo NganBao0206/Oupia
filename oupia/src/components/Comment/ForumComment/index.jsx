@@ -11,7 +11,7 @@ const ForumComment = (props) => {
     return (
         <div className='h-fit block bg-white'>
             <CommentInput post={post} />
-            {comments ? <CommentList comments={comments} /> : <></>}
+            {comments ? <CommentList /> : <></>}
 
         </div >
     );

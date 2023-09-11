@@ -2,9 +2,8 @@ import React, { useContext } from 'react';
 import Comment from '../Comment';
 import { PostFindContext } from '../../../Post/PostFindItem';
 
-const CommentList = (props) => {
-    const { comments } = props;
-    const { page, setPage } = useContext(PostFindContext);
+const CommentList = () => {
+    const { page, setPage, totalComment, comments} = useContext(PostFindContext);
 
     const handleNextPage = () => {
         setPage(prev => prev + 1);
@@ -19,7 +18,7 @@ const CommentList = (props) => {
 
             </div>
 
-            {comments.length >= (page * 8) ? <>
+            {totalComment > comments.length ? <>
                 <h1 className="font-bold text-sm absolute cursor-pointer" onClick={handleNextPage}>Xem thêm bình luận</h1>
             </> : <></>}
         </>

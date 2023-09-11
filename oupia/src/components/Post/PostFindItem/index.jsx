@@ -10,7 +10,8 @@ import Moment from 'react-moment';
 import 'moment/locale/vi';
 import { UserContext } from '../../../App';
 import ForumComment from '../../Comment/ForumComment';
-import APIs, { endpoints } from '../../../configs/APIs';
+import APIs, { authApi, endpoints } from '../../../configs/APIs';
+import { useDebounce } from 'use-debounce';
 
 export const PostFindContext = createContext();
 
@@ -18,17 +19,28 @@ const PostFindItem = (props) => {
     const { post } = props;
     const [currentUser,] = useContext(UserContext);
     const [comments, setComments] = useState([]);
-    const [totalComment, setTotalComment] = useState();
-    const [favour, setFavour] = useState(null);
-    const [hadLike, setHadLike] = useState(false);
+    const [totalComment, setTotalComment] = useState(0);
     const [page, setPage] = useState(1);
     const inputRef = useRef();
+    const hasFetched = useRef(false);
+
+    const [favour, setFavour] = useState(null);
+    const [favourTemp, setFavourTemp] = useState(false);
+    const [debouncedFavourTemp] = useDebounce(favourTemp, 1000);
+
+    const [totalFavour, setTotalFavour] = useState(0);
+    const [totalFavourTemp, setTotalFavourTemp] = useState(false);
 
 
     const minPrice = formatCurrency(post.postFindDetail.minPrice);
     const maxPrice = formatCurrency(post.postFindDetail.maxPrice);
     const area = post.postFindDetail.location;
 
+   
+
+    const [isFirstRender, setIsFirstRender] = useState(true);
+
+    
 
     useEffect(() => {
         const getComments = async () => {
@@ -40,111 +52,103 @@ const PostFindItem = (props) => {
                     }
                 });
                 if (res.status === 200) {
-                    setComments(c => [...c, res.data.comments]);
+                    setComments(c => [...c, ...res.data.comments]);
                     setTotalComment(res.data.total);
+                    hasFetched.current = false;
                 }
 
             } catch (err) {
                 console.error(err);
             }
         }
-        if (post)
+        if (post && !hasFetched.current) {
             getComments();
+            hasFetched.current = true;
+        }
     }, [post, page])
 
+    useEffect(() => {
+        const getFavourCountAndStatus = async () => {
+            const res = await APIs.get(endpoints["favourCount"], {
+                params: {
+                    postId: post.id,
+                    userId: currentUser ? currentUser.id : null,
+                }
+            })
 
-    // useEffect(() => {
+            if (res.status === 200) {
+                setTotalFavour(res.data.total);
+                setFavour(res.data.favour);
+                setFavourTemp(res.data.favour ? true : false);
+            }
+        }
+        getFavourCountAndStatus();
+        if (!currentUser) {
+            setFavourTemp(false);
+        }
+    }, [currentUser])
 
-    //     const getFavourStatus = async () => {
-    //         try {
-    //             const res = await authApi().get(endpoints["favour"], {
-    //                 params: {
-    //                     userId: currentUser.id,
-    //                     postId: post.id
-    //                 }
-    //             });
-    //             if (res.status === 200) {
-    //                 setFavour(res.data);
-    //             }
-    //             else {
-    //                 setFavour(null);
-    //             }
-    //         } catch (err) {
-    //             console.error(err);
-    //         }
-    //     }
-    //     getFavourStatus();
-    //     getComments();
-    // }, [post, currentUser, hadLike]);
+    const hasFetchedFavour = useRef(false);
 
-    //             if (res.status === 200) {
-    //                 setFavour(res.data);
-    //             }
-    //             else {
-    //                 setFavour(null);
-    //             }
-    //         } catch (err) {
-    //             console.error(err);
-    //         }
-    //     }
-    //     getFavourStatus();
-    // }, [post, hadAdd, currentUser, hadLike]);
+    useEffect(() => {
+        setTotalFavourTemp(totalFavour);
+    }, [totalFavour]);
 
-
-
-    // const addFavour = async () => {
-    //     try {
-    //         const favourite = {
-    //             postId: post,
-    //         }
-    //         const res = await authApi().post(endpoints["favour"], favourite);
-
-    //         if (res.status === 201) {
-    //             setFavour(res.data);
-    //         }
-    //         else {
-    //             alert("error");
-    //             setFavour(null);
-    //             setHadLike(true);
-    //         }
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // }
-
-    // const removeFavour = async () => {
-    //     try {
-    //         const res = await authApi().delete(endpoints["favour"], {
-    //             params: {
-    //                 favId: favour.id
-    //             }
-    //         });
-
-    //         if (res.status === 204) {
-    //             setFavour(null);
-    //             setHadLike(false);
-    //         }
-    //         else {
-    //             alert("error");
-    //         }
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // }
-    //         if (res.status === 204) {
-    //             setFavour(null);
-    //         }
-    //         else {
-    //             alert("error");
-    //         }
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // }
+    useEffect(() => {
+        const addFavour = async () => {
+            try {
+                const favourite = {
+                    postId: post,
+                }
+                const res = await authApi().post(endpoints["favour"], favourite);
+    
+                if (res.status === 201 || res.status === 302) {
+                    setFavour(res.data);
+                    hasFetchedFavour.current = false;
+                }
+    
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    
+        const removeFavour = async () => {
+            try {
+                const res = await authApi().delete(endpoints["favour"], {
+                    params: {
+                        favId: favour.id
+                    }
+                });
+    
+                if (res.status === 204) {
+                    setFavour(null);
+                    hasFetchedFavour.current = false;
+                }
+    
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        if (isFirstRender) {
+            setIsFirstRender(false);
+            return;
+        }
+        if (!hasFetchedFavour.current) {
+            if (debouncedFavourTemp && !favour) {
+                addFavour();
+                hasFetchedFavour.current = true;
+            }
+            else if (!debouncedFavourTemp && favour) {
+                removeFavour();
+                hasFetchedFavour.current = true;
+            }
+        }
+        
+    }, [debouncedFavourTemp])
 
 
     return (<>
-        <PostFindContext.Provider value={{ comments, setComments, inputRef, page, setPage }}>
+        <PostFindContext.Provider value={{ comments, setComments, inputRef, page, setPage, totalComment, setTotalComment }}>
             <div className=" border border-gray-200 rounded-xl shadow p-5 flex gap-5 flex flex-col">
                 <div className="flex gap-5 items-center">
                     <Link to={`/${post.userId.username}`}>
@@ -185,15 +189,15 @@ const PostFindItem = (props) => {
                     <div className="flex items-center mb-2">
                         <div className="flex gap-1 items-center">
                             <PiHeartFill size="25" className="text-heartColor" />
-                            <h2>12</h2>
+                            <h2>{totalFavourTemp}</h2>
                         </div>
-                        <h2 className="ml-auto">{totalComment && totalComment > 0 ? comments.length + " bình luận" : ""}</h2>
+                        <h2 className="ml-auto">{totalComment > 0 ? totalComment + " bình luận" : ""}</h2>
                     </div>
                     {currentUser ? <>
                         <hr />
                         <div className="w-full grid grid-cols-2">
-                            <Button size="sm" className="hover:bg-gray-200 focus:ring-transparent">
-                                {hadLike === true ? <div className="flex gap-3 items-center rounded py-2 px-4 text-heartColor">
+                            <Button size="sm" onClick={() => {favourTemp? setTotalFavourTemp(totalFavourTemp - 1) : setTotalFavourTemp(totalFavourTemp + 1); setFavourTemp(!favourTemp);}} className="hover:bg-gray-200 focus:ring-transparent">
+                                {favourTemp ? <div className="flex gap-3 items-center rounded py-2 px-4 text-heartColor">
                                     <PiHeartFill size="25" />
                                     <h3 className="text-lg">Yêu thích</h3>
                                 </div> : <div className="flex gap-3 items-center rounded py-2 px-4 text-Dark hover:text-heartColor">
