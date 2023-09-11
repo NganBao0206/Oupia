@@ -36,6 +36,10 @@ const UserCard = () => {
         }
     }, [post])
 
+    const handleChat = () => {
+        sessionStorage.setItem('postChat', JSON.stringify(post));
+    };
+
     return (
         <Card className='items-center'>
             <Link to={`/${post.userId.username}`}>
@@ -65,7 +69,7 @@ const UserCard = () => {
                 </Link>
 
                 {currentUser ? <> <Link to={`/messages/${post.userId.username}`}>
-                    <Button className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
+                    <Button onClick={() => handleChat()} className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
                 </Link></> : <> <Link to="/login">
                     <Button className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
                 </Link></>}
