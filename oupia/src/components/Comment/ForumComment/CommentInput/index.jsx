@@ -7,7 +7,7 @@ import { PostFindContext } from '../../../Post/PostFindItem';
 const CommentInput = (props) => {
     const { post } = props;
     const [currentUser,] = useContext(UserContext);
-    const { setHadAdd, inputRef} = useContext(PostFindContext);
+    const { inputRef} = useContext(PostFindContext);
     const [content, setContent] = useState("");
 
     const sendComment = (evt) => {
@@ -24,7 +24,6 @@ const CommentInput = (props) => {
                 let res = await authApi().post(endpoints["addComment"], comment);
                 if (res.status === 201) {
                     setContent("");
-                    setHadAdd(true);
                 }
 
             } catch (err) {

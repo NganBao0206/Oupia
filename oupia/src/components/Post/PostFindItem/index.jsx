@@ -18,7 +18,6 @@ const PostFindItem = (props) => {
     const { post } = props;
     const [currentUser,] = useContext(UserContext);
     const [comments, setComments] = useState();
-    const [hadAdd, setHadAdd] = useState(false);
     const [favour, setFavour] = useState(null);
     const [hadLike, setHadLike] = useState(false);
     const inputRef = useRef();
@@ -64,8 +63,7 @@ const PostFindItem = (props) => {
         }
         getFavourStatus();
         getComments();
-        setHadAdd(false);
-    }, [post, hadAdd, currentUser, hadLike]);
+    }, [post, currentUser, hadLike]);
 
     const addFavour = async () => {
         try {
@@ -97,7 +95,6 @@ const PostFindItem = (props) => {
 
             if (res.status === 204) {
                 setFavour(null);
-                setHadLike(false);
             }
             else {
                 alert("error");
@@ -109,7 +106,7 @@ const PostFindItem = (props) => {
 
 
     return (<>
-        <PostFindContext.Provider value={{ comments, setComments, setHadAdd, inputRef }}>
+        <PostFindContext.Provider value={{ comments, setComments, inputRef }}>
             <div className=" border border-gray-200 rounded-xl shadow p-5 flex gap-5 flex flex-col">
                 <div className="flex gap-5 items-center">
                     <Link to={`/${post.userId.username}`}>
