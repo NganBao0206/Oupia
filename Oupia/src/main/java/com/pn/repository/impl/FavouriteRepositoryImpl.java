@@ -116,6 +116,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
         predicates.add(b.equal(root.get("userId").get("username"), username));
         q.where(predicates.toArray(Predicate[]::new));
         Query query = s.createQuery(q);
+        query.setMaxResults(1);
    
         Long count = (Long) query.getSingleResult();
        
@@ -151,6 +152,17 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
             return false;
         }
         
+    }
+
+    @Override
+    public int getCountFavouritesOfPost(int postId) {
+        Session s = this.factory.getObject().getCurrentSession();
+        String hql = "SELECT COUNT(*) FROM Favourite fav WHERE fav.postId.id = :postId";
+        Query query = s.createQuery(hql);
+        query.setParameter("postId", postId);
+        query.setMaxResults(1);
+        Long rs = (Long) query.getSingleResult();
+        return rs.intValue(); 
     }
     
 }

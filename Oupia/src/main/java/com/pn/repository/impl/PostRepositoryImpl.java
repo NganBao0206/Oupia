@@ -200,9 +200,6 @@ public class PostRepositoryImpl implements PostRepository {
         postList.addAll(posts);
         return postList;
     }
-    
-    
-    
 
     @Override
     public int countPosts(Map<String, String> params) {
@@ -305,6 +302,8 @@ public class PostRepositoryImpl implements PostRepository {
         }
         Query query = s.createQuery(q);
         Long count = (Long) query.getSingleResult();
+        query.setMaxResults(1);
+
         return count.intValue();
     }
 

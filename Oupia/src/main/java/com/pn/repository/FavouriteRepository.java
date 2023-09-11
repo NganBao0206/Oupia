@@ -26,4 +26,6 @@ public interface FavouriteRepository {
     Favourite getFavById(int id);
 
     Boolean removeFavourite(int favId);
+    
+    int getCountFavouritesOfPost(int postId);
 }

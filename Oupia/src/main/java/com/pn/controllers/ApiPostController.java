@@ -238,7 +238,7 @@ public class ApiPostController {
     @GetMapping("/{slug}/comments/")
     @CrossOrigin
     public ResponseEntity<String> getComments(@PathVariable("slug") String slug, @RequestParam(value = "page", required = false) String page) {
-        int currentPage = page.isBlank() ? Integer.parseInt(page) : 1;
+        int currentPage = page != null? Integer.parseInt(page) : 1;
         List<Comment> comments = commentService.getComments(slug, currentPage);
         int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
         int count = commentService.getCount(slug);
@@ -258,5 +258,7 @@ public class ApiPostController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    
+    
 
 }

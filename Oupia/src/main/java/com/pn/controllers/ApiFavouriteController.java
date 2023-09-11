@@ -89,7 +89,7 @@ public class ApiFavouriteController {
         User u = userService.getUserByUsername(user.getName());
         Favourite fav = favouriteService.getFavourStatus(u.getId(), favourite.getPostId().getId());
         if (fav != null) {
-            return new ResponseEntity<>(HttpStatus.FOUND);
+            return new ResponseEntity<>(fav,HttpStatus.FOUND);
         } else {
             favourite.setUserId(u);
             fav = favouriteService.addFavourite(favourite);
@@ -119,6 +119,32 @@ public class ApiFavouriteController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping(path = "/count/")
+    @CrossOrigin
+    public ResponseEntity<?> getCount(@RequestParam("postId") int postId, @RequestParam(value = "userId", required = false) String currentUserId) {
+        int count = favouriteService.getCountFavouritesOfPost(postId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("total", count);
+        response.put("favour", null);
+
+        if (currentUserId != null) {
+            Favourite fav = favouriteService.getFavourStatus( Integer.parseInt(currentUserId), postId);
+            if (fav != null) {
+                response.put("favour", fav);
+            }
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(response);
+            ResponseEntity<String> result = new ResponseEntity<>(json, HttpStatus.OK);
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
 
 }

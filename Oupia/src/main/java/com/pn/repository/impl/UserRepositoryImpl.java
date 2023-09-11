@@ -185,6 +185,8 @@ public class UserRepositoryImpl implements UserRepository {
         }
 
         Query query = s.createQuery(q);
+        query.setMaxResults(1);
+
         Long count = (Long) query.getSingleResult();
         return count.intValue();
     }
@@ -311,7 +313,7 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (Exception e) {
             return null;
         }
-        
+
     }
 
 //    @Override

@@ -70,6 +70,10 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.antMatcher("/api/**").httpBasic().authenticationEntryPoint(restServicesEntryPoint()).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/users/**", "/api/motels/**", "/api/comments/**", "/api/favourites/**", "/api/posts/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/users/**", "/api/motels/**", "/api/comments/**", "/api/favourites/**", "/api/posts/**").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/api/users/**", "/api/motels/**", "/api/comments/**", "/api/favourites/**", "/api/posts/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/users/**", "/api/motels/**", "/api/comments/**", "/api/favourites/**", "/api/posts/**").authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());

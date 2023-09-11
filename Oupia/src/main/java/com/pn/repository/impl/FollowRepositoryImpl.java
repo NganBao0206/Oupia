@@ -50,7 +50,7 @@ public class FollowRepositoryImpl implements FollowRepository {
                 + "WHERE follow.beFollowedUserId.username = :username "
                 + "AND follow.followUserId.isDeleted = 0 "
                 + "ORDER BY follow.id DESC";
-        
+
         Query query = s.createQuery(hql);
         query.setParameter("username", username);
         if (maxValue > -1) {
@@ -116,6 +116,7 @@ public class FollowRepositoryImpl implements FollowRepository {
 
         Query query = s.createQuery(hql);
         query.setParameter("username", username);
+        query.setMaxResults(1);
         Long count = (Long) query.getSingleResult();
         return count.intValue();
     }
@@ -130,7 +131,10 @@ public class FollowRepositoryImpl implements FollowRepository {
 
         Query query = s.createQuery(hql);
         query.setParameter("username", username);
+        query.setMaxResults(1);
+
         Long count = (Long) query.getSingleResult();
+
         return count.intValue();
     }
 

@@ -13,5 +13,6 @@ import java.util.List;
  */
 public interface CommentRepository {
     Comment addComment(Comment cmt);
-    List<Comment> getComments(String slugPost, int maxValue);
+    List<Comment> getComments(String slugPost, int page);
+    int getCount(String slugPost);
 }

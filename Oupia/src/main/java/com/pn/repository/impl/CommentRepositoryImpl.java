@@ -62,6 +62,7 @@ public class CommentRepositoryImpl implements CommentRepository {
         String hql = "SELECT COUNT(*) FROM Comment cmt WHERE cmt.postId.slug = :slugPost";
         Query query = s.createQuery(hql);
         query.setParameter("slugPost", slugPost);
+        query.setMaxResults(1);
         Long rs = (Long) query.getSingleResult();
         return rs.intValue();
     }

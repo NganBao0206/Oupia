@@ -16,5 +16,6 @@ public interface CommentService {
     Comment addComment(Comment cmt);
 
     List<Comment> getComments(String slugPost, int page);
+    int getCount(String slugPost);
 
 }

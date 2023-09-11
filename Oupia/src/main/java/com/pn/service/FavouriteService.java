@@ -14,10 +14,18 @@ import java.util.Map;
  * @author yuu
  */
 public interface FavouriteService {
+
     Favourite getFavourStatus(int userId, int postId);
+
     List<Post> getFavouritesOfUser(String username, Map<String, String> params);
+
     int getCountFavouritesOfUser(String username);
+
     Favourite addFavourite(Favourite fav);
+
     Favourite getFavById(int id);
+
     Boolean removeFavourite(int favId);
+
+    int getCountFavouritesOfPost(int postId);
 }

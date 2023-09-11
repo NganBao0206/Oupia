@@ -66,7 +66,7 @@ public class MotelRepositoryImpl implements MotelRepository {
                 Predicate namePredicate = b.like(root.get("name"), "%" + kw + "%");
                 predicates.add(namePredicate);
             }
-            
+
             String userStatus = params.get("userStatus");
             if (userStatus != null && !userStatus.isEmpty()) {
                 Predicate namePredicate = b.equal(root.get("userId").get("status"), userStatus);
@@ -134,7 +134,7 @@ public class MotelRepositoryImpl implements MotelRepository {
                 Predicate namePredicate = b.like(root.get("name"), "%" + kw + "%");
                 predicates.add(namePredicate);
             }
-            
+
             String userStatus = params.get("userStatus");
             if (userStatus != null && !userStatus.isEmpty()) {
                 Predicate namePredicate = b.equal(root.get("userId").get("status"), userStatus);
@@ -169,6 +169,8 @@ public class MotelRepositoryImpl implements MotelRepository {
         }
         Query query = s.createQuery(q);
         Long count = (Long) query.getSingleResult();
+        query.setMaxResults(1);
+
         return count.intValue();
     }
 
@@ -274,13 +276,11 @@ public class MotelRepositoryImpl implements MotelRepository {
         Motel motel = s.get(Motel.class, motelId);
         motel.setStatus(status);
         try {
-           s.update(motel);
-           return true;
+            s.update(motel);
+            return true;
         } catch (Exception ex) {
             return false;
         }
     }
-
-   
 
 }

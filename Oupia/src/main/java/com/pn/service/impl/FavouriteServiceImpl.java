@@ -51,5 +51,10 @@ public class FavouriteServiceImpl implements FavouriteService{
         return favouriteRepository.getCountFavouritesOfUser(username);
 
     }
+
+    @Override
+    public int getCountFavouritesOfPost(int postId) {
+        return favouriteRepository.getCountFavouritesOfPost(postId);
+    }
     
 }
