@@ -25,8 +25,13 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public List<Comment> getComments(String slugPost) {
-        return commentRepository.getComments(slugPost);
+    public List<Comment> getComments(String slugPost, int page) {
+        return commentRepository.getComments(slugPost, page);
+    }
+
+    @Override
+    public int getCount(String slugPost) {
+        return commentRepository.getCount(slugPost);
     }
     
 }

@@ -27,6 +27,9 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Autowired
     private LocalSessionFactoryBean factory;
+    
+    @Autowired
+    private Environment env;
 
     @Override
     public Comment addComment(Comment cmt) {
@@ -36,16 +39,31 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> getComments(String slugPost) {
+    public List<Comment> getComments(String slugPost, int page) {
         Session s = this.factory.getObject().getCurrentSession();
         String hql = "FROM Comment cmt WHERE cmt.postId.slug = :slugPost ORDER BY cmt.id DESC";
         Query query = s.createQuery(hql);
         query.setParameter("slugPost", slugPost);
+         if (page != -1) {
+            int pageSize = Integer.parseInt(this.env.getProperty("PAGE_SIZE"));
+            query.setFirstResult((page - 1) * pageSize);
+            query.setMaxResults(pageSize);
+        }
         try {
             return query.getResultList();
         } catch (NoResultException exception) {
             return null;
         }
+    }
+    
+    @Override
+    public int getCount(String slugPost) {
+        Session s = this.factory.getObject().getCurrentSession();
+        String hql = "SELECT COUNT(*) FROM Comment cmt WHERE cmt.postId.slug = :slugPost";
+        Query query = s.createQuery(hql);
+        query.setParameter("slugPost", slugPost);
+        Long rs = (Long) query.getSingleResult();
+        return rs.intValue();
     }
 
 }

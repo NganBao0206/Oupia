@@ -181,7 +181,7 @@ public class ApiPostController {
     @CrossOrigin
     public ResponseEntity<String> getPosts(@RequestParam Map<String, String> params) {
         params.put("isDeleted", "0");
-        
+
         params.put("isAccepted", "accepted");
         if (params.get("page") == null) {
             params.put("page", "1");
@@ -237,11 +237,19 @@ public class ApiPostController {
 
     @GetMapping("/{slug}/comments/")
     @CrossOrigin
-    public ResponseEntity<String> getComments(@PathVariable("slug") String slug) {
-        List<Comment> comments = commentService.getComments(slug);
+    public ResponseEntity<String> getComments(@PathVariable("slug") String slug, @RequestParam(value = "page", required = false) String page) {
+        int currentPage = page.isBlank() ? Integer.parseInt(page) : 1;
+        List<Comment> comments = commentService.getComments(slug, currentPage);
+        int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
+        int count = commentService.getCount(slug);
+        int numOfPages = (int) Math.ceil(count * 1.0 / pageSize);
         try {
+            Map<String, Object> response = new HashMap<>();
+            response.put("pages", numOfPages);
+            response.put("comments", comments);
+            response.put("total", count);
             ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writeValueAsString(comments);
+            String json = mapper.writeValueAsString(response);
             ResponseEntity<String> result = new ResponseEntity<>(json, HttpStatus.OK);
             return result;
 
