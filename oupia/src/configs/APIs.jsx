@@ -14,6 +14,7 @@ export const endpoints = {
     "countPosts": `${SERVER_CONTEXT}/api/posts/count/`,
     "addPostRent": `${SERVER_CONTEXT}/api/posts/rent/`,
     "addPostFind": `${SERVER_CONTEXT}/api/posts/find/`,
+    "users":`${SERVER_CONTEXT}/api/users/`,
     "userInfo": (username) => `${SERVER_CONTEXT}/api/users/${username}/`,
     "postInfo": (slug) => `${SERVER_CONTEXT}/api/posts/${slug}/`,
     "postImages": (slug) => `${SERVER_CONTEXT}/api/posts/${slug}/images/`,
