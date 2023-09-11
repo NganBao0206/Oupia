@@ -6,7 +6,7 @@ import { authApi, endpoints } from "../../../../configs/APIs";
 import { IoSendSharp } from "react-icons/io5";
 
 const CommentInput = () => {
-    const { post, getComments } = useContext(PostContext);
+    const { post, setComments } = useContext(PostContext);
     const [content, setContent] = useState("");
     const [currentUser,] = useContext(UserContext);
 
@@ -22,7 +22,9 @@ const CommentInput = () => {
             try {
                 let res = await authApi().post(endpoints["addComment"], comment);
                 if (res.status === 201) {
-                    getComments();
+                    setComments(current => {
+                        return [res.data, ...current]
+                    })
                 }
 
             } catch (err) {
