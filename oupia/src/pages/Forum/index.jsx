@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MyBreadCrumb from '../../components/MyBreadCrumb';
 import UserStatus from '../../components/User/UserStatus';
 import APIs, { endpoints } from '../../configs/APIs';
@@ -11,12 +11,12 @@ const Forum = () => {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(null);
+    const hasFetched = useRef(false);
 
 
     useEffect(() => {
         if (page) {
             const getPosts = async () => {
-
                 try {
                     let res = await APIs.get(endpoints['posts'], {
                         params: {
@@ -26,28 +26,22 @@ const Forum = () => {
                         }
                     });
                     if (res.status === 200) {
-                        if (page && posts.length > (page * 8 - 8)) return;
-                        if (page === 1) setPosts([]);
                         setTotal(res.data.total);
                         setPosts(current => {
                             return [...current, ...res.data.posts]
                         });
+                        hasFetched.current = false;
                     }
                 } catch (err) {
                     console.error(err);
                 }
             }
-            if (page && posts.length > (page * 8 - 8)) return;
-            if (page === 1) setPosts([]);
-            getPosts();
+            if (!hasFetched.current) {
+                getPosts();
+                hasFetched.current = true;
+            }
         }
-
-    }, [page, posts]);
-
-
-    useEffect(() => {
-        console.log("dequyne");
-    }, [posts])
+    }, [page]);
 
 
     return (<>

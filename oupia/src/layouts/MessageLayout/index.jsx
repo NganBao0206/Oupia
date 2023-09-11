@@ -24,17 +24,15 @@ const MessageLayout = () => {
         getFbToken();
     }, [])
 
-
     useEffect(() => {
         if (authToken && currentUser) {
             signInWithCustomToken(auth, authToken);
-            if (authToken) {
-                const chatroomsRef = collection(db, 'chatrooms');
-                const q = query(chatroomsRef, where('members', 'array-contains', currentUser.username), orderBy("updatedAt", "desc"));
-                onSnapshot(q, (snapshot) => {
-                    setChatRooms(snapshot.docs.map((doc) => doc.data()));
-                })
-            }
+            const chatroomsRef = collection(db, 'chatrooms');
+            const q = query(chatroomsRef, where('members', 'array-contains', currentUser.username), orderBy("updatedAt", "desc"));
+            onSnapshot(q, (snapshot) => {
+                setChatRooms(snapshot.docs.map((doc) => doc.data()));
+
+            });
         }
     }, [authToken, currentUser]);
 

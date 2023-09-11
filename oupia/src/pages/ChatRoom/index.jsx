@@ -96,19 +96,22 @@ const ChatRoom = () => {
     }, [messages]);
 
     const updateMessage = () => {
-        const chatroomsRef = collection(db, 'chatrooms');
-        const combinedUsername = [currentUser.username, receiverUser.username].sort().join(':');
-        const q = query(chatroomsRef, where('roomId', '==', combinedUsername));
-        getDocs(q).then((snapshot) => {
-            const chatroom = snapshot.docs[0];
-            if (chatroom) {
-                const messageRef = collection(chatroom.ref, "messages");
-                const q2 = query(messageRef, orderBy("createdAt"));
-                onSnapshot(q2, (snapshot) => {
-                    setMessages(snapshot.docs.map((doc) => doc.data()));
-                })
-            }
-        });
+        if (currentUser) {
+            const chatroomsRef = collection(db, 'chatrooms');
+            const combinedUsername = [currentUser.username, receiverUser.username].sort().join(':');
+            const q = query(chatroomsRef, where('roomId', '==', combinedUsername));
+            getDocs(q).then((snapshot) => {
+                const chatroom = snapshot.docs[0];
+                if (chatroom) {
+                    const messageRef = collection(chatroom.ref, "messages");
+                    const q2 = query(messageRef, orderBy("createdAt"));
+                    onSnapshot(q2, (snapshot) => {
+                        setMessages(snapshot.docs.map((doc) => doc.data()));
+                    })
+                }
+            });
+        }                                              
+        
 
     }
 

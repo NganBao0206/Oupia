@@ -13,8 +13,8 @@ const PostFindList = (props) => {
 
     return (
         <>
-            {posts.map((post) => (
-                <div>
+            {posts.map((post, index) => (
+                <div key={index}>
                     {post.postFindDetail != null && <PostFindItem post={post} />}
                 </div>
             ))}

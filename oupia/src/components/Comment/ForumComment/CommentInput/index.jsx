@@ -7,7 +7,7 @@ import { PostFindContext } from '../../../Post/PostFindItem';
 const CommentInput = (props) => {
     const { post } = props;
     const [currentUser,] = useContext(UserContext);
-    const { setHadAdd, inputRef} = useContext(PostFindContext);
+    const { inputRef} = useContext(PostFindContext);
     const [content, setContent] = useState("");
 
     const sendComment = (evt) => {
@@ -24,7 +24,6 @@ const CommentInput = (props) => {
                 let res = await authApi().post(endpoints["addComment"], comment);
                 if (res.status === 201) {
                     setContent("");
-                    setHadAdd(true);
                 }
 
             } catch (err) {
@@ -33,10 +32,10 @@ const CommentInput = (props) => {
         }
         addComment();
     }
-    return (<>
+    return (<>  
         {
-            currentUser ? <div className="flex gap-5 items-center mt-5">
-                <div className="w-14 h-14" >
+            currentUser ? <div className="flex gap-5 items-center my-5">
+                <div className="w-16 h-14" >
                     <img
                         src={currentUser.avatar}
                         alt="Avatar"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom/dist';
 import APIs, { endpoints } from '../../../configs/APIs';
 import PostList from '../../../components/Post/PostRentList';
@@ -13,7 +13,8 @@ const UserPosts = (props) => {
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(null);
 
-    
+    const hasFetched = useRef(false);
+
     useEffect(() => {
         if (props.userRole === "TENANT")
             setType("tenantPost");
@@ -23,7 +24,7 @@ const UserPosts = (props) => {
     }, [props.userRole])
 
     useEffect(() => {
-        const getPost = async () => {
+        const getPosts = async () => {
             try {
                 let res = await APIs.get(endpoints['posts'], {
                     params: {
@@ -33,20 +34,21 @@ const UserPosts = (props) => {
                     }
                 });
                 if (res.status === 200) {
-                    if (page && posts.length > (page * 8 - 8)) return;
-                    if (page === 1) setPosts([]);
                     setTotal(res.data.total);
                     setPosts(current => {
                         return [...current, ...res.data.posts]
                     });
+                    hasFetched.current = false;
                 }
 
             } catch (err) {
                 console.error(err);
             }
         }
-        if (page && slugUser && type)
-            getPost();
+        if (page && slugUser && type && !hasFetched.current) {
+            getPosts();
+            hasFetched.current = true;
+        }
     }, [page, slugUser, type])
 
     if (posts === null) {

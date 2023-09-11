@@ -10,17 +10,18 @@ import Moment from 'react-moment';
 import 'moment/locale/vi';
 import { UserContext } from '../../../App';
 import ForumComment from '../../Comment/ForumComment';
-import APIs, { authApi, endpoints } from '../../../configs/APIs';
+import APIs, { endpoints } from '../../../configs/APIs';
 
 export const PostFindContext = createContext();
 
 const PostFindItem = (props) => {
     const { post } = props;
     const [currentUser,] = useContext(UserContext);
-    const [comments, setComments] = useState();
-    const [hadAdd, setHadAdd] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [totalComment, setTotalComment] = useState();
     const [favour, setFavour] = useState(null);
     const [hadLike, setHadLike] = useState(false);
+    const [page, setPage] = useState(1);
     const inputRef = useRef();
 
 
@@ -29,26 +30,31 @@ const PostFindItem = (props) => {
     const area = post.postFindDetail.location;
 
 
+    useEffect(() => {
+        const getComments = async () => {
+            try {
+                const url = endpoints.postComments(post.slug,);
+                let res = await APIs.get(url, {
+                    params: {
+                        page: page,
+                    }
+                });
+                if (res.status === 200) {
+                    setComments(c => [...c, res.data.comments]);
+                    setTotalComment(res.data.total);
+                }
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        if (post)
+            getComments();
+    }, [post, page])
+
+
     // useEffect(() => {
-    //     const getComments = async () => {
-    //         try {
-    //             const url = endpoints.postComments(post.slug);
-    //             let res = await APIs.get(url);
-    //             if (res.status === 200) {
-    //                 setComments(res.data);
-    //             }
 
-    //         } catch (err) {
-    //             console.error(err);
-    //         }
-    //     }
-    //     if (post)
-    //         getComments();
-    // }, [post])
-
-
-    // useEffect(() => {
-        
     //     const getFavourStatus = async () => {
     //         try {
     //             const res = await authApi().get(endpoints["favour"], {
@@ -57,6 +63,19 @@ const PostFindItem = (props) => {
     //                     postId: post.id
     //                 }
     //             });
+    //             if (res.status === 200) {
+    //                 setFavour(res.data);
+    //             }
+    //             else {
+    //                 setFavour(null);
+    //             }
+    //         } catch (err) {
+    //             console.error(err);
+    //         }
+    //     }
+    //     getFavourStatus();
+    //     getComments();
+    // }, [post, currentUser, hadLike]);
 
     //             if (res.status === 200) {
     //                 setFavour(res.data);
@@ -112,10 +131,20 @@ const PostFindItem = (props) => {
     //         console.error(err);
     //     }
     // }
+    //         if (res.status === 204) {
+    //             setFavour(null);
+    //         }
+    //         else {
+    //             alert("error");
+    //         }
+    //     } catch (err) {
+    //         console.error(err);
+    //     }
+    // }
 
 
     return (<>
-        <PostFindContext.Provider value={{ comments, setComments, setHadAdd, inputRef }}>
+        <PostFindContext.Provider value={{ comments, setComments, inputRef, page, setPage }}>
             <div className=" border border-gray-200 rounded-xl shadow p-5 flex gap-5 flex flex-col">
                 <div className="flex gap-5 items-center">
                     <Link to={`/${post.userId.username}`}>
@@ -158,7 +187,7 @@ const PostFindItem = (props) => {
                             <PiHeartFill size="25" className="text-heartColor" />
                             <h2>12</h2>
                         </div>
-                        <h2 className="ml-auto">{comments && comments.length > 0 ? comments.length + " bình luận" : ""}</h2>
+                        <h2 className="ml-auto">{totalComment && totalComment > 0 ? comments.length + " bình luận" : ""}</h2>
                     </div>
                     {currentUser ? <>
                         <hr />

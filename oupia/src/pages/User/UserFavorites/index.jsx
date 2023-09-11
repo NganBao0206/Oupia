@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import APIs, { endpoints } from '../../../configs/APIs';
 import { Link, useParams } from 'react-router-dom';
 import PostList from '../../../components/Post/PostRentList';
@@ -10,9 +10,11 @@ const UserFavourites = () => {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(null);
+    const hasFetched = useRef(false);
+
     useEffect(() => {
         if (page && slugUser) {
-            const getPost = async () => {
+            const getPosts = async () => {
                 try {
                     let res = await APIs.get(endpoints['getFavourOfUser'], {
                         params: {
@@ -21,19 +23,21 @@ const UserFavourites = () => {
                         }
                     });
                     if (res.status === 200) {
-                        if (page && posts.length > (page * 8 - 8)) return;
-                        if (page === 1) setPosts([]);
                         setTotal(res.data.total)
                         setPosts(current => {
                             return [...current, ...res.data.posts]
                         });
+                        hasFetched.current = false;
                     }
     
                 } catch (err) {
                     console.error(err);
                 }
             }
-            getPost();
+            if (!hasFetched.current) {
+                getPosts();
+                hasFetched.current = true;
+            }
         }
         
 
