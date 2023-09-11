@@ -45,7 +45,9 @@ const Forum = () => {
     }, [page, posts]);
 
 
-
+    useEffect(() => {
+        console.log("dequyne");
+    }, [posts])
 
 
     return (<>

@@ -109,7 +109,7 @@ const LandlordForm = () => {
         if (step < 2) {
             return;
         }
-        if (errors || postImages.length < 3)
+        if (Object.keys(errors).length > 0 || postImages.length < 3)
         {
             alert("Thông tin chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
             return;

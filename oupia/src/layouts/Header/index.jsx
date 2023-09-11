@@ -75,15 +75,14 @@ const Header = () => {
     }, [currentUser])
 
     useEffect(() => {
-        if (authToken) {
+        if (authToken && currentUser) {
             signInWithCustomToken(auth, authToken);
-            if (authToken) {
-                const chatroomsRef = collection(db, 'chatrooms');
-                const q = query(chatroomsRef, where('members', 'array-contains', currentUser.username), orderBy("updatedAt", "desc"));
-                onSnapshot(q, (snapshot) => {
-                    setIsNotice(true);
-                })
-            }
+            const chatroomsRef = collection(db, 'chatrooms');
+            const q = query(chatroomsRef, where('members', 'array-contains', currentUser.username), orderBy("updatedAt", "desc"));
+            onSnapshot(q, (snapshot) => {
+                setIsNotice(true);
+            })
+
         }
     }, [authToken, currentUser]);
 

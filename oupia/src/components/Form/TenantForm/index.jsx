@@ -145,12 +145,6 @@ const TenantForm = () => {
         refreshLocation();
     }
 
-
-
-    
-
-    
-
     useEffect(() => {
         const getDetail = async (placeId) => {
             const res = await APIs.get(endpoints["mapDetail"], {
@@ -207,7 +201,7 @@ const TenantForm = () => {
         e.preventDefault();
         setLoading(true);
 
-        if (errors) {
+        if (Object.keys(errors).length > 0) {
             alert("Thông tin chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
             setLoading(false);
             return;

@@ -29,83 +29,89 @@ const PostFindItem = (props) => {
     const area = post.postFindDetail.location;
 
 
+    // useEffect(() => {
+    //     const getComments = async () => {
+    //         try {
+    //             const url = endpoints.postComments(post.slug);
+    //             let res = await APIs.get(url);
+    //             if (res.status === 200) {
+    //                 setComments(res.data);
+    //             }
 
-    useEffect(() => {
-        const getComments = async () => {
-            try {
-                const url = endpoints.postComments(post.slug);
-                let res = await APIs.get(url);
-                if (res.status === 200) {
-                    setComments(res.data);
-                }
+    //         } catch (err) {
+    //             console.error(err);
+    //         }
+    //     }
+    //     if (post)
+    //         getComments();
+    // }, [post])
 
-            } catch (err) {
-                console.error(err);
-            }
-        }
-        const getFavourStatus = async () => {
-            try {
-                const res = await authApi().get(endpoints["favour"], {
-                    params: {
-                        userId: currentUser.id,
-                        postId: post.id
-                    }
-                });
 
-                if (res.status === 200) {
-                    setFavour(res.data);
-                }
-                else {
-                    setFavour(null);
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        }
-        getFavourStatus();
-        getComments();
-        setHadAdd(false);
-    }, [post, hadAdd, currentUser, hadLike]);
+    // useEffect(() => {
+        
+    //     const getFavourStatus = async () => {
+    //         try {
+    //             const res = await authApi().get(endpoints["favour"], {
+    //                 params: {
+    //                     userId: currentUser.id,
+    //                     postId: post.id
+    //                 }
+    //             });
 
-    const addFavour = async () => {
-        try {
-            const favourite = {
-                postId: post,
-            }
-            const res = await authApi().post(endpoints["favour"], favourite);
+    //             if (res.status === 200) {
+    //                 setFavour(res.data);
+    //             }
+    //             else {
+    //                 setFavour(null);
+    //             }
+    //         } catch (err) {
+    //             console.error(err);
+    //         }
+    //     }
+    //     getFavourStatus();
+    // }, [post, hadAdd, currentUser, hadLike]);
 
-            if (res.status === 201) {
-                setFavour(res.data);
-            }
-            else {
-                alert("error");
-                setFavour(null);
-                setHadLike(true);
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    }
 
-    const removeFavour = async () => {
-        try {
-            const res = await authApi().delete(endpoints["favour"], {
-                params: {
-                    favId: favour.id
-                }
-            });
 
-            if (res.status === 204) {
-                setFavour(null);
-                setHadLike(false);
-            }
-            else {
-                alert("error");
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    }
+    // const addFavour = async () => {
+    //     try {
+    //         const favourite = {
+    //             postId: post,
+    //         }
+    //         const res = await authApi().post(endpoints["favour"], favourite);
+
+    //         if (res.status === 201) {
+    //             setFavour(res.data);
+    //         }
+    //         else {
+    //             alert("error");
+    //             setFavour(null);
+    //             setHadLike(true);
+    //         }
+    //     } catch (err) {
+    //         console.error(err);
+    //     }
+    // }
+
+    // const removeFavour = async () => {
+    //     try {
+    //         const res = await authApi().delete(endpoints["favour"], {
+    //             params: {
+    //                 favId: favour.id
+    //             }
+    //         });
+
+    //         if (res.status === 204) {
+    //             setFavour(null);
+    //             setHadLike(false);
+    //         }
+    //         else {
+    //             alert("error");
+    //         }
+    //     } catch (err) {
+    //         console.error(err);
+    //     }
+    // }
 
 
     return (<>
@@ -157,7 +163,7 @@ const PostFindItem = (props) => {
                     {currentUser ? <>
                         <hr />
                         <div className="w-full grid grid-cols-2">
-                            <Button onClick={() => favour ? removeFavour() : addFavour()} size="sm" className="hover:bg-gray-200 focus:ring-transparent">
+                            <Button size="sm" className="hover:bg-gray-200 focus:ring-transparent">
                                 {hadLike === true ? <div className="flex gap-3 items-center rounded py-2 px-4 text-heartColor">
                                     <PiHeartFill size="25" />
                                     <h3 className="text-lg">Yêu thích</h3>

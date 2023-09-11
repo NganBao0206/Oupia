@@ -26,7 +26,7 @@ const MessageLayout = () => {
 
 
     useEffect(() => {
-        if (authToken) {
+        if (authToken && currentUser) {
             signInWithCustomToken(auth, authToken);
             if (authToken) {
                 const chatroomsRef = collection(db, 'chatrooms');
