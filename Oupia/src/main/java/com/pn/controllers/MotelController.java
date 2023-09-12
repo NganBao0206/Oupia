@@ -235,6 +235,10 @@ public class MotelController {
         int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
 
         List<Motel> motels = motelService.getMotels(params, status);
+        motels.forEach(motel -> {
+            String img = imageService.getImageByMotel(motel.getId());
+            motel.setImage(img);
+        });
 
         model.addAttribute("motels", motels);
         model.addAttribute("pages", Math.ceil(count * 1.0 / pageSize));

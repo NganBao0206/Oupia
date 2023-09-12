@@ -56,7 +56,6 @@
 /home/yuu/Documents/WorkSpace/java_cuoiki/backend/Oupia/src/main/java/com/pn/repository/StatRepository.java
 /home/yuu/Documents/WorkSpace/java_cuoiki/backend/Oupia/src/main/java/com/pn/repository/FavouriteRepository.java
 /home/yuu/Documents/WorkSpace/java_cuoiki/backend/Oupia/src/main/java/com/pn/service/impl/MotelServiceImpl.java
-/home/yuu/Documents/WorkSpace/java_cuoiki/backend/Oupia/src/main/java/com/pn/pojo/Message.java
 /home/yuu/Documents/WorkSpace/java_cuoiki/backend/Oupia/src/main/java/com/pn/controllers/ApiPostController.java
 /home/yuu/Documents/WorkSpace/java_cuoiki/backend/Oupia/src/main/java/com/pn/configs/WebApplicationContextConfig.java
 /home/yuu/Documents/WorkSpace/java_cuoiki/backend/Oupia/src/main/java/com/pn/service/impl/ImageServiceImpl.java

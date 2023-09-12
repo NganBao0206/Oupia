@@ -69,6 +69,9 @@
                 </div>
 
 
+
+
+
                 <div class="col-xs-12 col-md-6 mb-3">
                     <div class="input-group form-floating">
                         <form:input path="minPrice" type="number" class="form-control h-100" id="minPriceInput" placeholder="price"/>
@@ -86,9 +89,32 @@
                     <form:errors path="maxPrice" element="div" cssClass="text-danger my-2 px-2"/>
                 </div>
             </div>
+            <c:if test="${not empty images}">
+                <div id="carouselExample" class="carousel slide w-full">
+                    <div class="carousel-inner w-100">
+                        <c:forEach items="${images}" var="image">
+                            <div class="carousel-item myImage">
+                                <img src="${image}" class="w-100" style="height: 500px; object-fit: cover" alt="...">
+                            </div>
+                        </c:forEach>
+                    </div>
+                    <script>
+                            document.querySelector(".myImage").classList.add("active");
+                        </script>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </c:if>
             <c:if test="${empty detailFind.id}">
                 <div class="mt-3 col-12">
                     <p class="my-2">Ảnh cho bài đăng</p>
+
                     <input placeholder="Thêm ảnh minh họa" name="imgImport" onchange="addImage(this)" multiple class="py-3 form-control mt-3 mb-2" type="file" id="inputFile" accept="image/jpeg, image/png"/>
                     <div id="imgsImport" class="d-flex flex-wrap">
                     </div>
@@ -100,7 +126,7 @@
     </div>
     <div class="mt-3 row">
         <div class="col-12 col-md-7">
-            <button class="btn btn-my-primary col-12 col-md-7 w-100 p-3" id="btnSubmit" onclick="submitForm()" type="button">Thêm trọ</button>
+            <button class="btn btn-my-primary col-12 col-md-7 w-100 p-3" id="btnSubmit" onclick="submitForm()" type="button">Thêm/sửa trọ</button>
         </div>
         <div class="col-12 col-md-5">
             <button class="btn btn-outline-dark col-12 col-md-5 w-100 p-3" type="button">Hủy</button>

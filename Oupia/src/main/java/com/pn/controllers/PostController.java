@@ -58,15 +58,15 @@ public class PostController {
     private ImageService imageService;
     @Autowired
     private WebAppValidator postRentValidator;
-     @Autowired
+    @Autowired
     private WebAppValidator postFindValidator;
 
     @InitBinder("detailRent")
     public void initPostRentType(WebDataBinder binder) {
         binder.setValidator(postRentValidator);
     }
-    
-     @InitBinder("detailFind")
+
+    @InitBinder("detailFind")
     public void initPostFindType(WebDataBinder binder) {
         binder.setValidator(postFindValidator);
     }
@@ -162,7 +162,6 @@ public class PostController {
         }
         return "postFindDetail";
     }
-    
 
     @PostMapping("/posts/storage/{slug}")
     public String edit(@ModelAttribute(value = "post") @Valid Post post, BindingResult rs, RedirectAttributes redirectAttributes) {
@@ -181,16 +180,21 @@ public class PostController {
         if (post == null) {
             return "error";
         }
+        List<String> images = imageService.getImagesBySlugPost(post.getSlug());
         model.addAttribute("detailRent", post.getPostRentDetail());
+        model.addAttribute("images", images);
+
         return "postRentDetail";
     }
-    
+
     @GetMapping(value = "/posts/find/storage/{slug}")
     public String editPostFind(Model model, @PathVariable(value = "slug") String slug) {
         Post post = this.postService.getPostBySlug(slug);
         if (post == null) {
             return "error";
         }
+        List<String> images = imageService.getImagesBySlugPost(post.getSlug());
+        model.addAttribute("images", images);
         model.addAttribute("detailFind", post.getPostFindDetail());
         return "postFindDetail";
     }

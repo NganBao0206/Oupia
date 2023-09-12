@@ -36,14 +36,14 @@
             <p class="text-center mt-3 fs-4 mb-0">${user.fullName}</p>
             <p class="text-center text-secondary">@${user.username}</p>
             <div class="d-flex col-12 my-1 mt-3">
-                <p class="col-6 ">Ngày sinh:</p>
-                <p class="col-6">
+                <p class="col-4 ">Ngày sinh:</p>
+                <p class="col-8">
                     <fmt:formatDate value="${user.dob}" pattern="dd-MM-yyyy" />
                 </p>
             </div>
             <div class="d-flex col-12 my-1">
-                <p class="col-6 ">Giới tính:</p>
-                <p class="col-6">
+                <p class="col-4 ">Giới tính:</p>
+                <p class="col-8">
                     <c:choose>
                         <c:when test="${user.gender == 'MALE'}">Nam</c:when>
                         <c:when test="${user.gender == 'FEMALE'}">Nữ</c:when>
@@ -52,12 +52,12 @@
                 </p>
             </div>
             <div class="d-flex col-12 my-1">
-                <p class="col-6">Email:</p>
-                <p class="col-6">${user.email}</p>
+                <p class="col-4">Email:</p>
+                <p class="col-8">${user.email}</p>
             </div>
             <div class="d-flex col-12 my-1">
-                <p class="col-6">CMND/CCCD:</p>
-                <p class="col-6">${user.identityNumber}</p>
+                <p class="col-4">CMND/CCCD:</p>
+                <p class="col-8">${user.identityNumber}</p>
             </div>
             <c:if test="${user.status == 'PENDING'}">
                 <div class="d-flex justify-content-between mt-5">
@@ -102,13 +102,16 @@
                 Thông tin bài đăng
             </div>
             <div class="d-flex justify-content-center mt-3">
-                <div id="carouselExample w-full" class="carousel slide">
+                <div id="carouselExample" class="carousel slide w-full">
                     <div class="carousel-inner w-100">
                         <c:forEach items="${images}" var="image">
-                            <div class="carousel-item active">
+                            <div class="carousel-item myImage" >
                                 <img src="${image}" style="height: 250px; object-fit: cover" alt="...">
                             </div>
                         </c:forEach>
+                        <script>
+                            document.querySelector(".myImage").classList.add("active");
+                        </script>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
