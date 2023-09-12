@@ -13,11 +13,10 @@ const MessageLayout = () => {
     const [authToken, setAuthToken] = useState();
     const [currentUser,] = useContext(UserContext);
 
-    const [followingUsers, setFollowingUsers] = useState();
+    const [followingUsers, setFollowingUsers] = useState([]);
     const location = (useLocation().pathname === "/messages");
     const [chatRooms, setChatRooms] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-
 
     useEffect(() => {
         const getFbToken = async () => {
@@ -52,6 +51,9 @@ const MessageLayout = () => {
         room.user2.fullName.toLowerCase().includes(searchTerm.toLocaleLowerCase())
     );
 
+    const results2 = !searchTerm ? followingUsers : followingUsers.filter(following =>
+        following.beFollowedUserId.fullName.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+    );
 
 
     if (!currentUser) {
@@ -78,8 +80,8 @@ const MessageLayout = () => {
                         {results.map((item, index) => {
                             return <UserChatItem key={index} user={item.user1.username === currentUser.username ? item.user2 : item.user1} message={item.lastMessage} />
                         })}
-                        <h2 className="mt-5 font-bold border-t-2 border-gray-200 py-5">Người bạn theo dõi</h2>
-                        {followingUsers && followingUsers.map((followingUser, index) => {
+                        <h2 className="mt-5 font-bold border-t-2 border-gray-300 py-5">Người bạn theo dõi</h2>
+                        {results2.map((followingUser, index) => {
                             return <UserChatItem key={index} user={followingUser.beFollowedUserId} message={null} />
                         })}
                     </div>

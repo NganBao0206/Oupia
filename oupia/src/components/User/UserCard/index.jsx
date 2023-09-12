@@ -7,7 +7,7 @@ import APIs, { endpoints } from '../../../configs/APIs';
 import { UserContext } from '../../../App';
 
 const UserCard = () => {
-    const { post } = useContext(PostContext);
+    const { post, images } = useContext(PostContext);
     const [countPosts, setCountPosts] = useState(null);
     const [countFollowers, setCountFollowers] = useState(null);
     const [currentUser,] = useContext(UserContext);
@@ -35,6 +35,11 @@ const UserCard = () => {
             getCountFollowers();
         }
     }, [post])
+
+    const handleChat = () => {
+        post.image = images[0];
+        sessionStorage.setItem('postChat', JSON.stringify(post));
+    };
 
     return (
         <Card className='items-center'>
@@ -65,7 +70,7 @@ const UserCard = () => {
                 </Link>
 
                 {currentUser ? <> <Link to={`/messages/${post.userId.username}`}>
-                    <Button className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
+                    <Button onClick={() => handleChat()} className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
                 </Link></> : <> <Link to="/login">
                     <Button className=" bg-blueTemplate hover:bg-blueTemplate hover:text-white" outline>Nhắn tin</Button>
                 </Link></>}
