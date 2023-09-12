@@ -11,6 +11,7 @@ import RegisterStepper from "../../components/Stepper/RegisterStepper";
 import APIs, { endpoints } from '../../configs/APIs';
 import { UserContext } from '../../App';
 import { schemaMotel, schemaPost, schemaPostRentDetail, schemaUser } from '../../validators/yupValidators';
+import MySpinner from '../../components/MySpinner';
 
 export const FormContext = createContext();
 
@@ -21,7 +22,7 @@ const Register = () => {
     const [components, setComponents] = useState([<StepOne context={FormContext} />]);
 
     const [step, setStep] = useState(0);
-    const [, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [, setIsEnable] = useState(false);
     const nav = useNavigate();
 
@@ -35,7 +36,6 @@ const Register = () => {
     const [avatarFile, setAvatarFile] = useState(null);
     const [postImages, setPostImages] = useState([]);
     const [errors, setErrors] = useState({});
-
 
 
 
@@ -189,6 +189,7 @@ const Register = () => {
 
     return (<>
         <FormContext.Provider value={{ errors, user, setUser, avatar, setAvatar, setAvatarFile, postImages, setPostImages, motel, setMotel, postRentDetail, setPostRentDetail, post, setPost, validate, setValidate, setStep }}>
+
             <div className="min-h-screen">
                 <div className="grid grid-cols-3 rounded-xl border shadow-lg m-20">
                     <div className=" col-span-1 bg-Dark flex items-start h-full rounded-l-xl py-24">
@@ -211,13 +212,12 @@ const Register = () => {
                                     </Button>
                                     {step === components.length - 1 ?
                                         <>
-                                            {setLoading === true ? <div className="h-full w-full justify-center flex items-center">
-                                                <Spinner size="xl" className=" fill-blueTemplate" />
-                                            </div> : <>
-                                                <Button onClick={register} className="bg-blueTemplate w-full">
-                                                    <p className="font-bold text-base">Hoàn tất</p>
-                                                </Button>
-                                            </>}
+                                            {loading === true ? 
+                                                <Spinner size="xl" className=" fill-blueTemplate mx-auto" />         
+                                             : <Button onClick={register} className={`bg-blueTemplate w-full`}>
+                                                <p className="font-bold text-base">Hoàn tất</p>
+                                            </Button>}
+
                                         </>
                                         : <Button onClick={handleNextStep} type="button" className="bg-blueTemplate w-full">
                                             <p className="font-bold text-base">Tiếp tục</p>

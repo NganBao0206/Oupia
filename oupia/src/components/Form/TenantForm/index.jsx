@@ -14,7 +14,7 @@ const TenantForm = () => {
     const [provs, setProvs] = useState([]);
     const [dists, setDists] = useState([]);
     const [ws, setWs] = useState([]);
-    
+
     const [locationResult, setLocationResult] = useState(null);
     const [query, setQuery] = useState(null);
     const [errors, setErrors] = useState({});
@@ -388,9 +388,8 @@ const TenantForm = () => {
                         </div >
                     </div >
                     <div className="flex justify-center">
-                        {loading !== false ?
-                            <Spinner
-                                size="lg" className="my-2 fill-blueTemplate" />
+                        {loading === true ?
+                            <Spinner size="xl" className=" fill-blueTemplate mx-auto" />
                             : <Button type="submit" className="bg-blueTemplate w-1/2 mx-auto whitespace-nowrap">
                                 <p className="font-bold text-base">Đăng bài viết</p>
                             </Button>}

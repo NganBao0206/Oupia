@@ -1,4 +1,4 @@
-import { Button } from 'flowbite-react';
+import { Button, Spinner } from 'flowbite-react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import StepOne from './StepOneLandlordForm';
 import StepTwo from './StepTwoLandlordForm';
@@ -22,6 +22,7 @@ const LandlordForm = () => {
     const [postImages, setPostImages] = useState([]);
 
     const [motels, setMotels] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setErrors({});
@@ -62,18 +63,18 @@ const LandlordForm = () => {
                         }
                     });
                     if (res.status === 200) {
-    
+
                         setMotels(res.data);
                     }
-    
+
                 } catch (err) {
                     console.error(err);
                 }
             }
-    
-                getMotels();
+
+            getMotels();
         }
-        
+
     }, [currentUser])
 
     const handleNextStep = () => {
@@ -109,12 +110,11 @@ const LandlordForm = () => {
         if (step < 2) {
             return;
         }
-        if (Object.keys(errors).length > 0 || postImages.length < 3)
-        {
+        if (Object.keys(errors).length > 0 || postImages.length < 3) {
             alert("Thông tin chưa hợp lệ, vui lòng kiểm tra trước khi hoàn tất");
             return;
         }
-        
+
         let form = new FormData();
         form.append('post', JSON.stringify(post));
         form.append('postRentDetail', JSON.stringify(postRentDetail));
@@ -134,7 +134,7 @@ const LandlordForm = () => {
     }
 
     return (<>
-        <LandlordFormContext.Provider value={{errors, motels, postImages, setPostImages, postRentDetail, setPostRentDetail, post, setPost }}>
+        <LandlordFormContext.Provider value={{ errors, motels, postImages, setPostImages, postRentDetail, setPostRentDetail, post, setPost }}>
             <LandlordStepper step={step} />
             <form className="gap-4 mt-2 mx-36 mb-5" onSubmit={(e) => addPost(e)}>
                 <div className="my-10 flex items-center">
@@ -149,9 +149,13 @@ const LandlordForm = () => {
                         <Button onClick={handlePrevStep} className="bg-Dark text-white hover:bg-Darker">
                             <p className="font-bold text-base">Quay lại</p>
                         </Button>
-                        {step > 1 ? <Button type="submit" className="bg-blueTemplate w-full">
-                            <p className="font-bold text-base">Đăng bài viết</p>
-                        </Button> : <Button onClick={handleNextStep} className="bg-blueTemplate w-full">
+                        {step > 1 ? <>
+                            {loading === true ?
+                                <Spinner size="xl" className=" fill-blueTemplate mx-auto" /> :
+                                <Button type="submit" className="bg-blueTemplate w-full">
+                                    <p className="font-bold text-base">Đăng bài viết</p>
+                                </Button>}
+                        </> : <Button onClick={handleNextStep} className="bg-blueTemplate w-full">
                             <p className="font-bold text-base">Tiếp tục</p>
                         </Button>}
 
