@@ -31,7 +31,7 @@
                         <c:if test="${empty detailRent.postId.userId}">
                             <label id="labelOwner" for="ownerInput">Chọn chủ trọ</label>
                         </c:if>
-                        <c:url value="/api/motels/" var="apiPath"/>
+                        <c:url value="/admin/motels/" var="apiPath"/>
                         <form:select onchange="getMotels(this, '${apiPath}')" path="postId.userId" class="py-3 selectpicker form-control h-100" id="ownerInput" aria-label="user">
                             <c:if test="${empty detailRent.motelId.userId}">
                                 <option disabled selected></option>
@@ -144,7 +144,7 @@
 <script>
 
 
-    <c:url value="/api/motels/" var="apiPath"/>
+    <c:url value="/admin/motels/" var="apiPath"/>
     <c:if test="${not empty detailRent.postId.userId}">
                 const userInput = document.querySelector("#ownerInput");
                 getMotels(userInput, '${apiPath}', ${detailRent.motelId.id})

@@ -106,29 +106,7 @@ public class ApiUserController {
 
     }
 
-    @PatchMapping("/users/bin/{username}/")
-    @CrossOrigin
-    public ResponseEntity<Void> restoreUser(@PathVariable("username") String username) {
-        boolean restored = userService.restoreUser(username);
-
-        if (restored) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/users/{username}/")
-    @CrossOrigin
-    public ResponseEntity<Void> deleteUser(@PathVariable("username") String username) {
-        boolean deleted = userService.deleteUser(username);
-
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    
 
     @GetMapping(path = "/users/{username}/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
@@ -140,17 +118,7 @@ public class ApiUserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/users/bin/{username}/")
-    @CrossOrigin
-    public ResponseEntity<Void> destroyUser(@PathVariable("username") String username) {
-        boolean destroyed = userService.destroyUser(username);
-
-        if (destroyed) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+  
 
     @GetMapping(path = "/current-user/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin

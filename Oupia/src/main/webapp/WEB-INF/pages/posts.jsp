@@ -163,7 +163,7 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${params.isDeleted == '1'}">
-                                        <c:url value="/api/posts/bin/${post.slug}/" var="api" />
+                                        <c:url value="/admin/posts/bin/${post.slug}/" var="api" />
                                         <a onclick="restorePost('${api}')" type="button" class="btn btn-lg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Phục hồi">
                                             <i class="bi bi-arrow-clockwise text-my-primary"></i>
                                         </a>
@@ -179,7 +179,7 @@
                                         <a href="${editUrl}" type="button" class="btn btn-lg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Chỉnh sửa">
                                             <i class="bi bi-pencil text-my-primary"></i>
                                         </a>
-                                        <c:url value="/api/posts/${post.slug}/" var="api" />
+                                        <c:url value="/admin/posts/${post.slug}/" var="api" />
 
                                         <a onclick="delPost('${api}')" type="button" class="btn btn-lg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Xóa">
                                             <i class="bi bi-eraser text-my-primary"></i>

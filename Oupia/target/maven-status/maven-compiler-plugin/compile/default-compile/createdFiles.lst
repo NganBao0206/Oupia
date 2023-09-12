@@ -9,7 +9,6 @@ com/pn/pojo/Post.class
 com/pn/configs/DispatcherServletInitializer.class
 com/pn/filters/RestAuthenticationEntryPoint.class
 com/pn/service/impl/UserServiceImpl.class
-com/pn/pojo/Message_.class
 com/pn/service/impl/FollowServiceImpl.class
 com/pn/controllers/ApiFollowController.class
 com/pn/service/MultipleService.class
@@ -17,7 +16,6 @@ com/pn/controllers/ApiStatController.class
 com/pn/controllers/ApiUserController.class
 com/pn/pojo/Follow_.class
 com/pn/components/JwtService.class
-com/pn/pojo/Message.class
 com/pn/utils/DistanceUtils.class
 com/pn/pojo/Follow.class
 com/pn/controllers/MotelController.class

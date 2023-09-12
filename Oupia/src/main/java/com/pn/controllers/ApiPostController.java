@@ -70,30 +70,6 @@ public class ApiPostController {
     @Autowired
     private MailService mailService;
 
-    @PatchMapping("/bin/{slug}/")
-    @CrossOrigin
-    public ResponseEntity<Void> restorePost(@PathVariable("slug") String slug) {
-        boolean restored = postService.restorePost(slug);
-
-        if (restored) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{slug}/")
-    @CrossOrigin
-    public ResponseEntity<Void> deletePost(@PathVariable("slug") String slug) {
-        boolean deleted = postService.deletePost(slug);
-
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @GetMapping(path = "/{slug}/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public ResponseEntity<Post> getPostDetail(@PathVariable("slug") String slug) {
@@ -165,17 +141,7 @@ public class ApiPostController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/bin/{slug}/")
-    @CrossOrigin
-    public ResponseEntity<Void> destroyPost(@PathVariable("slug") String slug) {
-        boolean destroyed = postService.destroyPost(slug);
-
-        if (destroyed) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+  
 
     @GetMapping("/")
     @CrossOrigin

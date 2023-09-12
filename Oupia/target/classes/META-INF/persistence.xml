@@ -5,7 +5,6 @@
     <class>com.pn.pojo.Motel</class>
     <class>com.pn.pojo.Image</class>
     <class>com.pn.pojo.Follow</class>
-    <class>com.pn.pojo.Message</class>
     <class>com.pn.pojo.PostFindDetail</class>
     <class>com.pn.pojo.Post</class>
     <class>com.pn.pojo.Comment</class>

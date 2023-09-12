@@ -57,41 +57,7 @@ public class ApiMotelController {
     @Autowired
     private WebAppValidator motelValidator;
 
-    @PatchMapping("/bin/{slug}/")
-    @CrossOrigin
-    public ResponseEntity<Void> restoreMotel(@PathVariable("slug") String slug) {
-        boolean restored = motelService.restoreMotel(slug);
-
-        if (restored) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{slug}/")
-    @CrossOrigin
-    public ResponseEntity<Void> deleteMotel(@PathVariable("slug") String slug) {
-        boolean deleted = motelService.deleteMotel(slug);
-
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/bin/{slug}/")
-    @CrossOrigin
-    public ResponseEntity<Void> destroyMotel(@PathVariable("slug") String slug) {
-        boolean destroyed = motelService.destroyMotel(slug);
-
-        if (destroyed) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+   
 
     @GetMapping("/")
     @CrossOrigin
