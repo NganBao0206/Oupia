@@ -21,7 +21,10 @@ export const endpoints = {
     "mapDetail": `${SERVER_CONTEXT}/api/map/detail/`,
     "addComment": `${SERVER_CONTEXT}/api/comments/`,
     "register-landlord": `${SERVER_CONTEXT}/api/register-landlord/`,
+    
     "favour": `${SERVER_CONTEXT}/api/favourites/`,
+    "favourCount": `${SERVER_CONTEXT}/api/favourites/count/`,
+
     "getFavourOfUser": `${SERVER_CONTEXT}/api/favourites/user/`,
     "getAuthToken": `${SERVER_CONTEXT}/api/auth-token/`,
 

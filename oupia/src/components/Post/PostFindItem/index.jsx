@@ -36,7 +36,6 @@ const PostFindItem = (props) => {
     const maxPrice = formatCurrency(post.postFindDetail.maxPrice);
     const area = post.postFindDetail.location;
 
-   
 
     const [isFirstRender, setIsFirstRender] = useState(true);
 
@@ -45,7 +44,7 @@ const PostFindItem = (props) => {
     useEffect(() => {
         const getComments = async () => {
             try {
-                const url = endpoints.postComments(post.slug,);
+                const url = endpoints.postComments(post.slug);
                 let res = await APIs.get(url, {
                     params: {
                         page: page,

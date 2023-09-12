@@ -27,6 +27,9 @@ const UserLayout = () => {
 
     const [loading, setLoading] = useState(true);
 
+    const [notFound, setNotFound] = useState(false);
+
+
     useEffect(() => {
         if (currentUser == null || slugUser !== currentUser.username) {
             const getUser = async () => {
@@ -100,7 +103,15 @@ const UserLayout = () => {
         }
     }, [currentUser, user])
 
-
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (!user) {
+                setLoading(false);
+                setNotFound(true);
+            }
+        }, 3000);
+        return () => clearTimeout(timeoutId);
+    }, [user]);
 
     useEffect(() => {
         if (user) {
@@ -133,6 +144,10 @@ const UserLayout = () => {
 
 
     if (user === null) {
+        if(notFound === true)
+        {
+            return<NotFound/>
+        }
         return <>
             <div className="w-full h-full flex flex-col items-center justify-center col-span-7">
                 <MySpinner />
