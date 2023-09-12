@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { FormContext } from '../../../../pages/Register';
 
 const StepThreeLandlordForm = ({context}) => {
     const { postRentDetail, setPostRentDetail, errors} = useContext(context);
@@ -12,7 +11,7 @@ const StepThreeLandlordForm = ({context}) => {
         <>
             <div className="w-full">
                 <div className="border-b border-gray-900/10 pb-12">
-                    <h2 className="text-2xl font-bold leading-7 text-blueTemplate"> Chi tiết bài đăng</h2>
+                    <h2 className="text-2xl font-bold leading-7 text-blueTemplate">Tiện ích nhà trọ</h2>
                     <p className="mt-1 text-sm leading-6 text-gray-600"></p>
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-6">

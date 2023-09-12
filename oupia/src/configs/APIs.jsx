@@ -9,12 +9,10 @@ export const endpoints = {
     "current-user": `${SERVER_CONTEXT}/api/current-user/`,
     "register": `${SERVER_CONTEXT}/api/users/`,
     "motels": `${SERVER_CONTEXT}/api/motels/`,
-
     "posts": `${SERVER_CONTEXT}/api/posts/`,
     "countPosts": `${SERVER_CONTEXT}/api/posts/count/`,
     "addPostRent": `${SERVER_CONTEXT}/api/posts/rent/`,
     "addPostFind": `${SERVER_CONTEXT}/api/posts/find/`,
-    "users":`${SERVER_CONTEXT}/api/users/`,
     "userInfo": (username) => `${SERVER_CONTEXT}/api/users/${username}/`,
     "postInfo": (slug) => `${SERVER_CONTEXT}/api/posts/${slug}/`,
     "postImages": (slug) => `${SERVER_CONTEXT}/api/posts/${slug}/images/`,
@@ -24,7 +22,6 @@ export const endpoints = {
     "addComment": `${SERVER_CONTEXT}/api/comments/`,
     "register-landlord": `${SERVER_CONTEXT}/api/register-landlord/`,
     "favour": `${SERVER_CONTEXT}/api/favourites/`,
-    "favourCount": `${SERVER_CONTEXT}/api/favourites/count/`,
     "getFavourOfUser": `${SERVER_CONTEXT}/api/favourites/user/`,
     "getAuthToken": `${SERVER_CONTEXT}/api/auth-token/`,
 

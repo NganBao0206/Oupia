@@ -137,6 +137,7 @@ const Register = () => {
         let res = await APIs.get(url);
         if (res.status === 200) {
             alert("Tên người dùng đã tồn tại, vui lòng chọn tên khác");
+            setLoading(false);
             return;
         }
         else {
@@ -212,11 +213,12 @@ const Register = () => {
                                     </Button>
                                     {step === components.length - 1 ?
                                         <>
-                                            {loading === true ? 
-                                                <Spinner size="xl" className=" fill-blueTemplate mx-auto" />         
-                                             : <Button onClick={register} className={`bg-blueTemplate w-full`}>
-                                                <p className="font-bold text-base">Hoàn tất</p>
-                                            </Button>}
+                                            {loading === true ?
+                                                <div className="mx-auto">
+                                                    <Spinner size="xl" className=" fill-blueTemplate" />
+                                                </div> : <Button onClick={register} className={`bg-blueTemplate w-full`}>
+                                                    <p className="font-bold text-base">Hoàn tất</p>
+                                                </Button>}
 
                                         </>
                                         : <Button onClick={handleNextStep} type="button" className="bg-blueTemplate w-full">

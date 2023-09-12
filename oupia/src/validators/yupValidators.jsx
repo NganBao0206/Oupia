@@ -6,7 +6,8 @@ export const schemaUser = yup.object().shape({
     confirmPassword: yup.string().required('Không được để trống').oneOf([yup.ref('password'), null], 'Mật khẩu xác nhận không khớp'),
     fullName: yup.string().required('Họ và tên không được để trống').min(1, 'Họ và tên phải có ít nhất 1 ký tự').max(50, 'Họ và tên không được vượt quá 50 ký tự'),
     email: yup.string().required('Email không được để trống').email('Email không hợp lệ').max(100, 'Email không được vượt quá 100 ký tự'),
-    identityNumber: yup.string().required('Số CMND/CCCD không được để trống').length(12, 'Số CMND/CCCD phải có đúng 12 kí tự').matches(/^\d+$/, 'Số CMND/CCCD phải là số'),    gender: yup.string().required('Giới tính không được để trống').min(1, 'Giới tính phải có ít nhất 1 ký tự'),
+    identityNumber: yup.string().required('Số CMND/CCCD không được để trống').length(12, 'Số CMND/CCCD phải có đúng 12 kí tự').matches(/^\d+$/, 'Số CMND/CCCD phải là số'),
+    gender: yup.string().required('Giới tính không được để trống').min(1, 'Giới tính phải có ít nhất 1 ký tự'),
     dob: yup.date().required('Ngày sinh không được để trống'),
     userRole: yup.string().required('Vai trò người dùng không được để trống').min(1, 'Vai trò người dùng phải có ít nhất 1 ký tự'),
 });
