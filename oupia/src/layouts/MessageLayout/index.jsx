@@ -62,7 +62,7 @@ const MessageLayout = () => {
 
     return (<>
         <div className="mess-height grid grid-cols-9">
-            <div className="col-span-2 border-r border-gray-300 p-5">
+            <div className="col-span-2 mess-height overflow-y-auto border-r border-gray-300 p-5">
                 <div className="w-full flex flex-col gap-2">
                     <h1 className="text-xl font-bold">Tin nhắn</h1>
                     <div className="relative">
