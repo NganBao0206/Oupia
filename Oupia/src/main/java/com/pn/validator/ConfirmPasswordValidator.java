@@ -25,7 +25,7 @@ public class ConfirmPasswordValidator implements Validator{
     public void validate(Object target, Errors errors) {
         User user = (User) target;
         
-        if  (!user.getConfirmPassword().equals(user.getPassword())) {
+        if  (user.getConfirmPassword() != null && !user.getConfirmPassword().equals(user.getPassword())) {
             errors.rejectValue("confirmPassword", "user.confirmPassword.valid");
         }
     }
