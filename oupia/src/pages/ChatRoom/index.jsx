@@ -10,6 +10,7 @@ import { PiUser } from 'react-icons/pi';
 import { db } from '../../configs/FireBase';
 import { serverTimestamp, collection, query, where, getDocs, addDoc, orderBy, onSnapshot, updateDoc } from "firebase/firestore";
 import { Spinner } from 'flowbite-react';
+import PostMessage from '../../components/Message/PostMessage';
 
 const ChatRoom = () => {
     const [currentUser,] = useContext(UserContext);
@@ -110,8 +111,8 @@ const ChatRoom = () => {
                     })
                 }
             });
-        }                                              
-        
+        }
+
 
     }
 
@@ -119,6 +120,52 @@ const ChatRoom = () => {
 
     useEffect(() => {
         setMessages([]);
+        const sendPostMessage = (post) => {
+            if (post) {
+                const chatroomsRef = collection(db, 'chatrooms');
+                const combinedUsername = [currentUser.username, receiverUser.username].sort().join(':');
+
+                const q = query(chatroomsRef, where('roomId', '==', combinedUsername));
+                getDocs(q).then((snapshot) => {
+                    const chatroom = snapshot.docs[0];
+                    const newMesssage = {
+                        sender: currentUser.username,
+                        content: post,
+                        type: 'post',
+                        createdAt: serverTimestamp(),
+                    }
+                    if (chatroom) {
+                        addDoc(collection(chatroom.ref, 'messages'), {
+                            ...newMesssage
+                        }).then(() => {
+                            updateDoc(chatroom.ref, {
+                                lastMessage: newMesssage,
+                                updatedAt: serverTimestamp(),
+                            });
+                        });
+                    } else {
+                        addDoc(chatroomsRef, {
+                            roomId: combinedUsername,
+                            members: [currentUser.username, receiverUser.username],
+                            user1: currentUser,
+                            user2: receiverUser
+                        }).then((chatroomsRef) => {
+                            updateMessage();
+                            addDoc(collection(chatroomsRef, 'messages'), {
+                                ...newMesssage
+                            }).then(() => {
+                                updateDoc(chatroomsRef, {
+                                    lastMessage: newMesssage,
+                                    updatedAt: serverTimestamp(),
+                                });
+                            });
+                        });
+                    }
+                });
+                setMsg('');
+            }
+        }
+
         const updateMessage = () => {
             const chatroomsRef = collection(db, 'chatrooms');
             const combinedUsername = [currentUser.username, receiverUser.username].sort().join(':');
@@ -130,6 +177,7 @@ const ChatRoom = () => {
                     const q2 = query(messageRef, orderBy("createdAt"));
                     onSnapshot(q2, (snapshot) => {
                         setMessages(snapshot.docs.map((doc) => doc.data()));
+
                     })
                 }
             });
@@ -137,6 +185,12 @@ const ChatRoom = () => {
         }
         if (currentUser && receiverUser) {
             updateMessage();
+            if (sessionStorage.getItem('postChat') !== null) {
+                let postChat = JSON.parse(sessionStorage.getItem('postChat'));
+                if (postChat.userId.id === receiverUser.id)
+                    sendPostMessage(postChat);
+                sessionStorage.removeItem('postChat');
+            }
         }
     }, [currentUser, receiverUser])
 
@@ -162,7 +216,7 @@ const ChatRoom = () => {
     }
 
     if (receiverUser && !currentUser) {
-        return <Navigate to="/login"/>
+        return <Navigate to="/login" />
     }
 
     return (<>
@@ -187,8 +241,14 @@ const ChatRoom = () => {
                     <div className="pt-5 pr-5 flex flex-col gap-2">
                         {messages && messages.map((message) =>
                             <>
-                                {message.sender === currentUser.username ? <RightMessage content={message.content} /> : ""}
-                                {message.sender === receiverUser.username ? <LeftMessage content={message.content} avatar={receiverUser.avatar} /> : ""}
+                                {message.type === "text" && (<>
+                                    {message.sender === currentUser.username ? <RightMessage content={message.content} /> : ""}
+                                    {message.sender === receiverUser.username ? <LeftMessage content={message.content} avatar={receiverUser.avatar} /> : ""}
+                                </>)}
+                                {message.type === "post" && (<>
+                                    <PostMessage post={message.content}/>
+                                </>)}
+
                             </>
                         )}
                         <div ref={messagesEndRef} />

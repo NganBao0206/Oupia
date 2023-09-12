@@ -29,7 +29,7 @@ const UserChatItem = (props) => {
                             <div className="flex gap-1 text-gray-500 text-sm w-full">
                                 {message && (
                                     <>
-                                        <h3 className="truncate">{message.content}</h3>
+                                        {message.type === "text" ? <h3 className="truncate">{message.content}</h3> : <h3 className="truncate">'{message.content.title}'</h3>}
                                         <h3 className="whitespace-nowrap">· {message.createdAt && <Moment locale="vi" fromNow>{message.createdAt.toDate()}</Moment>}</h3>
                                     </>)
                                 }

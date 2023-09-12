@@ -7,7 +7,7 @@ import APIs, { endpoints } from '../../../configs/APIs';
 import { UserContext } from '../../../App';
 
 const UserCard = () => {
-    const { post } = useContext(PostContext);
+    const { post, images } = useContext(PostContext);
     const [countPosts, setCountPosts] = useState(null);
     const [countFollowers, setCountFollowers] = useState(null);
     const [currentUser,] = useContext(UserContext);
@@ -37,6 +37,7 @@ const UserCard = () => {
     }, [post])
 
     const handleChat = () => {
+        post.image = images[0];
         sessionStorage.setItem('postChat', JSON.stringify(post));
     };
 

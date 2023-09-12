@@ -13,9 +13,10 @@ const MessageLayout = () => {
     const [authToken, setAuthToken] = useState();
     const [currentUser,] = useContext(UserContext);
 
-    const [followingUsers, setFollowingUsers] = useState();
+    const [followingUsers, setFollowingUsers] = useState([]);
     const location = (useLocation().pathname === "/messages");
     const [chatRooms, setChatRooms] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const getFbToken = async () => {
@@ -28,10 +29,10 @@ const MessageLayout = () => {
                 setFollowingUsers(res.data);
             }
         }
-        if(currentUser){
+        if (currentUser) {
             getRecommendUser();
             getFbToken();
-        }      
+        }
     }, [currentUser])
 
     useEffect(() => {
@@ -45,6 +46,15 @@ const MessageLayout = () => {
             });
         }
     }, [authToken, currentUser]);
+
+    const results = !searchTerm ? chatRooms : chatRooms.filter(room =>
+        room.user2.fullName.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+    );
+
+    const results2 = !searchTerm ? followingUsers : followingUsers.filter(following =>
+        following.beFollowedUserId.fullName.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+    );
+
 
     if (!currentUser) {
         return (<Navigate to="/login?next=/messages" />);
@@ -61,15 +71,17 @@ const MessageLayout = () => {
                                 <RiSearch2Line className="text-gray-700" size={20} />
                             </div>
                             <input type="search"
+                                value={searchTerm}
+                                onChange={(evt) => setSearchTerm(evt.target.value)}
                                 className="h-full block w-full p-4 pl-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blueTemplate focus:border-blueTemplate" placeholder="Tìm người dùng..." />
                         </div>
                     </div>
                     <div className="mt-5 flex flex-col">
-                        {chatRooms.map((room, index) => {
-                            return <UserChatItem key={index} user={room.user1.username === currentUser.username ? room.user2 : room.user1} message={room.lastMessage} />
+                        {results.map((item, index) => {
+                            return <UserChatItem key={index} user={item.user1.username === currentUser.username ? item.user2 : item.user1} message={item.lastMessage} />
                         })}
                         <h2 className="mt-5 font-bold border-t-2 border-gray-300 py-5">Người bạn theo dõi</h2>
-                        {followingUsers && followingUsers.map((followingUser, index) => {
+                        {results2.map((followingUser, index) => {
                             return <UserChatItem key={index} user={followingUser.beFollowedUserId} message={null} />
                         })}
                     </div>
