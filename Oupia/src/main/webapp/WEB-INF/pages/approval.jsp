@@ -102,14 +102,24 @@
                 Thông tin bài đăng
             </div>
             <div class="d-flex justify-content-center mt-3">
-                <img
-                    id="avatar"
-                    src="${user.avatar}"
-                    class="w-100"
-                    style="height: 250px; object-fit: cover"
-                    alt="avatar"
-                    loading="lazy"
-                    />
+                <div id="carouselExample w-full" class="carousel slide">
+                    <div class="carousel-inner w-100">
+                        <c:forEach items="${images}" var="image">
+                            <div class="carousel-item active">
+                                <img src="${image}" style="height: 250px; object-fit: cover" alt="...">
+                            </div>
+                        </c:forEach>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
             </div>
             <div class="d-flex col-12 my-1 mt-3">
                 <p class="col fs-5">${post.title}</p>

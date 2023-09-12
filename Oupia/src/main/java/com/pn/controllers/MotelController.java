@@ -127,9 +127,12 @@ public class MotelController {
         params.put("motelSlug", slug);
 
         List<Post> post = postService.getPosts(params);
+        List<String> images = imageService.getImagesBySlugPost(post.get(0).getSlug());
+
         model.addAttribute("post", post.get(0));
         model.addAttribute("motel", motel);
         model.addAttribute("user", motel.getUserId());
+        model.addAttribute("images", images);
 
         return "approval";
     }

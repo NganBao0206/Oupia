@@ -6,6 +6,7 @@ import com.pn.enums.UserRole;
 import com.pn.pojo.Motel;
 import com.pn.pojo.Post;
 import com.pn.pojo.User;
+import com.pn.service.ImageService;
 import com.pn.service.MotelService;
 import com.pn.service.MultipleService;
 import com.pn.service.PostService;
@@ -51,12 +52,13 @@ public class UserController {
     private UserService userService;
     @Autowired
     private PostService postService;
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private Environment env;
     @Autowired
     private WebAppValidator userValidator;
-    
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -79,19 +81,22 @@ public class UserController {
     public Status[] getStatus() {
         return Status.values();
     }
-    
+
     @RequestMapping(value = "/users-approval/{username}")
     public String approval(Model model, @PathVariable(value = "username") String username) {
         User u = userService.getUserByUsername(username);
-        if (!u.getStatus().equals(Status.PENDING.toString()))
-             return "redirect:/users";
+        if (!u.getStatus().equals(Status.PENDING.toString())) {
+            return "redirect:/users";
+        }
         Map<String, String> params = new HashMap<>();
         params.put("username", username);
         params.put("isDeleted", "0");
         List<Post> post = postService.getPosts(params);
+        List<String> images = imageService.getImagesBySlugPost(post.get(0).getSlug());
         model.addAttribute("post", post.get(0));
         model.addAttribute("motel", post.get(0).getPostRentDetail().getMotelId());
         model.addAttribute("user", u);
+        model.addAttribute("images", images);
 
         return "approval";
     }
@@ -119,7 +124,7 @@ public class UserController {
 
         return "users";
     }
-    
+
     @RequestMapping(value = "/users-approval")
     public String users(Model model, @RequestParam Map<String, String> params) {
 
@@ -127,17 +132,16 @@ public class UserController {
         if (params.get("page") == null) {
             params.put("page", "1");
         }
-        
+
         List<String> userRole = new ArrayList<>();
         userRole.add("LANDLORD");
-        
+
         List<String> status = new ArrayList<>();
         status.add("PENDING");
 
         int count = this.userService.countUsers(params, userRole, status);
         int pageSize = Integer.parseInt(env.getProperty("PAGE_SIZE"));
-        
-        
+
         List<User> u = userService.getUsers(params, userRole, status);
 
         model.addAttribute("users", u);
